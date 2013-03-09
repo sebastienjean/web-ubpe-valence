@@ -1,0 +1,150 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="fr" />
+		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
+		<script type="text/javascript" src="../ressources/js/jquery-1.9.0.min.js"></script>
+		<!--<script type="text/javascript" src="../ressources/flot/jquery.js"></script>-->
+		<script type="text/javascript" src="../ressources/flot/jquery.flot.js"></script>
+
+		<title>UBPE 2013 | Graphiques</title>
+	</head>
+
+		<body>
+		<div id="big-frame">		
+			<div id="header">
+			</div> <!-- end header -->
+			
+			<div id="menu">
+				<ul>
+					<li>
+						<a href="../index.html" title="Accueil">Accueil</a>
+					</li>
+					<li>
+						<a href="./donnees.html" title="Données">Données</a>
+					</li>
+					<li>
+						<a href="" title="Graphiques">Graphiques</a>
+					</li>
+					<li>
+						<a href="./carte.html" title="Carte">Carte</a>
+					</li>
+					<li>
+						<a href="./donneesBrutes.html" title="Données brutes">Données brutes</a>
+					</li>
+				</ul>
+			</div> <!-- end menu -->
+			
+			<div id="frame">
+				<div id="page">
+					<div id="title">
+						<div id="title-left">
+							<h2>Graphique du vol</h2>
+						</div>
+					</div>
+					<div id="page-content">
+						<div id="graph"></div>
+						<div id="button-holder-graphique">
+							<ul>
+								<li>
+								<button id="btn1">Data 1</button>
+								</li>
+								<li>
+								<button id="btn2">Data 2</button>
+								</li>
+								<li>
+								<button id="btn3">Data 3</button>
+								</li>
+								<li>
+								<button id="btn4">All</button>
+								</li>
+							</ul>
+						</div>
+						<script>
+							$(function () {
+								
+								var graph = $("#graph");
+								
+								var vide = [];
+								
+								var datad1 = [];
+								for (var i = 0; i < 14; i += 0.5)
+									datad1.push([i, Math.sin(i)]);
+								
+								var d1 = 	{	
+											label:  'Data 1',
+											data : datad1,
+											color : 'green',
+											};
+											
+								var d2 = 	{	
+											label : 'Data 2',
+											data : [[0, 3], [4, 8], [8, 5], [9, 13]],
+											color : 'red',
+											};
+								
+								var d3 =	{
+											label : 'Data 3',
+											data : [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]],
+											color : 'yellow',
+											};
+											
+								var data = [d1, d2, d3];
+								
+								var option =	{
+												legend : { show: true, position : 'ne', backgroundColor : null, backgroundOpacity: 0 },
+												grid : { show: true, color: '#ff8c00', backgroundColor : null },
+												xaxis : { color: 'orange' },
+												yaxis : { color: 'orange' },
+												};
+			
+								/*$.plot(graph, data, option);*/
+								$.plot(graph, vide, option);
+								
+								graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Séléctionner un graphique</div>');
+								
+								$("#btn1").click(function () {
+									$.plot(graph, [d1], option);
+								});
+								
+								$("#btn2").click(function () {
+									$.plot(graph, [d2], option);
+								});
+								
+								$("#btn3").click(function () {
+									$.plot(graph, [d3], option);
+								});
+								
+								$("#btn4").click(function () {
+									$.plot(graph, data, option);
+								});
+								
+							});
+						</script>
+						<p>
+							Ce graphique permet de consulter graphiquement les données envoyées par le ballon.
+						</p>
+					</div>
+				</div> <!-- end page -->
+			</div> <!-- end frame -->
+			
+			<div id="footer">
+				<div id="footer-left">
+					UBPE 2013 - <a href="./credits.html" title="Page des crédits">Projet UBPE, IUT Valence</a>
+				</div>
+				<div id="footer-right">
+				
+					<ul>
+						<li>
+							<a href="http://iut-valence.fr"><img src="../ressources/img/logoiut2.png" title="IUT Valence" alt="Logo IUT Valence"></a>
+						</li>
+					</ul>
+					
+				</div>
+			</div> <!-- end footer -->	
+		</div>
+		</body>
+	
+</html>

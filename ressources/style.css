@@ -1,0 +1,243 @@
+#big-frame{
+	width : 1250px;
+	height : 700px;
+	margin: 0 auto 0 auto;
+	background-image : url(./img/Image1.png);
+	background-position:0% 0%;
+	background-color : black;
+	background-repeat:no-repeat;
+}
+
+body {
+	font-size: 11pt;
+	line-height: 1.6em;
+	font-family: Arial, sans-serif;
+	background: #9ea3a3;
+	color: #adadad;
+	/*background: url(./img/Image1.png) no-repeat black;*/
+	background-color : black;
+}
+
+#header{
+	margin: 10px auto 0 auto;
+	width: 950px;
+	height:75px;
+	/*background-color : blue;*/
+}
+
+#logo img{
+	float : right;
+	margin : 0 50px 0 0
+}
+
+
+/* ----------------------------------------------------------------------------------- MENU */
+
+#menu{
+	margin: 0 auto 0 auto;
+	width: 750px;
+	height: 30px;
+	/*background-color : orange;*/
+	text-align: center;
+}
+
+#menu li {
+    display: inline;  
+    list-style: none; /* nécessaire pour IE7 */  
+}
+
+#menu a {  
+    display:inline-block;  
+    margin: 3px 35px 0 0;
+	font-size: 15pt;
+	font-weight: bold;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	text-decoration: none;
+	color: #ff8c00;
+	/*color:orange;*/
+}  
+
+#menu a:hover {
+	color : #ff4500;
+}
+
+#frame{
+	margin: 10px auto 0 auto;
+	width: 950px;
+}
+	
+#page {
+	background: rgba(65, 70, 70, 0.85);
+	border-radius: 20px;
+	padding : 10px 10px 10px 10px;
+	border-width : 2px;
+	border-style : solid;
+	border-color : #ff8c00;
+}
+
+#page-content{ /* Only if div title before ! */
+	margin : 60px auto auto auto;
+}
+
+#title{
+}
+
+#title-left{
+	float : left;
+}
+
+#title-right{
+	float : right;
+	margin : 15px 15px 0 0;
+}
+
+#map { 
+	height: 550px;
+	width: 750px;
+	border-radius: 20px;
+	margin : auto auto auto auto;
+	border-width : 2px;
+	border-style : solid;
+	border-color : #ff8c00;
+}
+
+#graph{ 
+	height: 550px;
+	width: 750px;
+	margin : auto auto auto auto;
+}
+
+#tab{ 
+	height: 550px;
+	width: 750px;
+	/*border-radius: 20px;*/
+	margin : auto auto auto auto;
+	border-width : 1px;
+	border-style : solid;
+	border-color : #ff8c00;
+}
+
+#tab table{
+	width : 100%;
+	height : 100%;
+	/*border-width : 5px;
+	border-style  : solid;
+	border-color : #ff8c00;
+	border-radius : 13px;*/
+	border-collapse : collapse;
+	
+}
+
+#tab tr{
+	height : 10%;
+}
+
+#tab td{
+	border-width : 1px;
+	border-style  : solid;
+	border-color : orange;
+	text-align : center;
+}
+
+#tab th{
+	border-width : 1px;
+	border-style  : solid;
+	border-color : orange;
+	text-align : center;
+}
+
+#type-tile{
+	/*background-color : #404040;*/
+	background : rgba(40, 40, 40, 0.6);
+}
+
+#type-1{
+	/*background-color : #606060;*/
+	background : rgba(60, 60, 60, 0.4);
+
+}
+
+#type-2{
+	/*background-color : #505050;*/
+	background : rgba(50, 50, 50, 0.4);	
+}
+
+/* >>> button-holder-graphique --------------------------------------------------------------------------------------*/
+
+#button-holder-graphique { 
+	height: 55px;
+	width: 750px;
+	border-radius: 20px;
+	margin : 10px auto auto auto;
+	border-width : 2px;
+	border-style : solid;
+	border-color : #ff8c00;
+}
+
+#button-holder-graphique li {
+    display: inline;  
+    list-style: none; /* nécessaire pour IE7 */  
+}
+
+#button-holder-graphique button {
+    display:inline-block;  
+    margin: 0 24px 0 0;
+}
+
+/* >>> button-holder-donnees --------------------------------------------------------------------------------------*/
+
+#button-holder-donnees { 
+	height: 55px;
+	width: 750px;
+	border-radius: 20px;
+	margin : 10px auto auto auto;
+	border-width : 2px;
+	border-style : solid;
+	border-color : #ff8c00;
+}
+
+#button-holder-donnees li {
+    display: inline;  
+    list-style: none; /* nécessaire pour IE7 */  
+}
+
+#button-holder-donnees button {
+    display:inline-block;  
+    margin: 0 24px 0 0;
+}
+
+/* ----------------------------------------------------------------------------------- FOOTER */
+
+#footer{
+	margin: 0 auto 0 auto;
+	width: 950px;
+	color : #ff8c00;
+	font-weight: bold;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#footer li {
+    display: inline;  
+    list-style: none; /* nécessaire pour IE7 */  
+}
+
+
+#footer-left{
+	float : left;
+    margin: 5px 0 0 0;
+}
+
+#footer-right{
+	float : right;
+	margin: auto auto auto 0;
+}
+
+#footer a {  
+	text-decoration: none;
+	color: #ff8c00;
+}  
+
+#footer a:hover {
+	color : #ff4500;
+}
+

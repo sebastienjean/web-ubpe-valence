@@ -1,0 +1,93 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="fr" />
+		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
+		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
+		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+		<title>UBPE 2013 | Carte (ONLINE)</title>
+	</head>
+
+		<body>
+		<div id="big-frame">		
+			<div id="header">
+			</div> <!-- end header -->
+			
+			<div id="menu">
+				<ul>
+					<li>
+						<a href="../index.html" title="Accueil">Accueil</a>
+					</li>
+					<li>
+						<a href="./donnees.html" title="Données">Données</a>
+					</li>
+					<li>
+						<a href="./graphiques.html" title="Graphiques">Graphiques</a>
+					</li>
+					<li>
+						<a href="./carte.html" title="Carte">Carte</a>
+					</li>
+					<li>
+						<a href="./donneesBrutes.html" title="Données brutes">Données brutes</a>
+					</li>
+				</ul>
+			</div> <!-- end menu -->
+			
+			<div id="frame">
+				<div id="page">
+					<div id="title">
+						<div id="title-left">
+							<h2>Carte du vol</h2>
+						</div>
+						<div id="title-right">
+							<span style="color : #228b22; font-weight : bold; text-decoration: none;"}>ONLINE</span> | <a href="./carte.html" title="Passer en mode offline" style="color : red; font-weight : none; text-decoration: none;">OFFLINE</a>
+						</div>
+					</div>
+					<div id="page-content">
+						<div id="map"></div>
+						<script>
+							var map = L.map('map',{
+							center: [44.9250, 4.8900],
+							zoom: 13,
+							})
+							
+							L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+							attribution: 'UBPE 2013 - IUT Valence',
+							}).addTo(map);
+							
+							var marker = L.marker([44.91568, 4.91524]).addTo(map);
+							marker.bindPopup("IUT Valence");
+							
+							function onMapClick(e) {
+								alert(e.latlng);
+							}
+							
+							map.on('click', onMapClick);
+						</script>
+						<p>
+							Cette carte permet de suivre en direct ou différé la progression du ballon.
+						</p>
+					</div>
+				</div> <!-- end page -->
+			</div> <!-- end frame -->
+			
+			<div id="footer">
+				<div id="footer-left">
+					UBPE 2013 - <a href="./credits.html" title="Page des crédits">Projet UBPE, IUT Valence</a>
+				</div>
+				<div id="footer-right">
+				
+					<ul>
+						<li>
+							<a href="http://iut-valence.fr"><img src="../ressources/img/logoiut2.png" title="IUT Valence" alt="Logo IUT Valence"></a>
+						</li>
+					</ul>
+					
+				</div>
+			</div> <!-- end footer -->	
+		</div>
+		</body>
+	
+</html>
