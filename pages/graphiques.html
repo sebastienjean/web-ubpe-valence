@@ -7,6 +7,10 @@
 		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
 		<script type="text/javascript" src="../ressources/js/jquery-1.9.0.min.js"></script>
 		<!--<script type="text/javascript" src="../ressources/flot/jquery.js"></script>-->
+		
+		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+		
 		<script type="text/javascript" src="../ressources/flot/jquery.flot.js"></script>
 
 		<title>UBPE 2013 | Graphiques</title>
@@ -63,8 +67,15 @@
 							</ul>
 						</div>
 						<script>
+							
+							json = updateData();
+							var tabAlt = new Array();
+							for ( i = 0; i < 166; i++){
+								tabAlt.push([i,(json['filtered'][i]['altGPS'])]);
+							}
+							
 							$(function () {
-								
+							
 								var graph = $("#graph");
 								
 								var vide = [];
@@ -91,22 +102,31 @@
 											color : 'yellow',
 											};
 											
+								var dAlt =	{
+											label : 'Altitude',
+											data : tabAlt,
+											color : 'red',
+											points: { show: true },
+											}
+											
 								var data = [d1, d2, d3];
 								
 								var option =	{
 												legend : { show: true, position : 'ne', backgroundColor : null, backgroundOpacity: 0 },
-												grid : { show: true, color: '#ff8c00', backgroundColor : null },
+												grid : { show: true, color: '#ff8c00', backgroundColor : null, hoverable: true, mouseActiveRadius: 30},
 												xaxis : { color: 'orange' },
 												yaxis : { color: 'orange' },
 												};
-			
+												
+										var previousPoint = null;
+												
 								/*$.plot(graph, data, option);*/
 								$.plot(graph, vide, option);
 								
 								graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Séléctionner un graphique</div>');
 								
 								$("#btn1").click(function () {
-									$.plot(graph, [d1], option);
+									$.plot(graph, [dAlt], option);
 								});
 								
 								$("#btn2").click(function () {
@@ -121,6 +141,37 @@
 									$.plot(graph, data, option);
 								});
 								
+								$("#graph").bind("plothover", function (event, pos, item) {
+											
+									function showTooltip(x, y, contents) {
+										$("<div id='tooltip'>" + contents + "</div>").css({
+											position: "absolute",
+											display: "none",
+											top: y + 5,
+											left: x + 5,
+											border: "1px solid #fdd",
+											padding: "2px",
+											"background-color": "#fee",
+											opacity: 0.80,
+											color : "#000000",
+										}).appendTo("body").fadeIn(200);
+									}
+												
+									if (item) {
+										if (previousPoint != item.dataIndex) {
+											previousPoint = item.dataIndex;
+											$("#tooltip").remove();
+											var x = item.datapoint[0].toFixed(2),
+											y = item.datapoint[1].toFixed(2);
+
+											showTooltip(item.pageX, item.pageY, item.series.label + " = " + y);
+											}
+										} 
+										else {
+												$("#tooltip").remove();
+												previousPoint = null;            
+											}
+								});
 							});
 						</script>
 						<p>
