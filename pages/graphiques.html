@@ -53,7 +53,7 @@
 						<div id="button-holder-graphique">
 							<ul>
 								<li>
-									<select name="abscisse" id="abscisse" title="Abscisse">
+									<select name="ordonnee" id="ordonnee" title="Ordonnée">
 										<option selected="selected"> - - - </option>
 										<option value="altGPS">Altitude</option>
 										<option value="pressure">Pression</option>
@@ -64,7 +64,7 @@
 									</select>
 								</li>
 								<li>
-									<select name="ordonnee" id="ordonnee" title="Ordonnée">
+									<select name="abscisse" id="abscisse" title="Abscisse">
 										<option selected="selected"> - - - </option>
 										<option value="altGPS">Altitude</option>
 										<option value="pressure">Pression</option>
@@ -102,9 +102,13 @@
 								graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Séléctionner un graphique</div>');
 								
 								$("#btnGenerateChart").click(function () {
+								
 									var abscisse = $("#abscisse").val();
 									var ordonnee = $("#ordonnee").val();
-									/*alert("Abscisse : " + abscisse + "\nOrdonnée : " + ordonnee);*/
+									var nameAbscisse = $("#abscisse option:selected").text();
+									var nameOrdonnee = $("#ordonnee option:selected").text();
+									
+									/*alert("Abscisse : " + nameAbscisse + " (" + abscisse + ")" + "\nOrdonnée : " + nameOrdonnee + " (" + ordonnee + ")");*/
 									
 									var tab = new Array();
 									for ( i = 0; i < 166; i++){
@@ -112,7 +116,7 @@
 									}
 									
 									var dTab =	{
-											lbale : abscisse + ordonnee, 
+											label : nameOrdonnee + " / " + nameAbscisse, 
 											data : tab,
 											color : 'red',
 											points: { show: true },
