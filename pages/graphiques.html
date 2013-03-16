@@ -53,63 +53,39 @@
 						<div id="button-holder-graphique">
 							<ul>
 								<li>
-								<button id="btn1">Data 1</button>
+									<select name="abscisse" id="abscisse" title="Abscisse">
+										<option selected="selected"> - - - </option>
+										<option value="altGPS">Altitude</option>
+										<option value="pressure">Pression</option>
+										<option value="luxAverage">Luminosité moyenne</option>
+										<option value="tempIn">Température intérieur</option>
+										<option value="tempOut">Température extérieur</option>
+										<option value="speedGPS">Vitesse</option>
+									</select>
 								</li>
 								<li>
-								<button id="btn2">Data 2</button>
+									<select name="ordonnee" id="ordonnee" title="Ordonnée">
+										<option selected="selected"> - - - </option>
+										<option value="altGPS">Altitude</option>
+										<option value="pressure">Pression</option>
+										<option value="luxAverage">Luminosité moyenne</option>
+										<option value="tempIn">Température intérieur</option>
+										<option value="tempOut">Température extérieur</option>
+										<option value="speedGPS">Vitesse</option>
+									</select>
 								</li>
 								<li>
-								<button id="btn3">Data 3</button>
-								</li>
-								<li>
-								<button id="btn4">All</button>
+								<button id="btnGenerateChart">Generate chart</button>
 								</li>
 							</ul>
 						</div>
 						<script>
 							
 							json = updateData();
-							var tabAlt = new Array();
-							for ( i = 0; i < 166; i++){
-								tabAlt.push([i,(json['filtered'][i]['altGPS'])]);
-							}
-							
+
 							$(function () {
 							
 								var graph = $("#graph");
-								
-								var vide = [];
-								
-								var datad1 = [];
-								for (var i = 0; i < 14; i += 0.5)
-									datad1.push([i, Math.sin(i)]);
-								
-								var d1 = 	{	
-											label:  'Data 1',
-											data : datad1,
-											color : 'green',
-											};
-											
-								var d2 = 	{	
-											label : 'Data 2',
-											data : [[0, 3], [4, 8], [8, 5], [9, 13]],
-											color : 'red',
-											};
-								
-								var d3 =	{
-											label : 'Data 3',
-											data : [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]],
-											color : 'yellow',
-											};
-											
-								var dAlt =	{
-											label : 'Altitude',
-											data : tabAlt,
-											color : 'red',
-											points: { show: true },
-											}
-											
-								var data = [d1, d2, d3];
 								
 								var option =	{
 												legend : { show: true, position : 'ne', backgroundColor : null, backgroundOpacity: 0 },
@@ -118,27 +94,31 @@
 												yaxis : { color: 'orange' },
 												};
 												
-										var previousPoint = null;
-												
-								/*$.plot(graph, data, option);*/
-								$.plot(graph, vide, option);
+								var previousPoint = null;
+								
+								var vide =[];
+								$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
 								
 								graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Séléctionner un graphique</div>');
 								
-								$("#btn1").click(function () {
-									$.plot(graph, [dAlt], option);
-								});
-								
-								$("#btn2").click(function () {
-									$.plot(graph, [d2], option);
-								});
-								
-								$("#btn3").click(function () {
-									$.plot(graph, [d3], option);
-								});
-								
-								$("#btn4").click(function () {
-									$.plot(graph, data, option);
+								$("#btnGenerateChart").click(function () {
+									var abscisse = $("#abscisse").val();
+									var ordonnee = $("#ordonnee").val();
+									/*alert("Abscisse : " + abscisse + "\nOrdonnée : " + ordonnee);*/
+									
+									var tab = new Array();
+									for ( i = 0; i < 166; i++){
+										tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee])]);
+									}
+									
+									var dTab =	{
+											lbale : abscisse + ordonnee, 
+											data : tab,
+											color : 'red',
+											points: { show: true },
+											}
+									
+									$.plot(graph, [dTab], option);
 								});
 								
 								$("#graph").bind("plothover", function (event, pos, item) {
