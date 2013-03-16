@@ -75,7 +75,7 @@
 									</select>
 								</li>
 								<li>
-								<button id="btnGenerateChart">Generate chart</button>
+								<button id="btnGenerateChart">Générer graphique</button>
 								</li>
 							</ul>
 						</div>
@@ -103,10 +103,10 @@
 								
 								$("#btnGenerateChart").click(function () {
 								
-									var abscisse = $("#abscisse").val();
-									var ordonnee = $("#ordonnee").val();
-									var nameAbscisse = $("#abscisse option:selected").text();
-									var nameOrdonnee = $("#ordonnee option:selected").text();
+									abscisse = $("#abscisse").val();
+									ordonnee = $("#ordonnee").val();
+									nameAbscisse = $("#abscisse option:selected").text();
+									nameOrdonnee = $("#ordonnee option:selected").text();
 									
 									/*alert("Abscisse : " + nameAbscisse + " (" + abscisse + ")" + "\nOrdonnée : " + nameOrdonnee + " (" + ordonnee + ")");*/
 									
@@ -147,8 +147,8 @@
 											$("#tooltip").remove();
 											var x = item.datapoint[0].toFixed(2),
 											y = item.datapoint[1].toFixed(2);
-
-											showTooltip(item.pageX, item.pageY, item.series.label + " = " + y);
+											
+											showTooltip(item.pageX, item.pageY, nameOrdonnee + " = " + y + "<br/>" + nameAbscisse + " = " + x);
 											}
 										} 
 										else {
