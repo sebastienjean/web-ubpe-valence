@@ -82,6 +82,17 @@
 		
 							var polyline = L.polyline(Path, {color: 'red'}).addTo(map); //Create a polyline from an LatLng array object
 							
+							for (i = 0; i < 166; i++){
+								var marker = L.marker(Path[i],Path[i]).addTo(map);
+								marker.bindPopup(
+													"<u><b>Position</b></u> " + "<br/>" +
+													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
+													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
+													"<u><b>Mesures</b></u>" + "<br/>" +
+													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + "<br/>"
+												);
+							}
+							
 						</script>
 						<p>
 							Cette carte permet de suivre en direct ou différé la progression du ballon.
