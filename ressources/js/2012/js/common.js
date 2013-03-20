@@ -366,6 +366,26 @@ function guessCapImgName(cap) {
 	return name+'.png';
 }
 
+function guessSpeedIconName(speedGPS){
+	if(speedGPS == null || speedGPS == '' || speedGPS == 0 || speedGPS <= 0) {
+		name = 'grey';
+	}
+	else if(speedGPS > 0 && speedGPS <= 10) {
+		name = 'blue';
+	}
+	else if(speedGPS > 10 && speedGPS <= 20) {
+		name = 'green';
+	}
+	else if(speedGPS > 20 && speedGPS <= 50) {
+		name = 'orange';
+	}
+	else if(speedGPS > 50) {
+		name = 'red';
+	}
+	
+	return name + "Icon";
+}
+
 function volt(val, round) {
 	var U = 5 * val / 1024;
 
