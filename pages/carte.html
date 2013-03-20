@@ -67,11 +67,13 @@
 							var marker = L.marker([44.91568, 4.91524]).addTo(map);
 							marker.bindPopup("IUT Valence");
 							
+							/*
 							function onMapClick(e) {
 								alert(e.latlng);
 							}
 							
 							map.on('click', onMapClick);
+							*/
 							
 							json = updateData();
 							
@@ -83,14 +85,59 @@
 							var polyline = L.polyline(Path, {color: 'red'}).addTo(map); //Create a polyline from an LatLng array object
 							
 							for (i = 0; i < 166; i++){
-								var marker = L.marker(Path[i],Path[i]).addTo(map);
-								marker.bindPopup(
+								
+								
+								/* Traitement à part du premier élément du tableau (le dernier point reçu) pour afficher son cap */
+								if (i == 0){
+								
+									nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
+									
+									var capIcon = L.icon({
+										iconUrl: '../ressources/img/' + nomIcon,
+
+										iconSize:     [50, 50], // size of the icon
+										iconAnchor:   [20, 28], // point of the icon which will correspond to marker's location
+										popupAnchor:  [5,-10] // point from which the popup should open relative to the iconAnchor
+									});
+									
+									var marker = L.marker((Path[i],Path[i]),{icon: capIcon}).addTo(map);
+									marker.bindPopup(	
+													"<div style=\"color : black\">" +
+													"<center>Point n°" + i + "</center>" + "<br/>" +
 													"<u><b>Position</b></u> " + "<br/>" +
 													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
 													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
 													"<u><b>Mesures</b></u>" + "<br/>" +
-													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + "<br/>"
+													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + "<br/>" +
+													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + "<br/>" +
+													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + "<br/>" +
+													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + "<br/>" +
+													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + "<br/>" +
+													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + "<br/>" +
+													/*"<b></b> : " + (json['filtered'][i]['NOM_DE_VARIALE'])+'' + "<br/>" +*/
+													"</div>"
 												);
+								}
+								else{
+								
+								var marker = L.marker(Path[i],Path[i]).addTo(map);
+								marker.bindPopup(	
+													"<div style=\"color : black\">" +
+													"<center>Point n°" + i + "</center>" + "<br/>" +
+													"<u><b>Position</b></u> " + "<br/>" +
+													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
+													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
+													"<u><b>Mesures</b></u>" + "<br/>" +
+													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + "<br/>" +
+													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + "<br/>" +
+													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + "<br/>" +
+													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + "<br/>" +
+													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + "<br/>" +
+													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + "<br/>" +
+													/*"<b></b> : " + (json['filtered'][i]['NOM_DE_VARIALE'])+'' + "<br/>" +*/
+													"</div>"
+												);
+								}
 							}
 							
 						</script>

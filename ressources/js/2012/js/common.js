@@ -333,7 +333,7 @@ function retrieveChartSeries(data, property) {
  *
  * @param int cap Le cap, valeur entre 0 et 360
  */
-function guessCapImgUrl(cap) {
+function guessCapImgName(cap) {
 	if(cap == null || cap == '') {
 		return '';
 	}
@@ -363,7 +363,7 @@ function guessCapImgUrl(cap) {
 		name = 'leftup';
 	}
 	
-	return 'img/'+name+'.png';
+	return name+'.png';
 }
 
 function volt(val, round) {
