@@ -5,6 +5,10 @@
 		<meta http-equiv="Content-Language" content="fr" />
 		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
 		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
+		
+		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+		
 		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
 		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
 		<title>UBPE 2013 | Carte (ONLINE)</title>
@@ -65,6 +69,16 @@
 							}
 							
 							map.on('click', onMapClick);
+							
+							json = updateData();
+							
+							var Path = new Array();
+									for ( i = 0; i < 166; i++){
+										Path.push([(json['filtered'][i]['longGPSFormat']),(json['filtered'][i]['latGPSFormat'])]);
+									}
+		
+							var polyline = L.polyline(Path, {color: 'red'}).addTo(map); //Create a polyline from an LatLng array object
+							
 						</script>
 						<p>
 							Cette carte permet de suivre en direct ou différé la progression du ballon.
