@@ -51,14 +51,26 @@
 					</div>
 					<div id="page-content">
 						<div id="map"></div>
+						<div id="button-holder-graphique">
+							<ul>
+								<li>
+									<select name="layer" id="layer" title="Serveur carte">
+										<option selected="selected"> Open Street Map </option>
+										<option value="altGPS">Google Hybrid</option>
+									</select>
+								</li>
+							</ul>
+						</div>
 						<script>
+												
+							// Création de la carte 
 							var map = L.map('map',{
-							center: [44.9250, 4.8900],
-							zoom: 13,
+								center: [44.9250, 4.8900],
+								zoom: 13,
 							})
 							
-							L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-							attribution: 'UBPE 2013 - IUT Valence',
+							L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { //Serveur de tuiles à utiliser
+								attribution: 'UBPE 2013 - IUT Valence', //Nom du layer
 							}).addTo(map);
 							
 							// POI
@@ -67,6 +79,15 @@
 							
 							//Ouverture du json
 							json = updateData();
+							
+							//Unités des mesures
+							tabUnites = { 	"altitude" : "m",
+											"speedGPS" : "nd",
+											"luxAverage" : "lux",
+											"tempIn" : "°C",
+											"tempOut" : "°C",
+											"pressure" : "hPa"
+										}
 							
 							//Parcours du json afin de créer le chemin
 							var Path = new Array();
@@ -134,7 +155,7 @@
 										popupAnchor:  [5,-10] // Ajustement de l'emplacement du pop-up d'informations
 									});
 									
-									var marker = L.marker((Path[i],Path[i]),{icon: capIcon}).addTo(map);
+									var marker = L.marker((Path[i]),{icon: capIcon}).addTo(map);
 								}
 								
 								else { /* Point normal (sans cap) */
@@ -142,19 +163,19 @@
 									
 									//Déterlination de la couleur du point
 									if (iconName == "greenIcon"){
-										var marker = L.marker((Path[i],Path[i]),{icon: greenIcon}).addTo(map);
+										var marker = L.marker((Path[i]),{icon: greenIcon}).addTo(map);
 									}
 									if (iconName =="redIcon"){
-										var marker = L.marker((Path[i],Path[i]),{icon: redIcon}).addTo(map);
+										var marker = L.marker((Path[i]),{icon: redIcon}).addTo(map);
 									}
 									if (iconName == "blueIcon"){
-										var marker = L.marker((Path[i],Path[i]),{icon: blueIcon}).addTo(map);
+										var marker = L.marker((Path[i]),{icon: blueIcon}).addTo(map);
 									}
 									if (iconName == "orangeIcon"){
-										var marker = L.marker((Path[i],Path[i]),{icon: orangeIcon}).addTo(map);
+										var marker = L.marker((Path[i]),{icon: orangeIcon}).addTo(map);
 									}
 									if (iconName == "greyIcon"){
-										var marker = L.marker((Path[i],Path[i]),{icon: greyIcon}).addTo(map);
+										var marker = L.marker((Path[i]),{icon: greyIcon}).addTo(map);
 									}
 								}
 								
@@ -167,12 +188,12 @@
 													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
 													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
 													"<u><b>Mesures</b></u>" + "<br/>" +
-													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + "<br/>" +
-													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + "<br/>" +
-													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + "<br/>" +
-													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + "<br/>" +
-													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + "<br/>" +
-													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + "<br/>" +
+													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + tabUnites['altitude'] + "<br/>" +
+													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + ' ' + tabUnites['pressure'] + "<br/>" +
+													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + ' ' + tabUnites['luxAverage'] + "<br/>" +
+													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + ' ' + tabUnites['tempIn'] + "<br/>" +
+													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + ' ' + tabUnites['tempOut'] + "<br/>" +
+													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + tabUnites['speedGPS'] + "<br/>" +
 													/*"<b></b> : " + (json['filtered'][i]['NOM_DE_VARIALE'])+'' + "<br/>" +*/
 													"</div>"
 												);
