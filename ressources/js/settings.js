@@ -3,7 +3,7 @@ var settings = {};
 
 //Unités des mesures
 settings.tabUnites = { 	
-				"altitude" : "m",
+				"altGPS" : "m",
 				"speedGPS" : "nd",
 				"luxAverage" : "lux",
 				"tempIn" : "&degC",
