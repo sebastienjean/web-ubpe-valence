@@ -54,7 +54,7 @@
 							<ul>
 								<li>
 									<select name="ordonnee" id="ordonnee" title="Ordonnée">
-										<option selected="selected"> - - - </option>
+										<option selected="selected" value="null"> - - - </option>
 										<option value="altGPS">Altitude</option>
 										<option value="pressure">Pression</option>
 										<option value="luxAverage">Luminosité moyenne</option>
@@ -65,7 +65,7 @@
 								</li>
 								<li>
 									<select name="abscisse" id="abscisse" title="Abscisse">
-										<option selected="selected"> - - - </option>
+										<option selected="selected" value="null"> - - - </option>
 										<option value="altGPS">Altitude</option>
 										<option value="pressure">Pression</option>
 										<option value="luxAverage">Luminosité moyenne</option>
@@ -96,13 +96,21 @@
 												
 								var previousPoint = null;
 								
-								var vide =[];
-								$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
+								if ($("#abscisse").val() == "null" && $("#ordonnee").val() == "null" ){
+									var vide =[];
+									$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
+									graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Séléctionner un graphique</div>');
+								}
 								
-								graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Séléctionner un graphique</div>');
+								else {
+									createChart();
+								}
 								
 								$("#btnGenerateChart").click(function () {
+									createChart();
+								});
 								
+								function createChart(){
 									abscisse = $("#abscisse").val();
 									ordonnee = $("#ordonnee").val();
 									nameAbscisse = $("#abscisse option:selected").text();
@@ -123,7 +131,7 @@
 											}
 									
 									$.plot(graph, [dTab], option);
-								});
+								};
 								
 								$("#graph").bind("plothover", function (event, pos, item) {
 											
