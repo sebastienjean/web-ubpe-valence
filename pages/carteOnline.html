@@ -11,6 +11,9 @@
 		
 		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
 		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+		
+		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		
 		<title>UBPE 2013 | Carte (ONLINE)</title>
 	</head>
 
@@ -81,22 +84,6 @@
 							
 							//Ouverture du json
 							json = updateData();
-							
-							//Unités des mesures
-							tabUnites = { 	"altitude" : "m",
-											"speedGPS" : "nd",
-											"luxAverage" : "lux",
-											"tempIn" : "°C",
-											"tempOut" : "°C",
-											"pressure" : "hPa"
-										}
-							
-							//Tiles servers -> layerName : [ tileServerURL, subdomains, layerLabel]
-							tabServers = { 	"osmMap" : ["http://{s}.tile.osm.org/{z}/{x}/{y}.png", "", "OSM Map"],
-											"googleMap" : ["http://mt{s}.google.com/vt/v=w2.106&x={x}&y={y}&z={z}&s=", "0123", "Google Map"],
-											"googleHybrid" : ["http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", "0123", "Google Hybrid"],
-											"mapQuest" : ["http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "1234", "Map Quest"]
-										}
 							
 							//Parcours du json afin de créer le chemin
 							var Path = new Array();
@@ -197,12 +184,12 @@
 													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
 													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
 													"<u><b>Mesures</b></u>" + "<br/>" +
-													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + tabUnites['altitude'] + "<br/>" +
-													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + ' ' + tabUnites['pressure'] + "<br/>" +
-													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + ' ' + tabUnites['luxAverage'] + "<br/>" +
-													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + ' ' + tabUnites['tempIn'] + "<br/>" +
-													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + ' ' + tabUnites['tempOut'] + "<br/>" +
-													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + tabUnites['speedGPS'] + "<br/>" +
+													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + settings.tabUnites['altitude'] + "<br/>" +
+													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + ' ' + settings.tabUnites['pressure'] + "<br/>" +
+													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + ' ' + settings.tabUnites['luxAverage'] + "<br/>" +
+													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + ' ' + settings.tabUnites['tempIn'] + "<br/>" +
+													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + ' ' + settings.tabUnites['tempOut'] + "<br/>" +
+													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + settings.tabUnites['speedGPS'] + "<br/>" +
 													/*"<b></b> : " + (json['filtered'][i]['NOM_DE_VARIALE'])+'' + "<br/>" +*/
 													"</div>"
 												);
@@ -211,11 +198,11 @@
 							//Switch map layer
 							$('#layer').change(function(){
 								layerName = $("#layer").val();
-								if (tabServers[layerName][1] == ""){ //No layer subdomain specified
-									var layer = L.tileLayer(tabServers[layerName][0],{attribution: tabServers[layerName][2]});
+								if (settings.tabServers[layerName][1] == ""){ //No layer subdomain specified
+									var layer = L.tileLayer(settings.tabServers[layerName][0],{attribution: settings.tabServers[layerName][2]});
 								}
 								else {
-									var layer = L.tileLayer(tabServers[layerName][0],{subdomains: tabServers[layerName][1], attribution: tabServers[layerName][2]});
+									var layer = L.tileLayer(settings.tabServers[layerName][0],{subdomains: settings.tabServers[layerName][1], attribution: settings.tabServers[layerName][2]});
 								}
 								layer.addTo(map);
 							});

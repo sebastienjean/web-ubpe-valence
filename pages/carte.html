@@ -11,6 +11,9 @@
 		<!-- Leaflet -->
 		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
 		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+		
+		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		
 		<title>UBPE 2013 | Carte (OFFLINE)</title>
 	</head>
 		<body>
@@ -182,12 +185,12 @@
 													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
 													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
 													"<u><b>Mesures</b></u>" + "<br/>" +
-													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + tabUnites['altitude'] + "<br/>" +
-													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + ' ' + tabUnites['pressure'] + "<br/>" +
-													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + ' ' + tabUnites['luxAverage'] + "<br/>" +
-													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + ' ' + tabUnites['tempIn'] + "<br/>" +
-													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + ' ' + tabUnites['tempOut'] + "<br/>" +
-													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + tabUnites['speedGPS'] + "<br/>" +
+													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + settings.tabUnites['altitude'] + "<br/>" +
+													"<b>Pression</b> : " + (json['filtered'][i]['pressure'])+'' + ' ' + settings.tabUnites['pressure'] + "<br/>" +
+													"<b>Luminosité moyenne</b> : " + (json['filtered'][i]['luxAverage'])+'' + ' ' + settings.tabUnites['luxAverage'] + "<br/>" +
+													"<b>Température intérieure</b> : " + (json['filtered'][i]['tempIn'])+'' + ' ' + settings.tabUnites['tempIn'] + "<br/>" +
+													"<b>Température extérieure</b> : " + (json['filtered'][i]['tempOut'])+'' + ' ' + settings.tabUnites['tempOut'] + "<br/>" +
+													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + settings.tabUnites['speedGPS'] + "<br/>" +
 													/*"<b></b> : " + (json['filtered'][i]['NOM_DE_VARIALE'])+'' + "<br/>" +*/
 													"</div>"
 												);
