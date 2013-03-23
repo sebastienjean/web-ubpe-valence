@@ -1,6 +1,7 @@
-//Unités des mesures
+
 var settings = {};
 
+//Unités des mesures
 settings.tabUnites = { 	
 				"altitude" : "m",
 				"speedGPS" : "nd",
