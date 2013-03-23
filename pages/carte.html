@@ -91,7 +91,7 @@
 									for ( i = 0; i < 166; i++){
 										Path.push([(json['filtered'][i]['latGPSFormat']),(json['filtered'][i]['longGPSFormat'])]);
 									}
-									
+							
 							//Création du chemin
 							var polyline = L.polyline(Path, {color: 'black'}).addTo(map); //Create a polyline from an LatLng array object
 							
@@ -195,6 +195,9 @@
 													"</div>"
 												);
 							}
+							
+							//Set view to the last point received
+							map.setView(Path[0], 13);
 						</script>
 						<p>
 							Cette carte permet de suivre en direct ou différé la progression du ballon.
