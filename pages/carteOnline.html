@@ -55,8 +55,10 @@
 							<ul>
 								<li>
 									<select name="layer" id="layer" title="Serveur carte">
-										<option selected="selected"> Open Street Map </option>
-										<option value="altGPS">Google Hybrid</option>
+										<option selected="selected" value="osmMap">OSM Map</option>
+										<option value="googleMap">Google Map</option>
+										<option value="googleHybrid">Google Hybrid</option>
+										<option value="mapQuest">MapQuest</option>
 									</select>
 								</li>
 							</ul>
@@ -70,7 +72,7 @@
 							})
 							
 							L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { //Serveur de tuiles à utiliser
-								attribution: 'UBPE 2013 - IUT Valence', //Nom du layer
+							attribution: 'UBPE 2013 - IUT Valence', //Nom du layer
 							}).addTo(map);
 							
 							// POI
@@ -87,6 +89,13 @@
 											"tempIn" : "°C",
 											"tempOut" : "°C",
 											"pressure" : "hPa"
+										}
+							
+							//Tiles servers -> layerName : [ tileServerURL, subdomains, layerLabel]
+							tabServers = { 	"osmMap" : ["http://{s}.tile.osm.org/{z}/{x}/{y}.png", "", "OSM Map"],
+											"googleMap" : ["http://mt{s}.google.com/vt/v=w2.106&x={x}&y={y}&z={z}&s=", "0123", "Google Map"],
+											"googleHybrid" : ["http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", "0123", "Google Hybrid"],
+											"mapQuest" : ["http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "1234", "Map Quest"]
 										}
 							
 							//Parcours du json afin de créer le chemin
@@ -198,6 +207,18 @@
 													"</div>"
 												);
 							}
+							
+							//Switch map layer
+							$('#layer').change(function(){
+								layerName = $("#layer").val();
+								if (tabServers[layerName][1] == ""){ //No layer subdomain specified
+									var layer = L.tileLayer(tabServers[layerName][0],{attribution: tabServers[layerName][2]});
+								}
+								else {
+									var layer = L.tileLayer(tabServers[layerName][0],{subdomains: tabServers[layerName][1], attribution: tabServers[layerName][2]});
+								}
+								layer.addTo(map);
+							});
 						</script>
 						<p>
 							Cette carte permet de suivre en direct ou différé la progression du ballon.
