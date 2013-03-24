@@ -64,6 +64,9 @@
 										<option value="mapQuest">MapQuest</option>
 									</select>
 								</li>
+								<li>
+								<button id="btnOpenFullScreenMap">Carte plein écran</button>
+								</li>
 							</ul>
 						</div>
 						<script>
@@ -209,7 +212,13 @@
 							});
 							
 							//Set view to the last point received
-							map.setView(Path[0], 13);							
+							map.setView(Path[0], 13);
+
+							//Open the current map in full screen
+							$("#btnOpenFullScreenMap").click(function () {
+								url = './carteFullScreen-' + $("#layer").val() + '.html';
+								window.open(url);
+							});							
 						</script>
 						<p>
 							Cette carte permet de suivre en direct ou différé la progression du ballon.
