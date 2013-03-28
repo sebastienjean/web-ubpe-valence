@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="fr" />
+		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
+		
+		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+		
+		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
+		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+		
+		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		
+		<title>UBPE 2013 | Tableau)</title>
+	</head>
+	<body>
+		<script>
+		
+		//Ouverture du json
+		json = updateData();
+		
+		color = true;
+		document.write("<div id=\"tab2\">");
+		document.write("<table>");
+		document.write("<tr id=\"type-tile\">");
+			document.write("<th>Temps</th>");
+			document.write("<th>Latitude</th>");
+			document.write("<th>Longitude</th>");
+			document.write("<th colspan=\"2\">Cap</th>");
+			/*document.write("<th></th>");*/
+			document.write("<th>Vitesse</th>");
+			document.write("<th>Température<br/>Intérieure</th>");
+			document.write("<th>Température<br/>Extérieure</th>");
+			document.write("<th>Luminosité moyenne</th>");
+		document.write("</tr>");
+		
+		for ( i = 0; i < 166; i++){
+			if (color == true) {
+				document.write("<tr id=\"type-1\">");
+				color = !color
+			}
+			else {
+				document.write("<tr id=\"type-2\">");
+				color = !color
+			}
+				document.write("<td>" + (json['filtered'][i]['timeGPSFormat']).split(" ")[4] + "</td>");
+				document.write("<td>" + (json['filtered'][i]['latGPSFormat']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['longGPSFormat']) + "</td>");
+				document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
+				document.write("<td>" + (json['filtered'][i]['capGPS']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['speedGPS']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['tempIn']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['tempOut']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['luxAverage']) + "</td>");
+
+			document.write("</tr>");
+		}
+		
+		document.write("</table>");
+		document.write("</div>");
+		</script>
+	</body>
+</html>
