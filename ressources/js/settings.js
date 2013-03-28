@@ -8,7 +8,8 @@ settings.tabUnites = {
 				"luxAverage" : "lux",
 				"tempIn" : "&degC",
 				"tempOut" : "&degC",
-				"pressure" : "hPa"
+				"pressure" : "hPa",
+				"timeGPSFormat" : ""
 			};
 			
 //Tiles servers -> layerName : [ tileServerURL, subdomains, layerLabel]		

@@ -117,6 +117,16 @@ body {
 	border-color : #ff8c00;
 }
 
+#tab2{ 
+	height: 100%;
+	width: 100%;
+	/*border-radius: 20px;*/
+	margin : auto auto auto auto;
+	border-width : 1px;
+	border-style : solid;
+	border-color : #ff8c00;
+}
+
 #tab table{
 	width : 100%;
 	height : 100%;
@@ -125,10 +135,23 @@ body {
 	border-color : #ff8c00;
 	border-radius : 13px;*/
 	border-collapse : collapse;
-	
+}
+
+#tab2 table{
+	width : 100%;
+	height : 100%;
+	/*border-width : 5px;
+	border-style  : solid;
+	border-color : #ff8c00;
+	border-radius : 13px;*/
+	border-collapse : collapse;
 }
 
 #tab tr{
+	height : 10%;
+}
+
+#tab2 tr{
 	height : 10%;
 }
 
@@ -139,7 +162,21 @@ body {
 	text-align : center;
 }
 
+#tab2 td{
+	border-width : 1px;
+	border-style  : solid;
+	border-color : orange;
+	text-align : center;
+}
+
 #tab th{
+	border-width : 1px;
+	border-style  : solid;
+	border-color : orange;
+	text-align : center;
+}
+
+#tab2 th{
 	border-width : 1px;
 	border-style  : solid;
 	border-color : orange;
