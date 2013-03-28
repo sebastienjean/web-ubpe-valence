@@ -334,11 +334,11 @@ function retrieveChartSeries(data, property) {
  * @param int cap Le cap, valeur entre 0 et 360
  */
 function guessCapImgName(cap) {
-	if(cap == null || cap == '') {
-		return '';
+	if(cap == 'null' || cap == '' || cap == null) {
+		name = 'question';
 	}
 
-	if(cap > 337.5 && cap <= 22.5) {
+	else if(cap > 337.5 && cap <= 22.5) {
 		name = 'up';
 	}
 	else if(cap > 22.5 && cap <= 67.5) {
@@ -359,7 +359,7 @@ function guessCapImgName(cap) {
 	else if(cap > 247.5 && cap <= 292.5) {
 		name = 'left';
 	}
-	else {
+	else if(cap > 292.5 && cap <= 337.5) {
 		name = 'leftup';
 	}
 	
