@@ -30,9 +30,11 @@
 			document.write("<th>Longitude</th>");
 			document.write("<th colspan=\"2\">Cap</th>");
 			/*document.write("<th></th>");*/
+			document.write("<th>Altitude</th>");
 			document.write("<th>Vitesse</th>");
 			document.write("<th>Température<br/>Intérieure</th>");
 			document.write("<th>Température<br/>Extérieure</th>");
+			document.write("<th>Pression</th>");
 			document.write("<th>Luminosité moyenne</th>");
 		document.write("</tr>");
 		
@@ -50,9 +52,11 @@
 				document.write("<td>" + (json['filtered'][i]['longGPSFormat']) + "</td>");
 				document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
 				document.write("<td>" + (json['filtered'][i]['capGPS']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['altGPS']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['speedGPS']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['tempIn']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['tempOut']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['pressure']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['luxAverage']) + "</td>");
 
 			document.write("</tr>");
