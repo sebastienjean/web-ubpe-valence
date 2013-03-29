@@ -386,6 +386,41 @@ function guessSpeedIconName(speedGPS){
 	return name + "Icon";
 }
 
+/* Return time in an array [[h,m,s],[h,m,s],...] */
+function getTimeArray(json){
+	var tabTime = new Array();
+	for ( i = 0; i < (json['filtered'].length); i++){
+		tabTime.push(	[(json['filtered'][i]['timeGPSFormat']).split(" ")[4].split(":")[0],
+						(json['filtered'][i]['timeGPSFormat']).split(" ")[4].split(":")[1],
+						(json['filtered'][i]['timeGPSFormat']).split(" ")[4].split(":")[2]]
+						);
+	}
+	return tabTime;
+}
+
+function getTimeBonds(json){
+	tabTime = new Array();
+	tabTime = getTimeArray(json);
+	
+	var minH = tabTime[0][0]; var maxH = tabTime[0][0];
+	var minM = tabTime[0][1]; var maxM = tabTime[0][1];
+	var minS = tabTime[0][2]; var maxS = tabTime[0][2];
+	
+	for ( i = 1; i < (tabTime.length); i++){
+		if ((tabTime[i][0] > maxH) || (tabTime[i][0] >= maxH && tabTime[i][1] > maxM ) || (tabTime[i][0] >= maxH && tabTime[i][1] >= maxM && tabTime[i][2] > maxS)){
+			maxH = tabTime[i][0];
+			maxM = tabTime[i][1];
+			maxS = tabTime[i][2];
+		}
+		if ((tabTime[i][0] < maxH) || (tabTime[i][0] <= maxH && tabTime[i][1] < maxM ) || (tabTime[i][0] <= maxH && tabTime[i][1] <= maxM && tabTime[i][2] < maxS)){
+			minH = tabTime[i][0];
+			minM = tabTime[i][1];
+			minS = tabTime[i][2];
+		}
+	}
+	return ({"min" : [minH, minM, minS], "max" : [maxH, maxM, maxS]});
+}
+
 function volt(val, round) {
 	var U = 5 * val / 1024;
 

@@ -57,6 +57,7 @@
 								<li>
 									<select name="ordonnee" id="ordonnee" title="Ordonnée">
 										<option selected="selected" value="null"> - - - </option>
+										<option value="timeGPSFormat">Temps</option>
 										<option value="altGPS">Altitude</option>
 										<option value="pressure">Pression</option>
 										<option value="luxAverage">Luminosité moyenne</option>
@@ -68,6 +69,7 @@
 								<li>
 									<select name="abscisse" id="abscisse" title="Abscisse">
 										<option selected="selected" value="null"> - - - </option>
+										<option value="timeGPSFormat">Temps</option>
 										<option value="altGPS">Altitude</option>
 										<option value="pressure">Pression</option>
 										<option value="luxAverage">Luminosité moyenne</option>
@@ -112,6 +114,9 @@
 									createChart();
 								});
 								
+								timeTab = new Array();
+								timeTab = getTimeBonds(json);
+								
 								function createChart(){
 									abscisse = $("#abscisse").val();
 									ordonnee = $("#ordonnee").val();
@@ -122,7 +127,18 @@
 									
 									var tab = new Array();
 									for ( i = 0; i < 166; i++){
-										tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee])]);
+										if (abscisse == "timeGPSFormat"){
+											tab.push([(json['filtered'][i][abscisse].split(" ")[4]),(json['filtered'][i][ordonnee])]);
+										}
+										else if (ordonnee == "timeGPSFormat"){
+											tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee].split(" ")[4])]);
+										}
+										else if (abscisse == "timeGPSFormat" && ordonnee == "timeGPSFormat"){
+											tab.push([(json['filtered'][i][abscisse].split(" ")[4]),(json['filtered'][i][ordonnee].split(" ")[4])]);
+										}
+										else {
+											tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee])]);
+										}
 									}
 									
 									var dTab =	{
