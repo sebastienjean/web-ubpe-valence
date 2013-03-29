@@ -180,7 +180,7 @@
 								marker.bindPopup(	
 													"<div style=\"color : black\">" +
 													"<center>Point n°" + i + "</center>" + "<br/>" +
-													"<center>" + (json['filtered'][i]['timeGPSFormat']) + "</center>" + "<br/>" +
+													"<center>" + (json['filtered'][i]['timeGPSFormat'].split(" ")[4]) + "</center>" + "<br/>" +
 													"<u><b>Position</b></u> " + "<br/>" +
 													"<b>Lat</b> : " + (json['filtered'][i]['latGPSFormat'])+'' + "<br/>" +
 													"<b>Long</b> : " + (json['filtered'][i]['longGPSFormat'])+'' + "<br/>" +
