@@ -402,9 +402,9 @@ function getTimeBonds(json){
 	tabTime = new Array();
 	tabTime = getTimeArray(json);
 	
-	var minH = tabTime[0][0]; var maxH = tabTime[0][0];
-	var minM = tabTime[0][1]; var maxM = tabTime[0][1];
-	var minS = tabTime[0][2]; var maxS = tabTime[0][2];
+	var minH = tabTime[0][0]; var maxH = tabTime[0][0]; var durH = 0;
+	var minM = tabTime[0][1]; var maxM = tabTime[0][1]; var durM = 0;
+	var minS = tabTime[0][2]; var maxS = tabTime[0][2]; var durS = 0;
 	
 	for ( i = 1; i < (tabTime.length); i++){
 		if ((tabTime[i][0] > maxH) || (tabTime[i][0] >= maxH && tabTime[i][1] > maxM ) || (tabTime[i][0] >= maxH && tabTime[i][1] >= maxM && tabTime[i][2] > maxS)){
@@ -418,7 +418,30 @@ function getTimeBonds(json){
 			minS = tabTime[i][2];
 		}
 	}
-	return ({"min" : [minH, minM, minS], "max" : [maxH, maxM, maxS]});
+	
+	durS = maxS - minS;
+	if (durS >= 60){
+		durS = durS % 60;
+		durM += 1;
+	}
+	else if (durS < 0){
+		durM -= 1;
+		durS = 60 + durS;
+	}
+	
+	durM += (maxM - minM);
+	if (durM >= 60){
+		durM = durM % 60;
+		durH += 1;
+	}
+	else if (durM < 0){
+		durH -= 1;
+		durM = 60 + durM;
+	}
+	
+	durH += (maxH - minH);
+	
+	return ({"min" : [minH, minM, minS], "max" : [maxH, maxM, maxS], "duration" : [durH+"", durM+"", durS+""]});
 }
 
 function volt(val, round) {
