@@ -126,7 +126,7 @@
 									/*alert("Abscisse : " + nameAbscisse + " (" + abscisse + ")" + "\nOrdonnée : " + nameOrdonnee + " (" + ordonnee + ")");*/
 									
 									var tab = new Array();
-									for ( i = 0; i < 166; i++){
+									for ( i = 0; i < (json['filtered'].length); i++){
 										if (abscisse == "timeGPSFormat"){
 											tab.push([(json['filtered'][i][abscisse].split(" ")[4]),(json['filtered'][i][ordonnee])]);
 										}

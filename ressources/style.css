@@ -167,6 +167,7 @@ body {
 	border-style  : solid;
 	border-color : orange;
 	text-align : center;
+	padding : 5px 5px 5px 5px;
 }
 
 #tab th{
@@ -181,6 +182,7 @@ body {
 	border-style  : solid;
 	border-color : orange;
 	text-align : center;
+	padding : 5px 5px 5px 5px;
 }
 
 #type-tile{

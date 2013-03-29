@@ -398,6 +398,7 @@ function getTimeArray(json){
 	return tabTime;
 }
 
+/* Get the time of the first and last data received and the duration of the flight ([h, m, s])*/
 function getTimeBonds(json){
 	tabTime = new Array();
 	tabTime = getTimeArray(json);
@@ -406,7 +407,8 @@ function getTimeBonds(json){
 	var minM = tabTime[0][1]; var maxM = tabTime[0][1]; var durM = 0;
 	var minS = tabTime[0][2]; var maxS = tabTime[0][2]; var durS = 0;
 	
-	for ( i = 1; i < (tabTime.length); i++){
+	/* Get the min and max time */
+	for (i = 1; i < (tabTime.length); i++){
 		if ((tabTime[i][0] > maxH) || (tabTime[i][0] >= maxH && tabTime[i][1] > maxM ) || (tabTime[i][0] >= maxH && tabTime[i][1] >= maxM && tabTime[i][2] > maxS)){
 			maxH = tabTime[i][0];
 			maxM = tabTime[i][1];
@@ -419,6 +421,7 @@ function getTimeBonds(json){
 		}
 	}
 	
+	/* Seconds */
 	durS = maxS - minS;
 	if (durS >= 60){
 		durS = durS % 60;
@@ -429,6 +432,7 @@ function getTimeBonds(json){
 		durS = 60 + durS;
 	}
 	
+	/* Minutes */
 	durM += (maxM - minM);
 	if (durM >= 60){
 		durM = durM % 60;
@@ -439,9 +443,10 @@ function getTimeBonds(json){
 		durM = 60 + durM;
 	}
 	
+	/* Hours */
 	durH += (maxH - minH);
 	
-	return ({"min" : [minH, minM, minS], "max" : [maxH, maxM, maxS], "duration" : [durH+"", durM+"", durS+""]});
+	return ({"min" : [minH, minM, minS], "max" : [maxH, maxM, maxS], "duration" : [durH+"", durM+"", durS+""], "flight" : "Pas encore codé !"});
 }
 
 function volt(val, round) {
