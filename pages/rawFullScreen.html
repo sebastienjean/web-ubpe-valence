@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="fr" />
+		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
+		
+		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+		
+		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
+		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+		
+		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		
+		<title>UBPE 2013 | Tableau)</title>
+	</head>
+	<body>
+		<script>
+		
+		//Ouverture du json
+		json = updateData();
+		
+		color = true;
+		document.write("<div id=\"tab2\">");
+		document.write("<table>");
+		document.write("<tr id=\"type-tile\">");
+			document.write("<th>altGPS</th>");
+			document.write("<th>boussole</th>");
+			document.write("<th>capGPS</th>");
+			document.write("<th>checkGPS</th>");
+			document.write("<th>dateGPS</th>");
+			document.write("<th>dateGPSFormat</th>");
+			document.write("<th>dateLoc</th>");
+			document.write("<th>dateRelay</th>");
+			document.write("<th>fixGPS</th>");
+			document.write("<th>flightloop</th>");
+			document.write("<th>frameid</th>");
+			document.write("<th>hygro</th>");
+			document.write("<th>latGPS</th>");
+			document.write("<th>latGPSFormat</th>");
+			document.write("<th>longGPS</th>");
+			document.write("<th>longGPSFormat</th>");
+			document.write("<th>lux1</th>");
+			document.write("<th>lux2</th>");
+			document.write("<th>lux3</th>");
+			document.write("<th>lux4</th>");
+			document.write("<th>luxAverage</th>");
+			document.write("<th>numSatsGPS</th>");
+			document.write("<th>objectName</th>");
+			document.write("<th>pressure</th>");
+			document.write("<th>requests</th>");
+			document.write("<th>reset</th>");
+			document.write("<th>speedGPS</th>");
+			document.write("<th>stationName</th>");
+			document.write("<th>tempIn</th>");
+			document.write("<th>tempOut</th>");
+			document.write("<th>timeGPSFormat</th>");
+			document.write("<th>voltage</th>");
+		document.write("</tr>");
+		
+		for ( i = 0; i < (json['raw'].length); i++){
+			if (color == true) {
+				document.write("<tr id=\"type-1\">");
+				color = !color
+			}
+			else {
+				document.write("<tr id=\"type-2\">");
+				color = !color
+			}
+				document.write("<td>" + (json['raw'][i]['altGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['boussole']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['capGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['checkGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['dateGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['dateGPSFormat']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['dateLoc']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['dateRelay']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['fixGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['flightloop']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['frameid']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['hygro']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['latGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['latGPSFormat']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['longGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['longGPSFormat']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['lux1']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['lux2']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['lux3']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['lux4']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['luxAverage']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['numSatsGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['objectName']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['pressure']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['requests']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['reset']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['speedGPS']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['stationName']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['tempIn']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['tempOut']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['timeGPSFormat']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['voltage']) + "</td>");
+			document.write("</tr>");
+		}
+		
+		document.write("</table>");
+		document.write("</div>");
+		</script>
+	</body>
+</html>
