@@ -1,10 +1,19 @@
+//	commons.js
+//	Main functions to handle the data processing
+//--------------------------------------------------------------------------------
+//	Varaiables :
+//	Allow the user to quickly tune the website configuration
+//--------------------------------------------------------------------------------
+jsonPath = 'data/events.test'; 			/* Path of the JSON file. WARNING > The path is from the location of the HTML page which uses the script, not from the script's location ! */
+jsonFrameLength = 23;					/* Number of fiels in the json : 23 for the 2013 flight*/
+//--------------------------------------------------------------------------------
+// End of Varaiables
+//--------------------------------------------------------------------------------
 
-var UBPE = {};
+var UBPE = {}
 
 UBPE.__DEBUG__ = true;
-/*UBPE.dataFile = 'ressources/data/events.json';*/
-UBPE.dataFile = 'data/events.json';
-
+UBPE.dataFile = jsonPath;
 UBPE.lastDates = {};
 UBPE.timeout = 13000;
 UBPE.data = [];
@@ -139,7 +148,7 @@ function getFile (file) {
 				var invalidLine = false;
 				
 				for (k in json) {
-					if($.isArray(json[k]) && json[k].length == 27) {
+					if($.isArray(json[k]) && json[k].length == jsonFrameLength) {
 						data.push(createTrameObj(json[k]));
 					}
 					else {
@@ -180,46 +189,51 @@ function parseCoo (coo) {
 
 	return Math.round(f * 1000000) / 1000000;
 }
-
+/**
+// createTramObj : extract the data from the JSON and add a labels to it
+// IN	: 
+// OUT 	: 
+*/
 function createTrameObj (row) {
-	var date = row[3] ? new Date(row[3]) : null;
+	var date = row[0] ? new Date(row[0]) : null;
 	
-	var obj = {
-		dateRelay:     row[0],
-		stationName:   row[1],
-		objectName:    row[2],
-		dateGPS:       row[3],
-		dateGPSFormat: date ? date.toString('M/d/yyyy') : '',
-		timeGPSFormat: date ? date.toString('HH:mm:ss') : '',
-		latGPS:        row[4],
-		longGPS:       row[5],
-		latGPSFormat:  parseCoo(row[4]),
-		longGPSFormat: parseCoo(row[5]),
-		altGPS:        row[6],
-		checkGPS:      row[7],
-		fixGPS:        row[8],
-		numSatsGPS:    row[9],
-		speedGPS:      row[10],
-		capGPS:        row[11],
-		reset:         row[12],
-		frameid:       row[13],
-		flightloop:    row[14],
-		tempIn:        row[15],
-		tempOut:       row[16],
-		pressure:      row[17],
-		boussole:      row[18],
-		hygro:         row[19],
-		lux1:          row[20],
-		lux2:          row[21],
-		lux3:          row[22],
-		lux4:          row[23],
-		luxAverage:    (row[20] + row[21] + row[22] + row[23]) / 4,
-		voltage:       row[24],
-		dateLoc:       row[25],
-		requests:      row[26]
+	var obj = { //Name of field: row of the field
+		date:    	row[0],
+		stationName:  	row[1],
+		objectName:   	row[2],
+		frameCounter:	row[3],
+		resetCounter:	row[4],
+		currentFlightPhase:			row[5],
+		currentFlightPhaseDuration:	row[6],
+		systemTimeReset:			row[7],
+		RTCTime:	row[8],
+		GPSTime:	row[9],
+		fixGPS:		row[10],
+		longGPS:	row[11],
+		latGPS: 	row[12],
+		altGPS:		row[13],
+		speedGPS:	row[14],
+		capGPS:		row[15],
+		numSatsGPS:	row[16],
+		hdop:		row[17],
+		sensor1:	row[18],
+		sensor2:	row[19],
+		sensor3:	row[20],
+		sensor4:	row[21],
+		voltage: 	row[22]
 	};
-	
 	return obj;
+}
+
+/**
+//	realDate : get a formated date from the epoc date
+//	IN 	: an epoc date
+//	OUT	: the date formated
+*/
+function realDate (epoc){
+    var d = new Date();
+    d.setTime(epoc * 1000);
+    return d;
 }
 
 function getData (file) {
@@ -229,8 +243,8 @@ function getData (file) {
 		var lastDate = 0;
 		for (key in json)
 		{
-			if (json[key].dateRelay > lastDate) {
-				lastDate = json[key].dateRelay;
+			if (json[key].date > lastDate) {
+				lastDate = json[key].date;
 			}
 		}
 		
@@ -251,10 +265,10 @@ function getNewData(file) {
 			var newLastDate = lastDate = UBPE.lastDates[file];
 			for (key in json)
 			{
-				if (json[key].dateRelay > lastDate)
+				if (json[key].date > lastDate)
 				{
-					if (json[key].dateRelay > newLastDate)
-						newLastDate = json[key].dateRelay;
+					if (json[key].date > newLastDate)
+						newLastDate = json[key].date;
 					newData.push(json[key]);
 				}
 			}
@@ -287,7 +301,8 @@ function updateData () {
 		UBPE.rawData = $.merge( UBPE.rawData, newRawData );
 
 		for (key in newRawData) {
-			var d = filterData(newRawData[key]);
+			var d = "REPLACE ME IN THE CODE !"
+			/*var d = filterData(newRawData[key]);*/
 			var st = $.trim(d.stationName);
 			newData.push(d);
 			

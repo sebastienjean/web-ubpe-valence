@@ -32,10 +32,10 @@
 			/*document.write("<th></th>");*/
 			document.write("<th>Altitude</th>");
 			document.write("<th>Vitesse</th>");
-			document.write("<th>Température<br/>Intérieure</th>");
-			document.write("<th>Température<br/>Extérieure</th>");
-			document.write("<th>Pression</th>");
-			document.write("<th>Luminosité moyenne</th>");
+			document.write("<th>Sensor1</th>");
+			document.write("<th>Sensor2</th>");
+			document.write("<th>Sensor3</th>");
+			document.write("<th>Sensor4</th>");
 		document.write("</tr>");
 		
 		for ( i = 0; i < 166; i++){
@@ -47,17 +47,17 @@
 				document.write("<tr id=\"type-2\">");
 				color = !color
 			}
-				document.write("<td>" + (json['filtered'][i]['timeGPSFormat']).split(" ")[4] + "</td>");
-				document.write("<td>" + (json['filtered'][i]['latGPSFormat']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['longGPSFormat']) + "</td>");
+				document.write("<td>" + realDate((json['filtered'][i]['date'])).split(" ")[4] + "</td>");
+				document.write("<td>" + (json['filtered'][i]['latGPS']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['longGPS']) + "</td>");
 				document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
 				document.write("<td>" + (json['filtered'][i]['capGPS']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['altGPS']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['speedGPS']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['tempIn']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['tempOut']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['pressure']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['luxAverage']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['sensor1']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['sensor2']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['sensor3']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['sensor4']) + "</td>");
 
 			document.write("</tr>");
 		}

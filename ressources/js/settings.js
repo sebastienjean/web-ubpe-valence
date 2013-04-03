@@ -19,3 +19,10 @@ settings.tabServers = {
 						"googleHybrid" : ["http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", "0123", "Google Hybrid"],
 						"mapQuest" : ["http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "1234", "Map Quest"]
 						};
+						
+settings.tabConversion = {
+							"capteur1" : ["a", "b"],
+							"capteur2" : ["a", "b"],
+							"capteur3" : ["a", "b"],
+							"capteur4" : ["a", "b"]
+							};
