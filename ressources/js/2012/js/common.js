@@ -259,6 +259,31 @@ function getData (file) {
 	return json;
 }
 
+function convertDMSToDD(days, minutes, seconds, direction) {
+    var dd = days + minutes/60 + seconds/(60*60);
+
+    if (direction == "S" || direction == "W") {
+        dd = dd * -1;
+    } // Don't do anything for N or E
+    return dd;
+}
+
+function convertGPSLong(coord){
+	days = coord[0] + coord[1];
+	minutes = coord[2] + coord[4];
+	secondes = coord[5] + coord[6];
+	
+	return [days, minutes, secondes];
+}
+
+function convertGPSLat(coord){
+	days = coord[0];
+	minutes = coord[1] + coord[2];
+	secondes = coord[3] + coord[5];
+	
+	return [days, minutes, secondes];
+}
+
 function getNewData(file) {
 	var json = getFile(file);
 	if (json === false) {
