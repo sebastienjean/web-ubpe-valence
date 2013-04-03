@@ -8,7 +8,10 @@ settings.tabUnites = {
 				"sensor3" : "sensor3 unit",
 				"sensor4" : "sensor4 unit",
 				"speedGPS" : "km/h",
-				"date" : ""
+				"altGPS" : "m",
+				"hdop" : "hdop unit",
+				"date" : "",
+				"voltage" : "V"
 			};
 			
 //Tiles servers -> layerName : [ tileServerURL, subdomains, layerLabel]		

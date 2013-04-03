@@ -355,10 +355,10 @@ function retrieveChartSeries(data, property) {
  */
 function guessCapImgName(cap) {
 	if(cap == 'null' || cap == '' || cap == null) {
-		name = 'question';
+		name = 'null';
 	}
 
-	else if(cap > 337.5 && cap <= 22.5) {
+	else if(cap > 337.5 && cap <= 22.5 || cap == 0) {
 		name = 'up';
 	}
 	else if(cap > 22.5 && cap <= 67.5) {
