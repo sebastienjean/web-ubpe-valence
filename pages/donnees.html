@@ -69,7 +69,7 @@
 								document.write("<th>Tension" + "<br/>" + "(" + settings.tabUnites["voltage"] + ")" + "</th>");
 							document.write("</tr>");
 							
-							for ( i = 0; i < (json['filtered'].length); i++){
+							for ( i = 0; i < (json['filtered'].length) && i < 10; i++){
 								if (color == true) {
 									document.write("<tr id=\"type-1\">");
 									color = !color
@@ -107,7 +107,7 @@
 							</ul>
 						</div>
 						<p>
-							Ce tableau permet de consulter les données envoyées par le ballon.
+							Ce tableau permet de consulter les dernières mesures reçues.
 						</p>
 					</div>
 				</div> <!-- end page -->
