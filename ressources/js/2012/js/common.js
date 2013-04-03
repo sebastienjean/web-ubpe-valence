@@ -6,6 +6,12 @@
 //--------------------------------------------------------------------------------
 jsonPath = 'data/events.test'; 			/* Path of the JSON file. WARNING > The path is from the location of the HTML page which uses the script, not from the script's location ! */
 jsonFrameLength = 23;					/* Number of fiels in the json : 23 for the 2013 flight*/
+sensorCalibration = {						/* An array containing the name of the data and a, b as calibratedData = (data * a) + b */
+							"sensor1" : [1, 1],
+							"sensor2" : [2, 2],
+							"sensor3" : [3, 3],
+							"sensor4" : [4, 4]
+							};
 //--------------------------------------------------------------------------------
 // End of Varaiables
 //--------------------------------------------------------------------------------
@@ -301,8 +307,7 @@ function updateData () {
 		UBPE.rawData = $.merge( UBPE.rawData, newRawData );
 
 		for (key in newRawData) {
-			var d = "REPLACE ME IN THE CODE !"
-			/*var d = filterData(newRawData[key]);*/
+			var d = filterData(newRawData[key]);
 			var st = $.trim(d.stationName);
 			newData.push(d);
 			
@@ -475,46 +480,37 @@ function volt(val, round) {
 	}
 }
 
+/**
+//	filterData : calibrate the data
+// IN	: the not calibrated data
+// OUT 	: the calibrated data
+*/
 function filterData(dataArg) {
 		
 	var data = $.extend({}, dataArg);
 
-	if(data.tempIn != null) {
-		data.tempIn = Math.round( (20.36 * volt(data.tempIn) - 61.42) * 100) / 100;
+	if(data.sensor1 != null) {
+		data.sensor1 = ((data.sensor1 * sensorCalibration['sensor1'][0]) + sensorCalibration['sensor1'][1]);
 	}
 
-	if(data.tempOut != null) {
-		data.tempOut = Math.round( (20.36 * volt(data.tempOut) - 61.42) * 100) / 100;
+	if(data.sensor2 != null) {
+		data.sensor2 = ((data.sensor2 * sensorCalibration['sensor2'][0]) + sensorCalibration['sensor2'][1]);
 	}
 	
-	if(data.pressure != null) {
-		data.pressure = Math.round( -217.39 * volt(data.pressure) + 1059.6);
+	if(data.sensor3 != null) {
+		data.sensor3 = ((data.sensor3 * sensorCalibration['sensor3'][0]) + sensorCalibration['sensor3'][1]);
 	}
-	
-	data.luxAverage = 0;
-	for(var i = 1; i < 5; i++) {
-		if(data['lux'+i] != null) {
-			data['lux'+i] = Math.round(25000 * volt(data['lux'+i]) - 8675);
-			data.luxAverage += data['lux'+i];
-			        // Ou : 16666 * volt(data['lux'+i]) + 1155
-		}
-	}
-	data.luxAverage /= 4;
-	
-	if(data.hygro != null) {
-		data.hygro = Math.round( (data.hygro / 1024 * 100) * 10) / 10;
+
+	if(data.sensor4 != null) {
+		data.sensor4 = ((data.sensor4 * sensorCalibration['sensor4'][0]) + sensorCalibration['sensor4'][1]);
 	}
 	
 	if(data.voltage != null) {
-		data.voltage = Math.round( (volt(data.voltage) * 2) * 1000) / 1000;
+		data.voltage = Math.round( (volt(data.voltage) * 2) * 1000) / 1000; // convert to a real voltage
 	}
 	
 	if(data.speedGPS != null) {
-		data.speedGPS = Math.round( (data.speedGPS * 1.852) * 100) / 100; // km/h
-	}
-	
-	if(data.boussole != null) {
-		data.boussole = Math.round( (57 * volt(data.boussole) - 25) * 100) / 100;
+		data.speedGPS = Math.round( (data.speedGPS * 1.852) * 100) / 100; // convert knot speed to km/h
 	}
 	
 	return data;
