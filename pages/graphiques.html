@@ -117,9 +117,6 @@
 									createChart();
 								});
 								
-								//timeTab = new Array();
-								//timeTab = getTimeBonds(json);
-								
 								function createChart(){
 									abscisse = $("#abscisse").val();
 									ordonnee = $("#ordonnee").val();
@@ -130,18 +127,23 @@
 									
 									var tab = new Array();
 									for ( i = 0; i < (json['filtered'].length); i++){
-										if (abscisse == "timeGPSFormat"){
-											tab.push([(json['filtered'][i][abscisse].split(" ")[4]),(json['filtered'][i][ordonnee])]);
-										}
-										else if (ordonnee == "timeGPSFormat"){
-											tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee].split(" ")[4])]);
-										}
-										else if (abscisse == "timeGPSFormat" && ordonnee == "timeGPSFormat"){
-											tab.push([(json['filtered'][i][abscisse].split(" ")[4]),(json['filtered'][i][ordonnee].split(" ")[4])]);
-										}
-										else {
 											tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee])]);
-										}
+									}
+									
+									
+									// Handle the time !
+									if (abscisse == "date"){
+										option["xaxis"]["mode"] = "time";
+									}
+									else{
+										option["xaxis"]["mode"] = "";
+									}
+									
+									if (ordonnee == "date"){
+										option["yaxis"]["mode"] = "time";
+									}
+									else{
+										option["yaxis"]["mode"] = "";
 									}
 									
 									var dTab =	{
@@ -154,6 +156,8 @@
 									$.plot(graph, [dTab], option);
 								};
 								
+								
+								// Allow the showTooltip action DO NOT MODIFY !
 								$("#graph").bind("plothover", function (event, pos, item) {
 											
 									function showTooltip(x, y, contents) {
@@ -174,16 +178,14 @@
 										if (previousPoint != item.dataIndex) {
 											previousPoint = item.dataIndex;
 											$("#tooltip").remove();
-											var x = item.datapoint[0].toFixed(2),
-											y = item.datapoint[1].toFixed(2);
-											
+											var x = item.datapoint[0].toFixed(2), y = item.datapoint[1].toFixed(2);
 											showTooltip(item.pageX, item.pageY, nameOrdonnee + " = " + y + " " + settings.tabUnites[ordonnee] + "<br/>" + nameAbscisse + " = " + x + " " + settings.tabUnites[abscisse]);
-											}
 										} 
 										else {
 												$("#tooltip").remove();
 												previousPoint = null;            
 											}
+									}
 								});
 							});
 						</script>
