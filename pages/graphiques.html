@@ -14,6 +14,9 @@
 		<script type="text/javascript" src="../ressources/flot/jquery.flot.js"></script>
 		
 		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		
+		<meta http-equiv="refresh" content="15" > 
+		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
 
 		<title>UBPE 2013 | Graphiques</title>
 	</head>
@@ -57,25 +60,25 @@
 								<li>
 									<select name="ordonnee" id="ordonnee" title="Ordonnée">
 										<option selected="selected" value="null"> - - - </option>
-										<option value="timeGPSFormat">Temps</option>
+										<option value="date">Temps</option>
 										<option value="altGPS">Altitude</option>
-										<option value="pressure">Pression</option>
-										<option value="luxAverage">Luminosité moyenne</option>
-										<option value="tempIn">Température intérieur</option>
-										<option value="tempOut">Température extérieur</option>
 										<option value="speedGPS">Vitesse</option>
+										<option value="sensor1">Sensor1</option>
+										<option value="sensor2">Sensor2</option>
+										<option value="sensor3">Sensor3</option>
+										<option value="sensor4">Sensor4</option>
 									</select>
 								</li>
 								<li>
 									<select name="abscisse" id="abscisse" title="Abscisse">
 										<option selected="selected" value="null"> - - - </option>
-										<option value="timeGPSFormat">Temps</option>
+										<option value="date">Temps</option>
 										<option value="altGPS">Altitude</option>
-										<option value="pressure">Pression</option>
-										<option value="luxAverage">Luminosité moyenne</option>
-										<option value="tempIn">Température intérieur</option>
-										<option value="tempOut">Température extérieur</option>
 										<option value="speedGPS">Vitesse</option>
+										<option value="sensor1">Sensor1</option>
+										<option value="sensor2">Sensor2</option>
+										<option value="sensor3">Sensor3</option>
+										<option value="sensor4">Sensor4</option>
 									</select>
 								</li>
 								<li>
@@ -114,8 +117,8 @@
 									createChart();
 								});
 								
-								timeTab = new Array();
-								timeTab = getTimeBonds(json);
+								//timeTab = new Array();
+								//timeTab = getTimeBonds(json);
 								
 								function createChart(){
 									abscisse = $("#abscisse").val();
