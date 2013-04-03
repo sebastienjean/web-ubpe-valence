@@ -80,9 +80,20 @@
 								zoom: 13,
 							})
 							
-							layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { //Serveur de tuiles à utiliser
-							attribution: 'UBPE 2013 - IUT Valence', //Nom du layer
-							}).addTo(map);
+							var layerName = $("#layer").val();
+
+							if (settings.tabServers[layerName][1] == ""){ //No layer subdomain specified
+								layer = L.tileLayer(settings.tabServers[layerName][0], { //Serveur de tuiles à utiliser
+								attribution: settings.tabServers[layerName][2], //Nom du layer
+								}).addTo(map);
+							}
+							else {
+								layer = L.tileLayer(settings.tabServers[layerName][0], { //Serveur de tuiles à utiliser
+								subdomains: settings.tabServers[layerName][1], // Subdomains
+								attribution: settings.tabServers[layerName][2], //Nom du layer
+								}).addTo(map);
+							}
+
 							
 							// POI
 							var marker = L.marker([44.91568, 4.91524]).addTo(map);
@@ -206,7 +217,7 @@
 							//Switch map layer
 							$('#layer').change(function(){
 								layer.setOpacity(0);
-								layerName = $("#layer").val();
+								var layerName = $("#layer").val();
 								if (settings.tabServers[layerName][1] == ""){ //No layer subdomain specified
 									layer = L.tileLayer(settings.tabServers[layerName][0],{attribution: settings.tabServers[layerName][2]});
 								}
