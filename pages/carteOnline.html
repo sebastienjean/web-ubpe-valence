@@ -224,12 +224,6 @@
 								else {
 									layer = L.tileLayer(settings.tabServers[layerName][0],{subdomains: settings.tabServers[layerName][1], attribution: settings.tabServers[layerName][2]});
 								}
-								if (layerName == "googleMap" || layerName == "googleHybrid"){
-									$("#btnOpenFullScreenMap").attr("disabled", true);
-								}
-								else{
-									$("#btnOpenFullScreenMap").attr("disabled", false);
-								}
 								layer.addTo(map);
 							});
 							
