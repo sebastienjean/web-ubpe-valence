@@ -259,29 +259,31 @@ function getData (file) {
 	return json;
 }
 
-function convertDMSToDD(days, minutes, seconds, direction) {
-    var dd = days + minutes/60 + seconds/(60*60);
-
-    if (direction == "S" || direction == "W") {
-        dd = dd * -1;
-    } // Don't do anything for N or E
-    return dd;
-}
-
-function convertGPSLong(coord){
-	days = coord[0] + coord[1];
-	minutes = coord[2] + coord[4];
-	secondes = coord[5] + coord[6];
+/**
+// convertGPSToDecimal : convert DDDMM.MM / 0DDMM.MM / 00DMM.MM GPS to deciaml GPS
+// IN	:
+// OUT	:
+*/
+function convertGPSToDecimal(GPS){
+	if (GPS[5] == "."){ // Format : DDDMM.MM
+		var strPartieEntiere = GPS[0] + GPS[1] + GPS[2]; // Get DDD
+		var strPartieDecimale = GPS[3] + GPS[4] + GPS[5] + GPS[6] + GPS[7]; // Get MM.MM
+	}
+	else if (GPS[4] == "."){ // Format : 0DDMM.MM
+		var strPartieEntiere = GPS[0] + GPS[1]; // Get 0DD
+		var strPartieDecimale = GPS[2] + GPS[3] + GPS[4] + GPS[5] + GPS[6]; // Get MM.MM
+	}
+	else if (GPS[3] == "."){ // Format : 00DMM.MM
+		var strPartieEntiere = GPS[0]; // Get 00D
+		var strPartieDecimale = GPS[1] + GPS[2] + GPS[3] + GPS[4] + GPS[5]; // Get MM.MM
+	}
+	else{
+		return("I don't know how to handle this fucking GPS format !!!")
+	}
+	var partieEntiere = Number(strPartieEntiere); // Get the integer part
+	var partieDecimale = Number(strPartieDecimale)/60 // Get the float part
 	
-	return [days, minutes, secondes];
-}
-
-function convertGPSLat(coord){
-	days = coord[0];
-	minutes = coord[1] + coord[2];
-	secondes = coord[3] + coord[5];
-	
-	return [days, minutes, secondes];
+	return (Math.round((partieEntiere + partieDecimale)*1000))/1000 // Round 3 numbers after coma
 }
 
 function getNewData(file) {
