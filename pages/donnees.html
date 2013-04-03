@@ -6,8 +6,10 @@
 		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
 		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
 		<script type="text/javascript" src="../ressources/js/jquery-1.9.0.min.js"></script>
-		<!--<script type="text/javascript" src="../ressources/flot/jquery.js"></script>-->
-		<script type="text/javascript" src="../ressources/flot/jquery.flot.js"></script>
+		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+		
+		<script type="text/javascript" src="../ressources/js/settings.js"></script>
 
 		<title>UBPE 2013 | Données</title>
 	</head>
@@ -45,91 +47,59 @@
 						</div>
 					</div>
 					<div id="page-content">
-						<div id="tab">
-							<table>
-								<!--<caption>Titre du tableau</caption>-->
-								<tr id="type-tile">
-									<th width="30%">A1</th>
-									<th width="20%">A2</th>
-									<th width="20%">A3</th>
-									<th width="20%">A4</th>
-									<th width="10%">A5</th>
-								</tr>
-								<tr id="type-1">
-									<td>1</td>
-									<td>2</td>
-									<td>3</td>
-									<td>4</td>
-									<td>5</td>
-								</tr>
-								<tr id="type-2">
-									<td>6</td>
-									<td>7</td>
-									<td>8</td>
-									<td>9</td>
-									<td>10</td>
-								</tr>
-								<tr id="type-1">
-									<td>11</td>
-									<td>12</td>
-									<td>13</td>
-									<td>14</td>
-									<td>15</td>
-								</tr>
-								<tr id="type-2">
-									<td>16</td>
-									<td>17</td>
-									<td>18</td>
-									<td>19</td>
-									<td>20</td>
-								</tr>
-								<tr id="type-1">
-									<td>21</td>
-									<td>22</td>
-									<td>23</td>
-									<td>24</td>
-									<td>25</td>
-								</tr>
-								<tr id="type-2">
-									<td>26</td>
-									<td>27</td>
-									<td>28</td>
-									<td>29</td>
-									<td>30</td>
-								</tr>
-								<tr id="type-1">
-									<td>31</td>
-									<td>32</td>
-									<td>33</td>
-									<td>34</td>
-									<td>35</td>
-								</tr>
-								<tr id="type-2">
-									<td>36</td>
-									<td>37</td>
-									<td>38</td>
-									<td>39</td>
-									<td>40</td>
-								</tr>
-								<tr id="type-1">
-									<td>41</td>
-									<td>42</td>
-									<td>43</td>
-									<td>44</td>
-									<td>45</td>
-								</tr>
-							</table>
-						</div>
+							<script>
+							//Ouverture du json
+							json = updateData();
+							
+							color = true;
+							document.write("<div id=\"tab\">");
+							document.write("<table>");
+							document.write("<tr id=\"type-tile\">");
+								document.write("<th>Heure</th>");
+								document.write("<th>Phase</th>");
+								document.write("<th>Altitude" + "<br/>" + "(" + settings.tabUnites["altGPS"] + ")" + "</th>");
+								document.write("<th>Vitesse" + "<br/>" + "(" + settings.tabUnites["speedGPS"] + ")" + "</th>");
+								document.write("<th>sensor1" + "<br/>" + "(" + settings.tabUnites["sensor1"] + ")" + "</th>");
+								document.write("<th>sensor2" + "<br/>" + "(" + settings.tabUnites["sensor2"] + ")" + "</th>");
+								document.write("<th>sensor3" + "<br/>" + "(" + settings.tabUnites["sensor3"] + ")" + "</th>");
+								document.write("<th>sensor4" + "<br/>" + "(" + settings.tabUnites["sensor4"] + ")" + "</th>");
+								document.write("<th>Tension" + "<br/>" + "(" + settings.tabUnites["voltage"] + ")" + "</th>");
+							document.write("</tr>");
+							
+							for ( i = 0; i < (json['filtered'].length); i++){
+								if (color == true) {
+									document.write("<tr id=\"type-1\">");
+									color = !color
+								}
+								else {
+									document.write("<tr id=\"type-2\">");
+									color = !color
+								}
+									var time = realDate(json['filtered'][i]['date'])+""
+									document.write("<td>" + time.split(" ")[4] + "</td>");
+									document.write("<td>" + (json['filtered'][i]['currentFlightPhase']) + "</td>");
+									if (json['filtered'][i]['fixGPS'] == "V"){ // No GPS fix, the GPS data is replaced by null.png
+										document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+										document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+									}
+									else{
+										document.write("<td>" + (json['filtered'][i]['altGPS']) + "</td>");
+										document.write("<td>" + (json['filtered'][i]['speedGPS']) + "</td>");
+									}
+									document.write("<td>" + (json['filtered'][i]['sensor1']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['sensor2']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['sensor3']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['sensor4']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['voltage']) + "</td>");
+								document.write("</tr>");
+							}
+							document.write("</table>");
+							document.write("</div>");
+							</script>
 						<div id="button-holder-graphique">
 							<ul>
 								<li>
-								<button id="btn1">Précédent</button>
-								</li>
-								<li>
-								<button id="btn2">Suivant</button>
-								</li>
-								<li>
-								<button id="btn3">Imprimer</button>
+								<a href="#null" onclick="javascript:window.open('./donneesFullScreen.html')"><button id="btn1">Ouvrir tableau complet</button></a>
 								</li>
 							</ul>
 						</div>
