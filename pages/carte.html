@@ -91,27 +91,11 @@
 							//Parcours du json afin de créer le chemin
 							var Path = new Array();
 									for ( i = 0; i < (json['filtered'].length); i++){
-										/*
-										var latTmp = (convertGPSLat(json['filtered'][i]['latGPS']));
-										var longTmp = (convertGPSLong(json['filtered'][i]['longGPS']));
-										
-										latGPSFormat = convertDMSToDD(Number(latTmp[0]), Number(latTmp[1]), Number(latTmp[2]), "N");
-										longGPSFormat = convertDMSToDD(Number(longTmp[0]), Number(longTmp[1]), Number(longTmp[2]), "N");
-										
-										latGPSFormat = ((Math.round(Number(latGPSFormat)*1000000))/1000000);
-										longGPSFormat = ((Math.round(Number(longGPSFormat)*1000000))/1000000);
-										
-										//alert(latGPSFormat);
-										//alert(longGPSFormat);
-										*/
 										var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
 										var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
 										Path.push([latGPSFormat, longGPSFormat]);
 									}
-									
-							//conv1 = convertGPSToDecimal("4454.931");
-							//conv2 = convertGPSToDecimal("454.873");
-							
+
 							//Création du chemin
 							var polyline = L.polyline(Path, {color: 'black'}).addTo(map); //Create a polyline from an LatLng array object
 							
@@ -157,7 +141,7 @@
 									});										
 							
 							//Parcours du chemin pour affichage des points sur la carte
-							for (i = 0; i < json['filtered'].length; i++){
+							for (i = 0; i < Path.length; i++){
 								
 								/* Traitement des points à cap */
 								if (i == 0){
@@ -208,6 +192,10 @@
 													"<u><b>Mesures</b></u>" + "<br/>" +
 													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + settings.tabUnites['altGPS'] + "<br/>" +
 													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + settings.tabUnites['speedGPS'] + "<br/>" +
+													"<b>Sensor1</b> : " + (json['filtered'][i]['sensor1'])+'' + ' ' + settings.tabUnites['sensor1'] + "<br/>" +
+													"<b>Sensor2</b> : " + (json['filtered'][i]['sensor2'])+'' + ' ' + settings.tabUnites['sensor2'] + "<br/>" +
+													"<b>Sensor3</b> : " + (json['filtered'][i]['sensor3'])+'' + ' ' + settings.tabUnites['sensor3'] + "<br/>" +
+													"<b>Sensor4</b> : " + (json['filtered'][i]['sensor4'])+'' + ' ' + settings.tabUnites['sensor4'] + "<br/>" +
 													"</div>"
 												);
 							}

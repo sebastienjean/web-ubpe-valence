@@ -3,13 +3,13 @@ var settings = {};
 
 //Unités des mesures
 settings.tabUnites = { 	
-				"sensor1" : "sensor1 unit",
-				"sensor2" : "sensor2 unit",
-				"sensor3" : "sensor3 unit",
-				"sensor4" : "sensor4 unit",
+				"sensor1" : "unit",
+				"sensor2" : "unit",
+				"sensor3" : "unit",
+				"sensor4" : "unit",
 				"speedGPS" : "km/h",
 				"altGPS" : "m",
-				"hdop" : "hdop unit",
+				"hdop" : "unit",
 				"date" : "",
 				"voltage" : "V"
 			};
