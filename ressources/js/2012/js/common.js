@@ -6,7 +6,7 @@
 //--------------------------------------------------------------------------------
 jsonPath = 'data/events.test'; 			/* Path of the JSON file. WARNING > The path is from the location of the HTML page which uses the script, not from the script's location ! */
 jsonFrameLength = 23;					/* Number of fiels in the json : 23 for the 2013 flight*/
-sensorCalibration = {						/* An array containing the name of the data and a, b as calibratedData = (data * a) + b */
+sensorCalibration = {					/* An array containing the name of the data and a, b as calibratedData = (data * a) + b */
 							"sensor1" : [1, 1],
 							"sensor2" : [2, 2],
 							"sensor3" : [3, 3],
@@ -261,8 +261,8 @@ function getData (file) {
 
 /**
 // convertGPSToDecimal : convert DDDMM.MM / 0DDMM.MM / 00DMM.MM GPS to deciaml GPS
-// IN	:
-// OUT	:
+// IN	: GPS coordinates in DDDMM.MM foramt
+// OUT	: GPS coordinates in decimal foramt
 */
 function convertGPSToDecimal(GPS){
 	if (GPS[5] == "."){ // Format : DDDMM.MM
@@ -376,15 +376,14 @@ function retrieveChartSeries(data, property) {
 }
 
 /**
- * Retourne une image correspondant au cap donné
- *
- * @param int cap Le cap, valeur entre 0 et 360
+ // guessCapImgName : get the cap icon name according to the GPS cap
+ // IN	: GPS cap
+ // OUT	: image name corresponding to the cap
  */
 function guessCapImgName(cap) {
 	if(cap == 'null' || cap == '' || cap == null) {
 		name = 'null';
 	}
-
 	else if(cap > 337.5 && cap <= 22.5 || cap == 0) {
 		name = 'up';
 	}
@@ -413,6 +412,11 @@ function guessCapImgName(cap) {
 	return name+'.png';
 }
 
+/**
+// guessSpeedIconName : get the point icon name according to the GPS speed 
+// IN	: GPS speed
+// OUT	: image name corresponding to the speed
+*/
 function guessSpeedIconName(speedGPS){
 	if(speedGPS == null || speedGPS == '' || speedGPS == 0 || speedGPS <= 0) {
 		name = 'grey';
@@ -433,69 +437,11 @@ function guessSpeedIconName(speedGPS){
 	return name + "Icon";
 }
 
-/* Return time in an array [[h,m,s],[h,m,s],...] */
-function getTimeArray(json){
-	var tabTime = new Array();
-	for ( i = 0; i < (json['filtered'].length); i++){
-		tabTime.push(	[(json['filtered'][i]['timeGPSFormat']).split(" ")[4].split(":")[0],
-						(json['filtered'][i]['timeGPSFormat']).split(" ")[4].split(":")[1],
-						(json['filtered'][i]['timeGPSFormat']).split(" ")[4].split(":")[2]]
-						);
-	}
-	return tabTime;
-}
-
-/* Get the time of the first and last data received and the duration of the flight ([h, m, s])*/
-function getTimeBonds(json){
-	tabTime = new Array();
-	tabTime = getTimeArray(json);
-	
-	var minH = tabTime[0][0]; var maxH = tabTime[0][0]; var durH = 0;
-	var minM = tabTime[0][1]; var maxM = tabTime[0][1]; var durM = 0;
-	var minS = tabTime[0][2]; var maxS = tabTime[0][2]; var durS = 0;
-	
-	/* Get the min and max time */
-	for (i = 1; i < (tabTime.length); i++){
-		if ((tabTime[i][0] > maxH) || (tabTime[i][0] >= maxH && tabTime[i][1] > maxM ) || (tabTime[i][0] >= maxH && tabTime[i][1] >= maxM && tabTime[i][2] > maxS)){
-			maxH = tabTime[i][0];
-			maxM = tabTime[i][1];
-			maxS = tabTime[i][2];
-		}
-		if ((tabTime[i][0] < maxH) || (tabTime[i][0] <= maxH && tabTime[i][1] < maxM ) || (tabTime[i][0] <= maxH && tabTime[i][1] <= maxM && tabTime[i][2] < maxS)){
-			minH = tabTime[i][0];
-			minM = tabTime[i][1];
-			minS = tabTime[i][2];
-		}
-	}
-	
-	/* Seconds */
-	durS = maxS - minS;
-	if (durS >= 60){
-		durS = durS % 60;
-		durM += 1;
-	}
-	else if (durS < 0){
-		durM -= 1;
-		durS = 60 + durS;
-	}
-	
-	/* Minutes */
-	durM += (maxM - minM);
-	if (durM >= 60){
-		durM = durM % 60;
-		durH += 1;
-	}
-	else if (durM < 0){
-		durH -= 1;
-		durM = 60 + durM;
-	}
-	
-	/* Hours */
-	durH += (maxH - minH);
-	
-	return ({"min" : [minH, minM, minS], "max" : [maxH, maxM, maxS], "duration" : [durH+"", durM+"", durS+""], "flight" : "Pas encore codé !"});
-}
-
+/**
+// volt : get the corresponding voltage of the val
+// IN	: the val and a boolean according to the round 
+// OUT	: the val converted into voltage
+*/
 function volt(val, round) {
 	var U = 5 * val / 1024;
 
