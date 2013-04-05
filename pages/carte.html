@@ -74,8 +74,10 @@
 							}).addTo(map);
 
 							// POI
-							var marker = L.marker([44.91568, 4.91524]).addTo(map);
-							marker.bindPopup("<div style=\"color : black\">IUT Valence</div>");
+							for (i in settings.POI){
+								var marker = L.marker([settings.POI[i][0], settings.POI[i][1]]).addTo(map);
+								marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
+							}
 							
 							//Ouverture du json
 							json = updateData();
