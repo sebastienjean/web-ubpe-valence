@@ -1,0 +1,2 @@
+Tile documentation : http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+Tile servers : http://www.neongeo.com/wiki/doku.php?id=map_servers
