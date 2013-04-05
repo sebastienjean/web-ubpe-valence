@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
 		
 		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
 		
 		<meta http-equiv="refresh" content="15" > 
 		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
@@ -71,6 +72,10 @@
 							document.write("</tr>");
 							
 							for ( i = 0; i < (json['filtered'].length) && i < 10; i++){
+								if (blacklist.activate == true &&  blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1){
+									continue; //Skip the process for this particular i
+								};
+							
 								if (color == true) {
 									document.write("<tr id=\"type-1\">");
 									color = !color

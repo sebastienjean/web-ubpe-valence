@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="../ressources/flot/jquery.flot.js"></script>
 		
 		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
 		
 		<meta http-equiv="refresh" content="15" > 
 		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
@@ -127,6 +128,9 @@
 									
 									var tab = new Array();
 									for ( i = 0; i < (json['filtered'].length); i++){
+										if (blacklist.activate == true &&  blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1){
+											continue; //Skip the process for this particular i
+										};
 											tab.push([(json['filtered'][i][abscisse]),(json['filtered'][i][ordonnee])]);
 									}
 									

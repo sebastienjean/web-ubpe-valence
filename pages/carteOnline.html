@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
 		
 		<script type="text/javascript" src="../ressources/js/settings.js"></script>
+		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
 		
 		<meta http-equiv="refresh" content="15"> 
 		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
@@ -107,6 +108,10 @@
 							//Parcours du json afin de créer le chemin
 							var Path = new Array();
 									for ( i = 0; i < (json['filtered'].length); i++){
+										if (blacklist.activate == true &&  blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1){
+											continue; //Skip the process for this particular i
+										};
+										
 										var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
 										var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
 										Path.push([latGPSFormat, longGPSFormat]);
