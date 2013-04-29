@@ -20,7 +20,7 @@
 <script type="text/javascript" src="../ressources/js/settings.js"></script>
 <script type="text/javascript" src="../ressources/js/blacklist.js"></script>
 
-<meta http-equiv="refresh" content="15">
+<!-- <meta http-equiv="refresh" content="15"> -->
 <!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
 
 <title>UBPE2013@Valence | Charts</title>
@@ -56,13 +56,11 @@
 					<div id="button-holder-graphique">
 						<ul>
 							<li><select name="x" id="x" title="X">
-									<option selected="selected" value="null">- - -</option>
-									<option value="date">date</option>
+									<option selected="selected" value="date">date</option>
 									<option value="altGPS">altGPS</option>
 							</select></li>
-							<li><select name="y" id="y" title="Y">
-									<option selected="selected" value="null">- - -</option>
-									<option value="altGPS">altGPS</option>
+							<li><select name="y" id="y" title="Y">								
+									<option selected="selected" value="altGPS">altGPS</option>
 									<option value="speedGPS">speedGPS</option>
 									<option value="differentialPressureAnalogSensor">differentialPressureAnalogSensor</option>
 									<option value="absolutePressureAnalogSensor">absolutePressureAnalogSensor</option>
@@ -73,185 +71,198 @@
 						</ul>
 					</div>
 					<script>
-						json = updateData();
+						var json = updateData();
+						
+						setInterval("reload()", 5000);
 
-						$(function() {
+						var graph = $("#graph");
 
-							var graph = $("#graph");
+						var option = {
+							legend : {
+								show : true,
+								position : 'ne',
+								backgroundColor : null,
+								backgroundOpacity : 0
+							},
+							grid : {
+								show : true,
+								color : '#ff8c00',
+								backgroundColor : null,
+								hoverable : true,
+								mouseActiveRadius : 30
+							},
+							xaxis : {
+								color : 'orange'
+							},
+							yaxis : {
+								color : 'orange'
+							},
+						};
 
-							var option = {
-								legend : {
-									show : true,
-									position : 'ne',
-									backgroundColor : null,
-									backgroundOpacity : 0
-								},
-								grid : {
-									show : true,
-									color : '#ff8c00',
-									backgroundColor : null,
-									hoverable : true,
-									mouseActiveRadius : 30
-								},
-								xaxis : {
-									color : 'orange'
-								},
-								yaxis : {
-									color : 'orange'
-								},
-							};
+						var previousPoint = null;
 
-							var previousPoint = null;
+						if ($("#x").val() == "null" && $("#y").val() == "null") {
+							var vide = [];
+							$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
+							graph
+									.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Select a chart</div>');
+						}
 
-							if ($("#x").val() == "null"
-									&& $("#y").val() == "null") {
-								var vide = [];
-								$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
-								graph
-										.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Select a chart</div>');
-							}
+						else {
+							createChart();
+						}
 
-							else {
-								createChart();
-							}
-							
-							$("#x>option").click(function() {
-								createChart();
-							});
-							
-							$("#y>option").click(function() {
-								createChart();
-							});
-							
-							function createChart() {
-								x = $("#x").val();
-								y = $("#y").val();
-								nameX = $("#x option:selected")
-										.text();
-								nameY = $("#y option:selected")
-										.text();
-
-								/*alert("Abscisse : " + nameAbscisse + " (" + abscisse + ")" + "\nOrdonnée : " + nameOrdonnee + " (" + ordonnee + ")");*/
-
-								var tab = new Array();
-								for (i = 0; i < (json['filtered'].length); i++) {
-									if (blacklist.activate == true
-											&& blacklist.frame
-													.indexOf(json['filtered'][i]['date']) > -1) {
-										continue; //Skip the process for this particular i
-									}
-									;
-									tab.push([ (json['raw'][i][x]),
-											(json['filtered'][i][y]) ]);
-								}
-
-								// Handle the time !
-								if (x == "date") {
-									option["xaxis"]["mode"] = "time";
-								} else {
-									option["xaxis"]["mode"] = "";
-								}
-
-								if (y == "date") {
-									option["yaxis"]["mode"] = "time";
-								} else {
-									option["yaxis"]["mode"] = "";
-								}
-
-								var xUnitString = "";
-								if (settings.tabUnits[x] != null) xUnitString = " ("
-									+ settings.tabUnits[x]+ ")";
-								
-								var yUnitString = "";
-								if (settings.tabUnits[y] != null) yUnitString = " ("
-									+ settings.tabUnits[y]
-								+ ")";
-								
-								var dTab = {
-									label : nameX +
-											xUnitString
-											+ " / " + nameY + yUnitString,
-									data : tab,
-									color : 'red',
-									points : {
-										show : true
-									},
-								}
-
-								$.plot(graph, [ dTab ], option);
-							}
-							;
-
-							// Allow the showTooltip action DO NOT MODIFY !
-							$("#graph")
-									.bind(
-											"plothover",
-											function(event, pos, item) {
-
-												function showTooltip(x, y,
-														contents) {
-													$(
-															"<div id='tooltip'>"
-																	+ contents
-																	+ "</div>")
-															.css(
-																	{
-																		position : "absolute",
-																		display : "none",
-																		top : y + 5,
-																		left : x + 5,
-																		border : "1px solid #fdd",
-																		padding : "2px",
-																		"background-color" : "#fee",
-																		opacity : 0.80,
-																		color : "#000000",
-																	})
-															.appendTo("body")
-															.fadeIn(200);
-												}
-
-												if (item) {
-													if (previousPoint != item.dataIndex) {
-														previousPoint = item.dataIndex;
-														$("#tooltip").remove();
-														var x = item.datapoint[0];
-														if (settings.tabFixedPoint[nameX] != null)
-																x.toFixed(settings.tabFixedPoint[nameX]);
-														if (nameX == "date")
-															x = dateFormat(new Date(parseInt(x)), "HH:MM:ss");
-														var y = item.datapoint[1];
-														if (settings.tabFixedPoint[nameY] != null)
-																y.toFixed(settings.tabFixedPoint[nameY]);
-														
-														var xUnitString = "";
-														if (settings.tabUnits[nameX] != null) xUnitString = " ("
-															+ settings.tabUnits[nameX]+ ")";
-														
-														var yUnitString = "";
-														if (settings.tabUnits[nameY] != null) yUnitString = " ("
-															+ settings.tabUnits[nameY]
-														+ ")";
-														showTooltip(
-																item.pageX,
-																item.pageY,
-																nameX
-																		+ " = "
-																		+ x
-																		+ " "
-																		+ xUnitString
-																		+ "<br/>"
-																		+ nameY
-																		+ " = "
-																		+ y
-																		+ " "
-																		+ yUnitString);
-													} else {
-														$("#tooltip").remove();
-														previousPoint = null;
-													}
-												}
-											});
+						$("#x>option").click(function() {
+							createChart();
 						});
+
+						$("#x").change(function() {
+							createChart();
+						});
+
+						$("#y>option").click(function() {
+							createChart();
+						});
+
+						$("#y").change(function() {
+							createChart();
+						});
+
+						function createChart() {
+							x = $("#x").val();
+							y = $("#y").val();
+							nameX = $("#x option:selected").text();
+							nameY = $("#y option:selected").text();
+
+							/*alert("Abscisse : " + nameAbscisse + " (" + abscisse + ")" + "\nOrdonnée : " + nameOrdonnee + " (" + ordonnee + ")");*/
+
+							var tab = new Array();
+							for (i = 0; i < (json['filtered'].length); i++) {
+								if (blacklist.activate == true
+										&& blacklist.frame
+												.indexOf(json['filtered'][i]['date']) > -1) {
+									continue; //Skip the process for this particular i
+								}
+								;
+								tab.push([ (json['raw'][i][x]),
+										(json['filtered'][i][y]) ]);
+							}
+
+							// Handle the time !
+							if (x == "date") {
+								option["xaxis"]["mode"] = "time";
+							} else {
+								option["xaxis"]["mode"] = "";
+							}
+
+							if (y == "date") {
+								option["yaxis"]["mode"] = "time";
+							} else {
+								option["yaxis"]["mode"] = "";
+							}
+
+							var xUnitString = "";
+							if (settings.tabUnits[x] != null)
+								xUnitString = " (" + settings.tabUnits[x] + ")";
+
+							var yUnitString = "";
+							if (settings.tabUnits[y] != null)
+								yUnitString = " (" + settings.tabUnits[y] + ")";
+
+							var dTab = {
+								label : nameX + xUnitString + " / " + nameY
+										+ yUnitString,
+								data : tab,
+								color : 'red',
+								points : {
+									show : true
+								},
+							}
+
+							$.plot(graph, [ dTab ], option);
+						};
+
+						function reload() {
+							json = updateData();
+							createChart();
+						}
+
+						// Allow the showTooltip action DO NOT MODIFY !
+						$("#graph")
+								.bind(
+										"plothover",
+										function(event, pos, item) {
+
+											function showTooltip(x, y, contents) {
+												$(
+														"<div id='tooltip'>"
+																+ contents
+																+ "</div>")
+														.css(
+																{
+																	position : "absolute",
+																	display : "none",
+																	top : y + 5,
+																	left : x + 5,
+																	border : "1px solid #fdd",
+																	padding : "2px",
+																	"background-color" : "#fee",
+																	opacity : 0.80,
+																	color : "#000000",
+																}).appendTo(
+																"body").fadeIn(
+																200);
+											}
+
+											if (item) {
+												if (previousPoint != item.dataIndex) {
+													previousPoint = item.dataIndex;
+													$("#tooltip").remove();
+													var x = item.datapoint[0];
+													if (settings.tabFixedPoint[nameX] != null)
+														x
+																.toFixed(settings.tabFixedPoint[nameX]);
+													if (nameX == "date")
+														x = dateFormat(
+																new Date(
+																		parseInt(x)),
+																"HH:MM:ss");
+													var y = item.datapoint[1];
+													if (settings.tabFixedPoint[nameY] != null)
+														y
+																.toFixed(settings.tabFixedPoint[nameY]);
+
+													var xUnitString = "";
+													if (settings.tabUnits[nameX] != null)
+														xUnitString = " ("
+																+ settings.tabUnits[nameX]
+																+ ")";
+
+													var yUnitString = "";
+													if (settings.tabUnits[nameY] != null)
+														yUnitString = " ("
+																+ settings.tabUnits[nameY]
+																+ ")";
+													showTooltip(
+															item.pageX,
+															item.pageY,
+															nameX
+																	+ " = "
+																	+ x
+																	+ " "
+																	+ xUnitString
+																	+ "<br/>"
+																	+ nameY
+																	+ " = "
+																	+ y
+																	+ " "
+																	+ yUnitString);
+												} else {
+													$("#tooltip").remove();
+													previousPoint = null;
+												}
+											}
+										});
 					</script>
 					<p>Ce graphique permet de consulter graphiquement les données
 						envoyées par le ballon.</p>
