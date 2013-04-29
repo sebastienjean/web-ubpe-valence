@@ -1,270 +1,347 @@
 <html>
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="Content-Language" content="fr" />
-		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
-		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
-		
-		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
-		
-		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
-		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
-		
-		<script type="text/javascript" src="../ressources/js/settings.js"></script>
-		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
-		
-		<meta http-equiv="refresh" content="15"> 
-		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-		
-		<title>UBPE 2013 | Carte (ONLINE)</title>
-	</head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+<link rel="stylesheet" href="../ressources/style.css" type="text/css" />
 
-		<body>
-		<div id="big-frame">		
-			<div id="header">
-			</div> <!-- end header -->
-			
-			<div id="menu">
-				<ul>
-					<li>
-						<a href="../index.html" title="Accueil">Accueil</a>
-					</li>
-					<li>
-						<a href="./donnees.html" title="Données">Données</a>
-					</li>
-					<li>
-						<a href="./graphiques.html" title="Graphiques">Graphiques</a>
-					</li>
-					<li>
-						<a href="./carte.html" title="Carte">Carte</a>
-					</li>
-					<li>
-						<a href="#null" onclick="javascript:window.open('./rawFullScreen.html')">Données brutes</a>
-					</li>
-				</ul>
-			</div> <!-- end menu -->
-			
-			<div id="frame">
-				<div id="page">
-					<div id="title">
-						<div id="title-left">
-							<h2>Carte du vol</h2>
-						</div>
-						<div id="title-right">
-							<span style="color : #228b22; font-weight : bold; text-decoration: none;"}>ONLINE</span> | <a href="./carte.html" title="Passer en mode offline" style="color : red; font-weight : none; text-decoration: none;">OFFLINE</a>
-						</div>
-					</div>
-					<div id="page-content">
-						<div id="map"></div>
-						<div id="button-holder-graphique">
-							<ul>
-								<li>
-									<select name="layer" id="layer" title="Serveur carte">
-										<option selected="selected" value="osmMap">OSM Map</option>
-										<option value="googleMap">Google Map</option>
-										<option value="googleHybrid">Google Hybrid</option>
-										<option value="mapQuest">MapQuest</option>
-									</select>
-								</li>
-								<li>
-								<button id="btnOpenFullScreenMap">Carte plein écran</button>
-								</li>
-							</ul>
-						</div>
-						<script>
-												
-							// Création de la carte 
-							var map = L.map('map',{
-								center: [44.9250, 4.8900],
-								zoom: 13,
-							})
-							
-							var layerName = $("#layer").val();
+<script type="text/javascript"
+	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
 
-							if (settings.tabServers[layerName][1] == ""){ //No layer subdomain specified
-								layer = L.tileLayer(settings.tabServers[layerName][0], { //Serveur de tuiles à utiliser
-								attribution: settings.tabServers[layerName][2], //Nom du layer
-								}).addTo(map);
-							}
-							else {
-								layer = L.tileLayer(settings.tabServers[layerName][0], { //Serveur de tuiles à utiliser
-								subdomains: settings.tabServers[layerName][1], // Subdomains
-								attribution: settings.tabServers[layerName][2], //Nom du layer
-								}).addTo(map);
-							}
+<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
+<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
 
-							
-							// POI
-							for (i in settings.POI){
-								var marker = L.marker([settings.POI[i][0], settings.POI[i][1]]).addTo(map);
-								marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
-							}
-							
-							//Ouverture du json
-							json = updateData();
-							
-							//Parcours du json afin de créer le chemin
-							var Path = new Array();
-									for ( i = 0; i < (json['filtered'].length); i++){
-										if (blacklist.activate == true &&  blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1){
-											continue; //Skip the process for this particular i
-										};
-										
-										var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
-										var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
-										Path.push([latGPSFormat, longGPSFormat]);
-									}
-									
-							//Création du chemin
-							var polyline = L.polyline(Path, {color: 'black'}).addTo(map); //Create a polyline from an LatLng array object
-							
-							//Icone personalisées
-							var orangeIcon = L.icon({
-										iconUrl: '../ressources/img/point-orange.png',
+<script type="text/javascript" src="../ressources/js/settings.js"></script>
+<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
 
-										iconSize:     [20, 20], // size of the icon
-										iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-										popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-									});
-									
-							var blueIcon = L.icon({
-										iconUrl: '../ressources/img/point-bleu.png',
+<meta http-equiv="refresh" content="15">
+<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
 
-										iconSize:     [20, 20], // size of the icon
-										iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-										popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-									});
-									
-							var greenIcon = L.icon({
-										iconUrl: '../ressources/img/point-vert.png',
+<title>UBPE2013@Valence | Map (online)</title>
+</head>
 
-										iconSize:     [20, 20], // size of the icon
-										iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-										popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-									});
-									
-							var redIcon = L.icon({
-										iconUrl: '../ressources/img/point-rouge.png',
+<body>
+	<div id="big-frame">
+		<div id="header"></div>
+		<!-- end header -->
 
-										iconSize:     [20, 20], // size of the icon
-										iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-										popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-									});
-									
-							var greyIcon = L.icon({
-										iconUrl: '../ressources/img/point-gris.png',
-
-										iconSize:     [20, 20], // size of the icon
-										iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-										popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-									});										
-							
-							//Parcours du chemin pour affichage des points sur la carte
-							for (i = 0; i < Path.length; i++){
-								
-								/* Traitement des points à cap */
-								if (i == 0){
-								
-									nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
-									
-									var capIcon = L.icon({ 
-										iconUrl: '../ressources/img/' + nomIcon,
-
-										iconSize:     [50, 50], // Taille de l'icone
-										iconAnchor:   [20, 28], // Ajustement de l'emplcemant de l'icone
-										popupAnchor:  [5,-10] // Ajustement de l'emplacement du pop-up d'informations
-									});
-									
-									var marker = L.marker((Path[i]),{icon: capIcon}).addTo(map);
-								}
-								
-								else { /* Point normal (sans cap) */
-									var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
-									
-									//Déterlination de la couleur du point
-									if (iconName == "greenIcon"){
-										var marker = L.marker((Path[i]),{icon: greenIcon}).addTo(map);
-									}
-									if (iconName =="redIcon"){
-										var marker = L.marker((Path[i]),{icon: redIcon}).addTo(map);
-									}
-									if (iconName == "blueIcon"){
-										var marker = L.marker((Path[i]),{icon: blueIcon}).addTo(map);
-									}
-									if (iconName == "orangeIcon"){
-										var marker = L.marker((Path[i]),{icon: orangeIcon}).addTo(map);
-									}
-									if (iconName == "greyIcon"){
-										var marker = L.marker((Path[i]),{icon: greyIcon}).addTo(map);
-									}
-								}
-								
-								/* Remplissage du pop-up du marker */
-								var time = realDate(json['filtered'][i]['date'])+""
-								marker.bindPopup(	
-													"<div style=\"color : black\">" +
-													"<center>Point n°" + i + "</center>" + "<br/>" +
-													"<center>" + time.split(" ")[4] + "</center>" + "<br/>" +
-													"<u><b>Position</b></u> " + "<br/>" +
-													"<b>Lat</b> : " + (json['filtered'][i]['latGPS'])+'' + "<br/>" +
-													"<b>Long</b> : " + (json['filtered'][i]['longGPS'])+'' + "<br/>" +
-													"<u><b>Mesures</b></u>" + "<br/>" +
-													"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" +
-													"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + settings.fieldUnits['speedGPS'] + "<br/>" +
-													"<b>Sensor1</b> : " + (json['filtered'][i]['differentialPressureAnalogSensor'])+'' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" +
-													"<b>Sensor2</b> : " + (json['filtered'][i]['absolutePressureAnalogSensor'])+'' + ' ' + settings.fieldUnits['absolutePressureAnalogSensor'] + "<br/>" +
-													"<b>Sensor3</b> : " + (json['filtered'][i]['externalTemperatureAnalogSensor'])+'' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>" +
-													"<b>Sensor4</b> : " + (json['filtered'][i]['internalTemperatureAnalogSensor'])+'' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>" +
-													"</div>"
-												);
-							}
-							
-							//Switch map layer
-							$('#layer').change(function(){
-								layer.setOpacity(0);
-								var layerName = $("#layer").val();
-								if (settings.tabServers[layerName][1] == ""){ //No layer subdomain specified
-									layer = L.tileLayer(settings.tabServers[layerName][0],{attribution: settings.tabServers[layerName][2]});
-								}
-								else {
-									layer = L.tileLayer(settings.tabServers[layerName][0],{subdomains: settings.tabServers[layerName][1], attribution: settings.tabServers[layerName][2]});
-								}
-								layer.addTo(map);
-							});
-							
-							//Set view to the last point received
-							map.setView(Path[0], 13);
-
-							//Open the current map in full screen
-							$("#btnOpenFullScreenMap").click(function () {
-								url = './carteFullScreen-' + $("#layer").val() + '.html';
-								window.open(url);
-							});							
-						</script>
-						<p>
-							Cette carte permet de suivre en direct ou différé la progression du ballon.
-						</p>
-					</div>
-				</div> <!-- end page -->
-			</div> <!-- end frame -->
-			
-			<div id="footer">
-				<div id="footer-left">
-					UBPE 2013 - <a href="./credits.html" title="Page des crédits">Projet UBPE, IUT Valence</a>
-				</div>
-				<div id="footer-right">
-				
-					<ul>
-						<li>
-							<a href="http://iut-valence.fr"><img src="../ressources/img/logoiut2.png" title="IUT Valence" alt="Logo IUT Valence"></a>
-						</li>
-					</ul>
-					
-				</div>
-			</div> <!-- end footer -->	
+		<div id="menu">
+			<ul>
+				<li><a href="../index.html" title="Home">Home</a></li>
+				<li><a href="./data-filtered-brief.html" title="Data">Data</a></li>
+				<li><a href="./charts.html" title="Charts">Charts</a></li>
+				<li><a href="./map-offline.html" title="Map">Map</a></li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./data-raw-all.html')">Raw
+						data</a></li>
+			</ul>
 		</div>
-		</body>
-	
+		<!-- end menu -->
+
+		<div id="frame">
+			<div id="page">
+				<div id="title">
+					<div id="title-left">
+						<h2>Flight path</h2>
+					</div>
+				</div>
+				<div id="page-content">
+					<div id="map"></div>
+					<div id="button-holder-graphique">
+						<ul>
+							  <li>Map server: <select name="layer" id="layer" title="map server">
+									<option selected="selected" value="osmMap">OSM Map</option>
+									<option value="googleMap">Google Map</option>
+									<option value="googleHybrid">Google Hybrid</option>
+									<option value="mapQuest">MapQuest</option>
+							</select></li>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<li><script>
+								var url = './map-fullScreen-'
+										+ $("#layer").val() + '.html';
+								document
+										.write("<a href=\"#null\" onclick=\"javascript:window.open(\'"
+												+ url + "\')\">");
+							</script>
+								<button id="btnOpenFullScreenMap">switch to full screen
+									mode</button></a></li>							
+							<li><a href="#null"
+								onclick="javascript:window.open('./map-offline.html')">
+									<button id="btnOpenOfflineMap">switch to offline mode</button>
+							</a></li>
+						</ul>
+					</div>
+					<script>
+						// Création de la carte 
+						var map = L.map('map', {
+							center : [ 44.9250, 4.8900 ],
+							zoom : 13,
+						})
+
+						var layerName = $("#layer").val();
+
+						if (settings.tabServers[layerName][1] == "") { //No layer subdomain specified
+							layer = L
+									.tileLayer(
+											settings.tabServers[layerName][0],
+											{ //Serveur de tuiles à utiliser
+												attribution : settings.tabServers[layerName][2], //Nom du layer
+											}).addTo(map);
+						} else {
+							layer = L
+									.tileLayer(
+											settings.tabServers[layerName][0],
+											{ //Serveur de tuiles à utiliser
+												subdomains : settings.tabServers[layerName][1], // Subdomains
+												attribution : settings.tabServers[layerName][2], //Nom du layer
+											}).addTo(map);
+						}
+
+						// POI
+						for (i in settings.POI) {
+							var marker = L.marker(
+									[ settings.POI[i][0], settings.POI[i][1] ])
+									.addTo(map);
+							marker.bindPopup("<div style=\"color : black\">"
+									+ settings.POI[i][2] + "</div>");
+						}
+
+						//Ouverture du json
+						var json = updateData();
+
+						//Parcours du json afin de créer le chemin
+						var Path = new Array();
+						for (i = 0; i < (json['filtered'].length); i++) {
+							if (blacklist.activate == true
+									&& blacklist.frame
+											.indexOf(json['filtered'][i]['date']) > -1) {
+								continue; //Skip the process for this particular i
+							}
+							;
+
+							var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
+							var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
+							Path.push([ latGPSFormat, longGPSFormat ]);
+						}
+
+						//Création du chemin
+						var polyline = L.polyline(Path, {
+							color : 'black'
+						}).addTo(map); //Create a polyline from an LatLng array object
+
+						//Icone personalisées
+						var orangeIcon = L.icon({
+							iconUrl : '../ressources/img/point-orange.png',
+
+							iconSize : [ 20, 20 ], // size of the icon
+							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+							popupAnchor : [ 0, -5 ]
+						// point from which the popup should open relative to the iconAnchor
+						});
+
+						var blueIcon = L.icon({
+							iconUrl : '../ressources/img/point-bleu.png',
+
+							iconSize : [ 20, 20 ], // size of the icon
+							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+							popupAnchor : [ 0, -5 ]
+						// point from which the popup should open relative to the iconAnchor
+						});
+
+						var greenIcon = L.icon({
+							iconUrl : '../ressources/img/point-vert.png',
+
+							iconSize : [ 20, 20 ], // size of the icon
+							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+							popupAnchor : [ 0, -5 ]
+						// point from which the popup should open relative to the iconAnchor
+						});
+
+						var redIcon = L.icon({
+							iconUrl : '../ressources/img/point-rouge.png',
+
+							iconSize : [ 20, 20 ], // size of the icon
+							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+							popupAnchor : [ 0, -5 ]
+						// point from which the popup should open relative to the iconAnchor
+						});
+
+						var greyIcon = L.icon({
+							iconUrl : '../ressources/img/point-gris.png',
+
+							iconSize : [ 20, 20 ], // size of the icon
+							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+							popupAnchor : [ 0, -5 ]
+						// point from which the popup should open relative to the iconAnchor
+						});
+
+						//Parcours du chemin pour affichage des points sur la carte
+						for (i = 0; i < Path.length; i++) {
+
+							/* Traitement des points à cap */
+							if (i == 0) {
+
+								nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
+
+								var capIcon = L.icon({
+									iconUrl : '../ressources/img/' + nomIcon,
+
+									iconSize : [ 50, 50 ], // Taille de l'icone
+									iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+									popupAnchor : [ 5, -10 ]
+								// Ajustement de l'emplacement du pop-up d'informations
+								});
+
+								var marker = L.marker((Path[i]), {
+									icon : capIcon
+								}).addTo(map);
+							}
+
+							else { /* Point normal (sans cap) */
+								var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
+
+								//Déterlination de la couleur du point
+								if (iconName == "greenIcon") {
+									var marker = L.marker((Path[i]), {
+										icon : greenIcon
+									}).addTo(map);
+								}
+								if (iconName == "redIcon") {
+									var marker = L.marker((Path[i]), {
+										icon : redIcon
+									}).addTo(map);
+								}
+								if (iconName == "blueIcon") {
+									var marker = L.marker((Path[i]), {
+										icon : blueIcon
+									}).addTo(map);
+								}
+								if (iconName == "orangeIcon") {
+									var marker = L.marker((Path[i]), {
+										icon : orangeIcon
+									}).addTo(map);
+								}
+								if (iconName == "greyIcon") {
+									var marker = L.marker((Path[i]), {
+										icon : greyIcon
+									}).addTo(map);
+								}
+							}
+
+							/* Remplissage du pop-up du marker */
+							marker
+									.bindPopup("<div style=\"color : black\">"
+											+ "<center>Point "
+											+ i
+											+ "</center>"
+											+ "<br/>"
+											+ "<center>"
+											+ json['filtered'][i]['date']
+											+ "</center>"
+											+ "<br/>"
+											+ "<u><b>Location</b></u> "
+											+ "<br/>"
+											+ "<b>Latitude</b> : "
+											+ (json['filtered'][i]['latGPS'])
+											+ ''
+											+ "<br/>"
+											+ "<b>Longitude</b> : "
+											+ (json['filtered'][i]['longGPS'])
+											+ ''
+											+ "<br/>"
+											+ "<b>Altitude</b> : "
+											+ (json['filtered'][i]['altGPS'])
+											+ ''
+											+ ' '
+											+ settings.fieldUnits['altGPS']
+											+ "<br/>"
+											+ "<u><b>Data</b></u>"
+											+ "<br/>"
+											+ "<b>Speed</b> : "
+											+ (json['filtered'][i]['speedGPS'])
+											+ ''
+											+ ' '
+											+ settings.fieldUnits['speedGPS']
+											+ "<br/>"
+											+ "<b>Pressure diff.</b> : "
+											+ (json['filtered'][i]['differentialPressureAnalogSensor'])
+											+ ''
+											+ ' '
+											+ settings.fieldUnits['differentialPressureAnalogSensor']
+											+ "<br/>"
+											+ "<b>Pressure abs.</b> : "
+											+ (json['filtered'][i]['absolutePressureAnalogSensor'])
+											+ ''
+											+ ' '
+											+ settings.fieldUnits['absolutePressureAnalogSensor']
+											+ "<br/>"
+											+ "<b>Temperature out</b> : "
+											+ (json['filtered'][i]['externalTemperatureAnalogSensor'])
+											+ ''
+											+ ' '
+											+ settings.fieldUnits['externalTemperatureAnalogSensor']
+											+ "<br/>"
+											+ "<b>Temperature in</b> : "
+											+ (json['filtered'][i]['internalTemperatureAnalogSensor'])
+											+ ''
+											+ ' '
+											+ settings.fieldUnits['internalTemperatureAnalogSensor']
+											+ "<br/>" + "</div>");
+						}
+
+						//Switch map layer
+						$('#layer')
+								.change(
+										function() {
+											layer.setOpacity(0);
+											var layerName = $("#layer").val();
+											if (settings.tabServers[layerName][1] == "") { //No layer subdomain specified
+												layer = L
+														.tileLayer(
+																settings.tabServers[layerName][0],
+																{
+																	attribution : settings.tabServers[layerName][2]
+																});
+											} else {
+												layer = L
+														.tileLayer(
+																settings.tabServers[layerName][0],
+																{
+																	subdomains : settings.tabServers[layerName][1],
+																	attribution : settings.tabServers[layerName][2]
+																});
+											}
+											layer.addTo(map);
+										});
+
+						//Set view to the last point received
+						map.setView(Path[0], 13);
+					</script>
+				</div>
+			</div>
+			<!-- end page -->
+		</div>
+		<!-- end frame -->
+
+		<div id="footer">
+			<div id="footer-left">
+				UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE
+					project, IUT Valence</a>
+			</div>
+			<div id="footer-right">
+
+				<ul>
+					<li><a href="http://iut-valence.fr"><img
+							src="../ressources/img/logoiut2.png" title="IUT Valence"
+							alt="Logo IUT Valence"></a></li>
+				</ul>
+
+			</div>
+		</div>
+		<!-- end footer -->
+	</div>
+</body>
+
 </html>
