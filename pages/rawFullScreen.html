@@ -67,7 +67,7 @@
 				document.write("<td>" + (json['raw'][i]['objectName']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['frameCounter']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['resetCounter']) + "</td>");
-				document.write("<td>" + (json['raw'][i]['currentFlightPhase']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['currentFlightPhaseNumber']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['currentFlightPhaseDuration']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['systemTimeReset']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['RTCTime']) + "</td>");
@@ -80,11 +80,11 @@
 				document.write("<td>" + (json['raw'][i]['capGPS']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['numSatsGPS']) + "</td>");
 				document.write("<td>" + (json['raw'][i]['hdop']) + "</td>");
-				document.write("<td>" + (json['raw'][i]['sensor1']) + "</td>");
-				document.write("<td>" + (json['raw'][i]['sensor2']) + "</td>");
-				document.write("<td>" + (json['raw'][i]['sensor3']) + "</td>");
-				document.write("<td>" + (json['raw'][i]['sensor4']) + "</td>");
-				document.write("<td>" + (json['raw'][i]['voltage']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['differentialPressureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['absolutePressureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['externalTemperatureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['internalTemperatureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['raw'][i]['voltageAnalogSensor']) + "</td>");
 			document.write("</tr>");
 		}
 		

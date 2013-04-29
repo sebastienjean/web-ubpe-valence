@@ -4,13 +4,13 @@
 //	Varaiables :
 //	Allow the user to quickly tune the website configuration
 //--------------------------------------------------------------------------------
-jsonPath = 'data/events.test'; 			/* Path of the JSON file. WARNING > The path is from the location of the HTML page which uses the script, not from the script's location ! */
-jsonFrameLength = 23;					/* Number of fiels in the json : 23 for the 2013 flight*/
+jsonPath = 'data/events.clean'; 			/* Path of the JSON file. WARNING > The path is from the location of the HTML page which uses the script, not from the script's location ! */
+jsonFrameLength = 23;					/* Number of fields in the json : 23 for the 2013 flight*/
 sensorCalibration = {					/* An array containing the name of the data and a, b as calibratedData = (data * a) + b */
-							"sensor1" : [1, 1],
-							"sensor2" : [2, 2],
-							"sensor3" : [3, 3],
-							"sensor4" : [4, 4]
+							"differentialPressureAnalogSensor" : [1, 1],
+							"absolutePressureAnalogSensor" : [2, 2],
+							"externalTemperatureAnalogSensor" : [3, 3],
+							"internalTemperatureAnalogSensor" : [4, 4]
 							};
 //--------------------------------------------------------------------------------
 // End of Varaiables
@@ -203,30 +203,34 @@ function parseCoo (coo) {
 function createTrameObj (row) {
 	var date = row[0] ? new Date(row[0]) : null;
 	
+	// "1367221880630", "IUT-Radio", "STRATERRESTRE", 
+	// "148", "0", "0", "801", "84", "271658", "001128", "V", 
+	// "454.969", "4454.896", "0.0", "0.0", "0.0", "0", "0.0", 
+	// "38", "824", "615", "614", "467"
 	var obj = { //Name of field: row of the field
-		date:    	row[0],
-		stationName:  	row[1],
-		objectName:   	row[2],
-		frameCounter:	row[3],
-		resetCounter:	row[4],
-		currentFlightPhase:			row[5],
-		currentFlightPhaseDuration:	row[6],
-		systemTimeReset:			row[7],
-		RTCTime:	row[8],
-		GPSTime:	row[9],
-		fixGPS:		row[10],
-		longGPS:	row[11],
-		latGPS: 	row[12],
-		altGPS:		row[13],
-		speedGPS:	row[14],
-		capGPS:		row[15],
-		numSatsGPS:	row[16],
-		hdop:		row[17],
-		sensor1:	row[18],
-		sensor2:	row[19],
-		sensor3:	row[20],
-		sensor4:	row[21],
-		voltage: 	row[22]
+		date:    								row[0],
+		stationName:  							row[1],
+		objectName:   							row[2],
+		frameCounter:							row[3],
+		resetCounter:							row[4],
+		currentFlightPhaseNumber:				row[5],
+		currentFlightPhaseDurationInSeconds:	row[6],
+		secondsSinceLastReset:					row[7],
+		RTCTime:								row[8],
+		GPSTime:								row[9],
+		fixGPS:									row[10],
+		longGPS:								row[11],
+		latGPS: 								row[12],
+		altGPS:									row[13],
+		speedGPS:								row[14],
+		capGPS:									row[15],
+		numSatsGPS:								row[16],
+		hdop:									row[17],
+		differentialPressureAnalogSensor:		row[18],
+		absolutePressureAnalogSensor:			row[19],
+		externalTemperatureAnalogSensor:		row[20],
+		internalTemperatureAnalogSensor:		row[21],
+		voltageAnalogSensor:					row[22]
 	};
 	return obj;
 }
@@ -237,9 +241,7 @@ function createTrameObj (row) {
 //	OUT	: the date formated
 */
 function realDate (epoc){
-    var d = new Date();
-    d.setTime(epoc * 1000);
-    return d;
+    return new Date(parseInt(epoc));
 }
 
 function getData (file) {
@@ -463,19 +465,19 @@ function filterData(dataArg) {
 	var data = $.extend({}, dataArg);
 
 	if(data.sensor1 != null) {
-		data.sensor1 = ((data.sensor1 * sensorCalibration['sensor1'][0]) + sensorCalibration['sensor1'][1]);
+		data.sensor1 = ((data.sensor1 * sensorCalibration['differentialPressureAnalogSensor'][0]) + sensorCalibration['differentialPressureAnalogSensor'][1]);
 	}
 
 	if(data.sensor2 != null) {
-		data.sensor2 = ((data.sensor2 * sensorCalibration['sensor2'][0]) + sensorCalibration['sensor2'][1]);
+		data.sensor2 = ((data.sensor2 * sensorCalibration['absolutePressureAnalogSensor'][0]) + sensorCalibration['absolutePressureAnalogSensor'][1]);
 	}
 	
 	if(data.sensor3 != null) {
-		data.sensor3 = ((data.sensor3 * sensorCalibration['sensor3'][0]) + sensorCalibration['sensor3'][1]);
+		data.sensor3 = ((data.sensor3 * sensorCalibration['externalTemperatureAnalogSensor'][0]) + sensorCalibration['externalTemperatureAnalogSensor'][1]);
 	}
 
 	if(data.sensor4 != null) {
-		data.sensor4 = ((data.sensor4 * sensorCalibration['sensor4'][0]) + sensorCalibration['sensor4'][1]);
+		data.sensor4 = ((data.sensor4 * sensorCalibration['internalTemperatureAnalogSensor'][0]) + sensorCalibration['internalTemperatureAnalogSensor'][1]);
 	}
 	
 	if(data.voltage != null) {

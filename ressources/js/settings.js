@@ -3,15 +3,15 @@ var settings = {};
 
 //Measurment units
 settings.tabUnites = { //"unitName" : "unit" 	
-				"sensor1" : "unit",
-				"sensor2" : "unit",
-				"sensor3" : "unit",
-				"sensor4" : "unit",
+				"differentialPressureAnalogSensor" : "hPa",
+				"absolutePressureAnalogSensor" : "hPa",
+				"externalTemperatureAnalogSensor" : "°C",
+				"internalTemperatureAnalogSensor" : "°C",
 				"speedGPS" : "km/h",
 				"altGPS" : "m",
 				"hdop" : "unit",
 				"date" : "",
-				"voltage" : "V"
+				"voltageAnalogSensor" : "V"
 			};
 			
 //Tiles server list

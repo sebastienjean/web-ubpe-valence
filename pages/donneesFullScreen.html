@@ -73,7 +73,7 @@
 				document.write("<td>" + (json['filtered'][i]['objectName']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['frameCounter']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['resetCounter']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['currentFlightPhase']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseDuration']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['systemTimeReset']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['RTCTime']) + "</td>");
@@ -98,11 +98,11 @@
 				}
 				document.write("<td>" + (json['filtered'][i]['numSatsGPS']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['hdop']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['sensor1']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['sensor2']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['sensor3']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['sensor4']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['voltage']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']) + "</td>");
 			document.write("</tr>");
 		}
 		document.write("</table>");
