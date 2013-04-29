@@ -8,6 +8,8 @@
 		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
 		
+		<script type="text/javascript" src="../ressources/js/date.format.js"></script>
+				
 		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
 		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
 		
@@ -28,30 +30,19 @@
 		document.write("<div id=\"tab2\">");
 		document.write("<table>");
 		document.write("<tr id=\"type-tile\">");
-			document.write("<th>Heure</th>");
-			document.write("<th>Station</th>");
-			document.write("<th>Objet</th>");
-			document.write("<th>Trame</th>");
-			document.write("<th>Compteur reset</th>");
-			document.write("<th>Phase</th>");
-			document.write("<th>Durée phase</th>");
-			document.write("<th>systemTimeReset</th>");
-			document.write("<th>RTCTime</th>");
-			document.write("<th>fixGPS</th>");			
-			document.write("<th>GPSTime</th>");
-			document.write("<th>Longitude</th>");
-			document.write("<th>Latitude</th>");
-			document.write("<th>Altitude" + "<br/>" + "(" + settings.tabUnites["altGPS"] + ")" + "</th>");
-			document.write("<th>Vitesse" + "<br/>" + "(" + settings.tabUnites["speedGPS"] + ")" + "</th>");
-			document.write("<th colspan=\"2\">Cap</th>");
-			/*document.write("<th>NE DOIT PAS S'AFFICHER (Colonne colspan)</th>");*/
-			document.write("<th>Nombre satelites</th>");
-			document.write("<th>hdop" + "<br/>" + "(" + settings.tabUnites["hdop"] + ")" + "</th>");
-			document.write("<th>sensor1" + "<br/>" + "(" + settings.tabUnites["sensor1"] + ")" + "</th>");
-			document.write("<th>sensor2" + "<br/>" + "(" + settings.tabUnites["sensor2"] + ")" + "</th>");
-			document.write("<th>sensor3" + "<br/>" + "(" + settings.tabUnites["sensor3"] + ")" + "</th>");
-			document.write("<th>sensor4" + "<br/>" + "(" + settings.tabUnites["sensor4"] + ")" + "</th>");
-			document.write("<th>Tension" + "<br/>" + "(" + settings.tabUnites["voltage"] + ")" + "</th>");
+		
+		for (i in json['filtered'][0])
+		{
+			if (settings.tabUnites[i] == null)
+			{	
+				document.write("<th>"+i+"</th>");
+			}
+			else
+			{
+				document.write("<th>" + i + "<br/>" + "(" + settings.tabUnites[i] + ")" + "</th>");
+			}
+		}
+		
 		document.write("</tr>");
 		
 		for ( i = 0; i < (json['filtered'].length); i++){
@@ -67,17 +58,15 @@
 				document.write("<tr id=\"type-2\">");
 				color = !color
 			}
-				var time = realDate(json['filtered'][i]['date'])+""
-				document.write("<td>" + time.split(" ")[4] + "</td>");
+				document.write("<td>" +(json['filtered'][i]['date']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['stationName']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['objectName']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['frameCounter']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['resetCounter']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseDuration']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['systemTimeReset']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['RTCTime']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['fixGPS']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseDurationInSeconds']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['secondsSinceLastReset']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['RTCTime']) + "</td>");				
 				if (json['filtered'][i]['fixGPS'] == "V"){ // No GPS fix, the GPS data is replaced by null.png
 					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
 					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
@@ -89,20 +78,20 @@
 				}
 				else{
 					document.write("<td>" + (json['filtered'][i]['GPSTime']) + "</td>");
+					document.write("<td>" + (json['filtered'][i]['fixGPS']) + "</td>");
 					document.write("<td>" + (json['filtered'][i]['longGPS']) + "</td>");
 					document.write("<td>" + (json['filtered'][i]['latGPS']) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['altGPS']) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['speedGPS']) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['capGPS']) + "</td>");
+					document.write("<td>" + (parseFloat(json['filtered'][i]['altGPS']).toFixed(0)) + "</td>");
+					document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(0) + "</td>");				
 					document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
 				}
 				document.write("<td>" + (json['filtered'][i]['numSatsGPS']) + "</td>");
 				document.write("<td>" + (json['filtered'][i]['hdop']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(0) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(0) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(1) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(1) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(1) + "</td>");
 			document.write("</tr>");
 		}
 		document.write("</table>");
