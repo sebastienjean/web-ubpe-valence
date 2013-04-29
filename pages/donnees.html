@@ -94,14 +94,14 @@
 										document.write("<td><img src=\"../ressources/img/null.png\"></td>");
 									}
 									else{
-										document.write("<td>" + (json['filtered'][i]['altGPS']) + "</td>");
-										document.write("<td>" + (json['filtered'][i]['speedGPS']) + "</td>");
+										document.write("<td>" + parseFloat(json['filtered'][i]['altGPS']).toFixed(0) + "</td>");
+										document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(0) + "</td>");
 									}
-									document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(0) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(0) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(1) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(1) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(1) + "</td>");
 								document.write("</tr>");
 							}
 							document.write("</table>");
