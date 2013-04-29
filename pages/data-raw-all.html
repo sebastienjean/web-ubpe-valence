@@ -32,7 +32,7 @@
 		document.write("<tr id=\"type-tile\">");
 
 		for (i in json['raw'][0]) {
-			document.write("<th>" + i + "</th>");
+			document.write("<th>" + settings.fieldLabels[i] + "</th>");
 		}
 
 		document.write("</tr>");

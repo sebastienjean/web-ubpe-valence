@@ -2,7 +2,7 @@
 var settings = {};
 
 //Measurment units
-settings.tabUnits = { //"fieldName" : "unit" 	
+settings.fieldUnits = { //"fieldName" : "unit" 	
 				"currentFlightPhaseDurationInSeconds" : "s",	
 				"secondsSinceLastReset" : "s",	
 				"differentialPressureAnalogSensor" : "hPa",
@@ -15,7 +15,7 @@ settings.tabUnits = { //"fieldName" : "unit"
 			};
 		
 //Measurment precision
-settings.tabFixedPoint = { //"fieldName" : "number of digit after floating point" 	
+settings.fieldFixedPoints = { //"fieldName" : "number of digit after floating point" 	
 				"currentFlightPhaseDurationInSeconds" : 0,	
 				"secondsSinceLastReset" : 0,	
 				"differentialPressureAnalogSensor" : 0,
@@ -26,6 +26,35 @@ settings.tabFixedPoint = { //"fieldName" : "number of digit after floating point
 				"altGPS" : 0,
 				"voltageAnalogSensor" : 1
 			};
+
+// Field labels (for charts and tables)
+
+settings.fieldLabels = { //"fieldName" : "label" 	
+				"date" : "Time",	
+				"stationName" : "Station",
+				"objectName" : "Object",
+				"frameCounter" : "Frame",
+				"resetCounter" : "Reset",
+				"currentFlightPhaseNumber" : "Phase",
+				"currentFlightPhaseDurationInSeconds" : "Phase duration",	
+				"secondsSinceLastReset" : "System time",	
+				"RTCTime" : "RTC time",	
+				"GPSTime" : "GPS time",	
+				"fixGPS" : "GPS fix",	
+				"longGPS" : "Longitude",
+				"latGPS" : "Latitude",
+				"altGPS" : "Altitude",
+				"speedGPS" : "Speed",
+				"capGPS" : "Course",
+				"numSatsGPS" : "Sats",
+				"hdop" : "Precision",
+				"differentialPressureAnalogSensor" : "Pressure diff.",
+				"absolutePressureAnalogSensor" : "Pressure abs.",
+				"externalTemperatureAnalogSensor" : "Temperature out",
+				"internalTemperatureAnalogSensor" : "Temperature in",				
+				"voltageAnalogSensor" : "Voltage"
+			};
+
 //Tiles server list
 settings.tabServers = { //"layerName" : ["tileServerURL", "subdomains", "layerLabel"]	
 						"osmMap" : ["http://{s}.tile.osm.org/{z}/{x}/{y}.png", "", "OSM Map"],
