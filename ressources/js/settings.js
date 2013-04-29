@@ -3,14 +3,14 @@ var settings = {};
 
 //Measurment units
 settings.tabUnites = { //"unitName" : "unit" 	
+				"currentFlightPhaseDurationInSeconds" : "s",	
+				"secondsSinceLastReset" : "s",	
 				"differentialPressureAnalogSensor" : "hPa",
 				"absolutePressureAnalogSensor" : "hPa",
 				"externalTemperatureAnalogSensor" : "°C",
 				"internalTemperatureAnalogSensor" : "°C",
 				"speedGPS" : "km/h",
 				"altGPS" : "m",
-				"hdop" : "unit",
-				"date" : "",
 				"voltageAnalogSensor" : "V"
 			};
 			
