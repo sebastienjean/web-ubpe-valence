@@ -101,11 +101,11 @@
 										document.write("<td>" + parseFloat(json['filtered'][i]['altGPS']).toFixed(0) + "</td>");
 										document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(0) + "</td>");
 									}
-									document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(0) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(0) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(1) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(1) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(1) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(settings.tabFixedPoint['differentialPressureAnalogSensor']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.tabFixedPoint['absolutePressureAnalogSensor']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(settings.tabFixedPoint['externalTemperatureAnalogSensor']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(settings.tabFixedPoint['internalTemperatureAnalogSensor']) + "</td>");
+									document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.tabFixedPoint['voltageAnalogSensor']) + "</td>");
 								document.write("</tr>");
 							}
 							document.write("</table>");

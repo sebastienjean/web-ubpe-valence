@@ -2,7 +2,7 @@
 var settings = {};
 
 //Measurment units
-settings.tabUnits = { //"unitName" : "unit" 	
+settings.tabUnits = { //"fieldName" : "unit" 	
 				"currentFlightPhaseDurationInSeconds" : "s",	
 				"secondsSinceLastReset" : "s",	
 				"differentialPressureAnalogSensor" : "hPa",
@@ -13,7 +13,19 @@ settings.tabUnits = { //"unitName" : "unit"
 				"altGPS" : "m",
 				"voltageAnalogSensor" : "V"
 			};
-			
+		
+//Measurment precision
+settings.tabFixedPoint = { //"fieldName" : "number of digit after floating point" 	
+				"currentFlightPhaseDurationInSeconds" : 0,	
+				"secondsSinceLastReset" : 0,	
+				"differentialPressureAnalogSensor" : 0,
+				"absolutePressureAnalogSensor" : 0,
+				"externalTemperatureAnalogSensor" : 1,
+				"internalTemperatureAnalogSensor" : 1,
+				"speedGPS" : 0,
+				"altGPS" : 0,
+				"voltageAnalogSensor" : 1
+			};
 //Tiles server list
 settings.tabServers = { //"layerName" : ["tileServerURL", "subdomains", "layerLabel"]	
 						"osmMap" : ["http://{s}.tile.osm.org/{z}/{x}/{y}.png", "", "OSM Map"],

@@ -214,9 +214,14 @@
 													if (previousPoint != item.dataIndex) {
 														previousPoint = item.dataIndex;
 														$("#tooltip").remove();
-														var x = item.datapoint[0]
-																.toFixed(2), y = item.datapoint[1]
-																.toFixed(2);
+														var x = item.datapoint[0];
+														if (settings.tabFixedPoint[nameX] != null)
+																x.toFixed(settings.tabFixedPoint[nameX]);
+														if (nameX == "date")
+															x = dateFormat(new Date(parseInt(x)), "HH:MM:ss");
+														var y = item.datapoint[1];
+														if (settings.tabFixedPoint[nameY] != null)
+																y.toFixed(settings.tabFixedPoint[nameY]);
 														
 														var xUnitString = "";
 														if (settings.tabUnits[nameX] != null) xUnitString = " ("
