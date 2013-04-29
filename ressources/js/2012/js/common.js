@@ -237,15 +237,6 @@ function createTrameObj (row) {
 	return obj;
 }
 
-/**
-//	realDate : get a formated date from the epoc date
-//	IN 	: an epoc date
-//	OUT	: the date formated
-*/
-function realDate (epoc){
-    return new Date(parseInt(epoc));
-}
-
 function getData (file) {
 	var json = getFile(file);
 	if (json !== false)
@@ -460,6 +451,9 @@ function filterData(dataArg) {
 		}
 		else data[i] = 0;
 	}
+	
+	data['date'] = dateFormat(new Date(parseInt(data['date'])), "HH:MM:ss");
+	
 	return data;
 }
 

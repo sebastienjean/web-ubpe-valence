@@ -86,8 +86,7 @@
 									document.write("<tr id=\"type-2\">");
 									color = !color
 								}
-									var time = realDate(json['raw'][i]['date']); 
-									document.write("<td>" + dateFormat(time, "HH:MM:ss o")  + "</td>");
+									document.write("<td>" + json['filtered'][i]['date']  + "</td>");
 									document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
 									if (json['filtered'][i]['fixGPS'] == "V"){ // No GPS fix, the GPS data is replaced by null.png
 										document.write("<td><img src=\"../ressources/img/null.png\"></td>");
