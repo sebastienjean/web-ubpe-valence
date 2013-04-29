@@ -1,0 +1,278 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+<link rel="stylesheet" href="../ressources/style.css" type="text/css" />
+<script type="text/javascript"
+	src="../ressources/js/jquery-1.9.0.min.js"></script>
+<!--<script type="text/javascript" src="../ressources/flot/jquery.js"></script>-->
+
+<script type="text/javascript" src="../ressources/js/date.format.js"></script>
+
+<script type="text/javascript"
+	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+
+<script type="text/javascript" src="../ressources/flot/jquery.flot.js"></script>
+
+<script type="text/javascript" src="../ressources/js/settings.js"></script>
+<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
+
+<meta http-equiv="refresh" content="15">
+<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
+
+<title>UBPE2013@Valence | Charts</title>
+</head>
+
+<body>
+	<div id="big-frame">
+		<div id="header"></div>
+		<!-- end header -->
+
+		<div id="menu">
+			<ul>
+				<li><a href="../index.html" title="Home">Home</a></li>
+				<li><a href="" title="Data">Data</a></li>
+				<li><a href="./charts.html" title="Charts">Charts</a></li>
+				<li><a href="./map-offline.html" title="Map">Map</a></li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./data-raw-all.html')">Raw
+						data</a></li>
+			</ul>
+		</div>
+		<!-- end menu -->
+
+		<div id="frame">
+			<div id="page">
+				<div id="title">
+					<div id="title-left">
+						<h2>Charts</h2>
+					</div>
+				</div>
+				<div id="page-content">
+					<div id="graph"></div>
+					<div id="button-holder-graphique">
+						<ul>
+							<li><select name="x" id="x" title="X">
+									<option selected="selected" value="null">- - -</option>
+									<option value="date">date</option>
+									<option value="altGPS">altGPS</option>
+							</select></li>
+							<li><select name="y" id="y" title="Y">
+									<option selected="selected" value="null">- - -</option>
+									<option value="altGPS">altGPS</option>
+									<option value="speedGPS">speedGPS</option>
+									<option value="differentialPressureAnalogSensor">differentialPressureAnalogSensor</option>
+									<option value="absolutePressureAnalogSensor">absolutePressureAnalogSensor</option>
+									<option value="externalTemperatureAnalogSensor">externalTemperatureAnalogSensor</option>
+									<option value="internalTemperatureAnalogSensor">internalTemperatureAnalogSensor</option>
+									<option value="voltageAnalogSensor">voltageAnalogSensor</option>
+							</select></li>
+						</ul>
+					</div>
+					<script>
+						json = updateData();
+
+						$(function() {
+
+							var graph = $("#graph");
+
+							var option = {
+								legend : {
+									show : true,
+									position : 'ne',
+									backgroundColor : null,
+									backgroundOpacity : 0
+								},
+								grid : {
+									show : true,
+									color : '#ff8c00',
+									backgroundColor : null,
+									hoverable : true,
+									mouseActiveRadius : 30
+								},
+								xaxis : {
+									color : 'orange'
+								},
+								yaxis : {
+									color : 'orange'
+								},
+							};
+
+							var previousPoint = null;
+
+							if ($("#x").val() == "null"
+									&& $("#y").val() == "null") {
+								var vide = [];
+								$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
+								graph
+										.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Select a chart</div>');
+							}
+
+							else {
+								createChart();
+							}
+							
+							$("#x>option").click(function() {
+								createChart();
+							});
+							
+							$("#y>option").click(function() {
+								createChart();
+							});
+							
+							function createChart() {
+								x = $("#x").val();
+								y = $("#y").val();
+								nameX = $("#x option:selected")
+										.text();
+								nameY = $("#y option:selected")
+										.text();
+
+								/*alert("Abscisse : " + nameAbscisse + " (" + abscisse + ")" + "\nOrdonnée : " + nameOrdonnee + " (" + ordonnee + ")");*/
+
+								var tab = new Array();
+								for (i = 0; i < (json['filtered'].length); i++) {
+									if (blacklist.activate == true
+											&& blacklist.frame
+													.indexOf(json['filtered'][i]['date']) > -1) {
+										continue; //Skip the process for this particular i
+									}
+									;
+									tab.push([ (json['raw'][i][x]),
+											(json['filtered'][i][y]) ]);
+								}
+
+								// Handle the time !
+								if (x == "date") {
+									option["xaxis"]["mode"] = "time";
+								} else {
+									option["xaxis"]["mode"] = "";
+								}
+
+								if (y == "date") {
+									option["yaxis"]["mode"] = "time";
+								} else {
+									option["yaxis"]["mode"] = "";
+								}
+
+								var xUnitString = "";
+								if (settings.tabUnites[x] != null) xUnitString = " ("
+									+ settings.tabUnites[x]+ ")";
+								
+								var yUnitString = "";
+								if (settings.tabUnites[y] != null) yUnitString = " ("
+									+ settings.tabUnites[y]
+								+ ")";
+								
+								var dTab = {
+									label : nameX +
+											xUnitString
+											+ " / " + nameY + yUnitString,
+									data : tab,
+									color : 'red',
+									points : {
+										show : true
+									},
+								}
+
+								$.plot(graph, [ dTab ], option);
+							}
+							;
+
+							// Allow the showTooltip action DO NOT MODIFY !
+							$("#graph")
+									.bind(
+											"plothover",
+											function(event, pos, item) {
+
+												function showTooltip(x, y,
+														contents) {
+													$(
+															"<div id='tooltip'>"
+																	+ contents
+																	+ "</div>")
+															.css(
+																	{
+																		position : "absolute",
+																		display : "none",
+																		top : y + 5,
+																		left : x + 5,
+																		border : "1px solid #fdd",
+																		padding : "2px",
+																		"background-color" : "#fee",
+																		opacity : 0.80,
+																		color : "#000000",
+																	})
+															.appendTo("body")
+															.fadeIn(200);
+												}
+
+												if (item) {
+													if (previousPoint != item.dataIndex) {
+														previousPoint = item.dataIndex;
+														$("#tooltip").remove();
+														var x = item.datapoint[0]
+																.toFixed(2), y = item.datapoint[1]
+																.toFixed(2);
+														
+														var xUnitString = "";
+														if (settings.tabUnites[nameX] != null) xUnitString = " ("
+															+ settings.tabUnites[nameX]+ ")";
+														
+														var yUnitString = "";
+														if (settings.tabUnites[nameY] != null) yUnitString = " ("
+															+ settings.tabUnites[nameY]
+														+ ")";
+														showTooltip(
+																item.pageX,
+																item.pageY,
+																nameX
+																		+ " = "
+																		+ x
+																		+ " "
+																		+ xUnitString
+																		+ "<br/>"
+																		+ nameY
+																		+ " = "
+																		+ y
+																		+ " "
+																		+ yUnitString);
+													} else {
+														$("#tooltip").remove();
+														previousPoint = null;
+													}
+												}
+											});
+						});
+					</script>
+					<p>Ce graphique permet de consulter graphiquement les données
+						envoyées par le ballon.</p>
+				</div>
+			</div>
+			<!-- end page -->
+		</div>
+		<!-- end frame -->
+
+		<div id="footer">
+			<div id="footer-left">
+				UBPE 2013 - <a href="./credits.html" title="Page des crédits">Projet
+					UBPE, IUT Valence</a>
+			</div>
+			<div id="footer-right">
+
+				<ul>
+					<li><a href="http://iut-valence.fr"><img
+							src="../ressources/img/logoiut2.png" title="IUT Valence"
+							alt="Logo IUT Valence"></a></li>
+				</ul>
+
+			</div>
+		</div>
+		<!-- end footer -->
+	</div>
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="Content-Language" content="fr" />
+		<meta http-equiv="Content-Language" content="en" />
 		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
 		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
 		
@@ -18,7 +18,7 @@
 		<meta http-equiv="refresh" content="15" > 
 		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
 
-		<title>UBPE 2013 | Données</title>
+		<title>UBPE2013@Valence | Data</title>
 	</head>
 
 		<body>
@@ -29,19 +29,19 @@
 			<div id="menu">
 				<ul>
 					<li>
-						<a href="../index.html" title="Accueil">Accueil</a>
+						<a href="../index.html" title="Home">Home</a>
 					</li>
 					<li>
-						<a href="" title="Données">Données</a>
+						<a href="" title="Data">Data</a>
 					</li>
 					<li>
-						<a href="./graphiques.html" title="Graphiques">Graphiques</a>
+						<a href="./charts.html" title="Charts">Charts</a>
 					</li>
 					<li>
-						<a href="./carte.html" title="Carte">Carte</a>
+						<a href="./map-offline.html" title="Map">Map</a>
 					</li>
 					<li>
-						<a href="#null" onclick="javascript:window.open('./rawFullScreen.html')">Données brutes</a>
+						<a href="#null" onclick="javascript:window.open('./data-raw-all.html')">Raw data</a>
 					</li>
 				</ul>
 			</div> <!-- end menu -->
@@ -50,9 +50,14 @@
 				<div id="page">
 					<div id="title">
 						<div id="title-left">
-							<h2>Données du vol</h2>
+							<h2>Flight data</h2>							
+							The following array contains last 10 received frames, click <a href="#null" onclick="javascript:window.open('./data-filtered-all.html')"><button id="btn1">here</button></a> to see them all 												
+								
 						</div>
 					</div>
+					
+					
+					<br/><br/>
 					<div id="page-content">
 							<script>
 							//Ouverture du json
@@ -62,15 +67,15 @@
 							document.write("<div id=\"tab\">");
 							document.write("<table>");
 							document.write("<tr id=\"type-tile\">");
-								document.write("<th>Heure</th>");
+								document.write("<th>Time</th>");
 								document.write("<th>Phase</th>");
 								document.write("<th>Altitude" + "<br/>" + "(" + settings.tabUnites["altGPS"] + ")" + "</th>");
-								document.write("<th>Vitesse" + "<br/>" + "(" + settings.tabUnites["speedGPS"] + ")" + "</th>");
-								document.write("<th>Pression (D)" + "<br/>" + "(" + settings.tabUnites["differentialPressureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Pression (A)" + "<br/>" + "(" + settings.tabUnites["absolutePressureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Temp. Ext" + "<br/>" + "(" + settings.tabUnites["externalTemperatureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Temp. Int" + "<br/>" + "(" + settings.tabUnites["internalTemperatureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Tension" + "<br/>" + "(" + settings.tabUnites["voltageAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Speed" + "<br/>" + "(" + settings.tabUnites["speedGPS"] + ")" + "</th>");
+								document.write("<th>Pressure (D)" + "<br/>" + "(" + settings.tabUnites["differentialPressureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Pressure (A)" + "<br/>" + "(" + settings.tabUnites["absolutePressureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Temp. Out" + "<br/>" + "(" + settings.tabUnites["externalTemperatureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Temp. In" + "<br/>" + "(" + settings.tabUnites["internalTemperatureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Voltage" + "<br/>" + "(" + settings.tabUnites["voltageAnalogSensor"] + ")" + "</th>");
 							document.write("</tr>");
 							
 							for ( i = 0; i < (json['filtered'].length) && i < 10; i++){
@@ -106,23 +111,14 @@
 							document.write("</table>");
 							document.write("</div>");
 							</script>
-						<div id="button-holder-graphique">
-							<ul>
-								<li>
-								<a href="#null" onclick="javascript:window.open('./donneesFullScreen.html')"><button id="btn1">Ouvrir tableau complet</button></a>
-								</li>
-							</ul>
-						</div>
-						<p>
-							Ce tableau permet de consulter les dernières mesures reçues.
-						</p>
+					
 					</div>
 				</div> <!-- end page -->
 			</div> <!-- end frame -->
 			
 			<div id="footer">
 				<div id="footer-left">
-					UBPE 2013 - <a href="./credits.html" title="Page des crédits">Projet UBPE, IUT Valence</a>
+					UBPE2013@Valence - <a href="./credits.html" title="Page des crédits">Projet UBPE, IUT Valence</a>
 				</div>
 				<div id="footer-right">
 				
