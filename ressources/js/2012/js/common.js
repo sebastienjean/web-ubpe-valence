@@ -10,7 +10,9 @@ sensorCalibration = {					/* An array containing the name of the data and a, b a
 							"differentialPressureAnalogSensor" : [1, 1],
 							"absolutePressureAnalogSensor" : [1, 2],
 							"externalTemperatureAnalogSensor" : [1, 3],
-							"internalTemperatureAnalogSensor" : [1, 4]
+							"internalTemperatureAnalogSensor" : [1, 4],
+							"voltageAnalogSensor" : [0.0097, 0],
+							"speedGPS" : [1.852, 0]
 							};
 //--------------------------------------------------------------------------------
 // End of Varaiables
@@ -437,22 +439,6 @@ function guessSpeedIconName(speedGPS){
 	}
 	
 	return name + "Icon";
-}
-
-/**
-// volt : get the corresponding voltage of the val
-// IN	: the val and a boolean according to the round 
-// OUT	: the val converted into voltage
-*/
-function volt(val, round) {
-	var U = 5 * val / 1024;
-
-	if(round) {
-		return Math.round( U * 1000) / 1000;
-	}
-	else {
-		return U;
-	}
 }
 
 /**
