@@ -6,6 +6,5 @@ blacklist.activate = true;
 
 //Blacklisted frame list
 blacklist.frame = [
-					"44",
-					"42",
+					"1367221923752"
 					];

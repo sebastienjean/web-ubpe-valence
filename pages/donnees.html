@@ -74,7 +74,7 @@
 							document.write("</tr>");
 							
 							for ( i = 0; i < (json['filtered'].length) && i < 10; i++){
-								if (blacklist.activate == true &&  blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1){
+								if (blacklist.activate == true &&  blacklist.frame.indexOf(json['raw'][i]['date']) > -1){
 									continue; //Skip the process for this particular i
 								};
 							
