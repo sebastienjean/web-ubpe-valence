@@ -69,13 +69,13 @@
 							document.write("<tr id=\"type-tile\">");
 								document.write("<th>Time</th>");
 								document.write("<th>Phase</th>");
-								document.write("<th>Altitude" + "<br/>" + "(" + settings.tabUnites["altGPS"] + ")" + "</th>");
-								document.write("<th>Speed" + "<br/>" + "(" + settings.tabUnites["speedGPS"] + ")" + "</th>");
-								document.write("<th>Pressure (D)" + "<br/>" + "(" + settings.tabUnites["differentialPressureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Pressure (A)" + "<br/>" + "(" + settings.tabUnites["absolutePressureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Temp. Out" + "<br/>" + "(" + settings.tabUnites["externalTemperatureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Temp. In" + "<br/>" + "(" + settings.tabUnites["internalTemperatureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>Voltage" + "<br/>" + "(" + settings.tabUnites["voltageAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Altitude" + "<br/>" + "(" + settings.tabUnits["altGPS"] + ")" + "</th>");
+								document.write("<th>Speed" + "<br/>" + "(" + settings.tabUnits["speedGPS"] + ")" + "</th>");
+								document.write("<th>Pressure (D)" + "<br/>" + "(" + settings.tabUnits["differentialPressureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Pressure (A)" + "<br/>" + "(" + settings.tabUnits["absolutePressureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Temp. Out" + "<br/>" + "(" + settings.tabUnits["externalTemperatureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Temp. In" + "<br/>" + "(" + settings.tabUnits["internalTemperatureAnalogSensor"] + ")" + "</th>");
+								document.write("<th>Voltage" + "<br/>" + "(" + settings.tabUnits["voltageAnalogSensor"] + ")" + "</th>");
 							document.write("</tr>");
 							
 							for ( i = 0; i < (json['filtered'].length) && i < 10; i++){

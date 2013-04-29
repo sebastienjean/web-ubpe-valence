@@ -2,7 +2,7 @@
 var settings = {};
 
 //Measurment units
-settings.tabUnites = { //"unitName" : "unit" 	
+settings.tabUnits = { //"unitName" : "unit" 	
 				"currentFlightPhaseDurationInSeconds" : "s",	
 				"secondsSinceLastReset" : "s",	
 				"differentialPressureAnalogSensor" : "hPa",
