@@ -8,9 +8,9 @@ jsonPath = 'data/events.clean'; 			/* Path of the JSON file. WARNING > The path 
 jsonFrameLength = 23;					/* Number of fields in the json : 23 for the 2013 flight*/
 sensorCalibration = {					/* An array containing the name of the data and a, b as calibratedData = (data * a) + b */
 							"differentialPressureAnalogSensor" : [1, 1],
-							"absolutePressureAnalogSensor" : [2, 2],
-							"externalTemperatureAnalogSensor" : [3, 3],
-							"internalTemperatureAnalogSensor" : [4, 4]
+							"absolutePressureAnalogSensor" : [1, 2],
+							"externalTemperatureAnalogSensor" : [1, 3],
+							"internalTemperatureAnalogSensor" : [1, 4]
 							};
 //--------------------------------------------------------------------------------
 // End of Varaiables
@@ -460,34 +460,20 @@ function volt(val, round) {
 // IN	: the not calibrated data
 // OUT 	: the calibrated data
 */
+
 function filterData(dataArg) {
-		
+	
 	var data = $.extend({}, dataArg);
 
-	if(data.sensor1 != null) {
-		data.sensor1 = ((data.sensor1 * sensorCalibration['differentialPressureAnalogSensor'][0]) + sensorCalibration['differentialPressureAnalogSensor'][1]);
+	for ( i in sensorCalibration)
+	{
+		var sensor = data[i];
+		if (sensor != null)
+		{
+			data[i] = (data[i] * sensorCalibration[i][0]) + sensorCalibration[i][1];
+		}
+		else data[i] = 0;
 	}
-
-	if(data.sensor2 != null) {
-		data.sensor2 = ((data.sensor2 * sensorCalibration['absolutePressureAnalogSensor'][0]) + sensorCalibration['absolutePressureAnalogSensor'][1]);
-	}
-	
-	if(data.sensor3 != null) {
-		data.sensor3 = ((data.sensor3 * sensorCalibration['externalTemperatureAnalogSensor'][0]) + sensorCalibration['externalTemperatureAnalogSensor'][1]);
-	}
-
-	if(data.sensor4 != null) {
-		data.sensor4 = ((data.sensor4 * sensorCalibration['internalTemperatureAnalogSensor'][0]) + sensorCalibration['internalTemperatureAnalogSensor'][1]);
-	}
-	
-	if(data.voltage != null) {
-		data.voltage = Math.round( (volt(data.voltage) * 2) * 1000) / 1000; // convert to a real voltage
-	}
-	
-	if(data.speedGPS != null) {
-		data.speedGPS = Math.round( (data.speedGPS * 1.852) * 100) / 100; // convert knot speed to km/h
-	}
-	
 	return data;
 }
 
