@@ -10,6 +10,8 @@
 	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
 
+<script type="text/javascript" src="../ressources/js/date.format.js"></script>
+
 <link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
 <script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
 
@@ -60,10 +62,9 @@
 							</select></li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<li><script>
 				var url = './map-fullScreen-' + $("#layer").val() + '.html';
-				document.write("<a href=\"#null\" onclick=\"javascript:window.open(\'" + url + "\')\">");
-			    </script>
-								<button id="btnOpenFullScreenMap">switch to full screen
-									mode</button> </a></li>
+				document.write("<a href=\"#null\" onclick=\"javascript:window.open(\'" + url + "\')\">"
+					+ "<button id=\"btnOpenFullScreenMap\">switch to full screen mode</button></a>");
+			    </script></li>
 							<li><a href="#null"
 								onclick="javascript:window.open('./map-offline.html')">
 									<button id="btnOpenOfflineMap">switch to offline mode</button>
@@ -73,24 +74,29 @@
 					<script>
 			// Création de la carte 
 			var map = L.map('map', settings.map);
-
-			var layerName = $("#layer").val();
-
-			if (settings.tabServers[layerName][1] == "")
-			{ //No layer subdomain specified
-			    layer = L.tileLayer(settings.tabServers[layerName][0],
-			    { //Serveur de tuiles à utiliser
-				attribution : settings.tabServers[layerName][2], //Nom du layer
-			    }).addTo(map);
-			}
-			else
+			
+			function reloadMap()
 			{
-			    layer = L.tileLayer(settings.tabServers[layerName][0],
-			    { //Serveur de tuiles à utiliser
-				subdomains : settings.tabServers[layerName][1], // Subdomains
-				attribution : settings.tabServers[layerName][2], //Nom du layer
-			    }).addTo(map);
+			    var layerName = $("#layer").val();
+			    if (settings.tabServers[layerName][1] == "")
+			    { //No layer subdomain specified
+				layer = L.tileLayer(settings.tabServers[layerName][0],
+				{
+				    attribution : settings.tabServers[layerName][2]
+				});
+			    }
+			    else
+			    {
+				layer = L.tileLayer(settings.tabServers[layerName][0],
+				{
+				    subdomains : settings.tabServers[layerName][1],
+				    attribution : settings.tabServers[layerName][2]
+				});
+			    }
+			    layer.addTo(map);
 			}
+
+			reloadMap();
 
 			// POI
 			for (i in settings.POI)
@@ -259,26 +265,14 @@
 			}
 
 			//Switch map layer
-			$('#layer').change(function()
+			$("#layer>option").click(function()
 			{
-			    layer.setOpacity(0);
-			    var layerName = $("#layer").val();
-			    if (settings.tabServers[layerName][1] == "")
-			    { //No layer subdomain specified
-				layer = L.tileLayer(settings.tabServers[layerName][0],
-				{
-				    attribution : settings.tabServers[layerName][2]
-				});
-			    }
-			    else
-			    {
-				layer = L.tileLayer(settings.tabServers[layerName][0],
-				{
-				    subdomains : settings.tabServers[layerName][1],
-				    attribution : settings.tabServers[layerName][2]
-				});
-			    }
-			    layer.addTo(map);
+			    reloadMap();
+			});
+
+			$("#layer").change(function()
+			{
+			    reloadMap();
 			});
 
 			//Set view to the last point received
