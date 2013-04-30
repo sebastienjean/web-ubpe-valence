@@ -50,7 +50,7 @@
 				<div id="page-content">
 					<div id="map"></div>
 					<div id="button-holder-graphique">
-						<ul>				
+						<ul>
 							<li><a href="#null"
 								onclick="javascript:window.open('./map-online.html')">
 									<button id="btnOpenOnlineMap">switch to online mode</button>
@@ -58,238 +58,212 @@
 						</ul>
 					</div>
 					<script>
-						// Création de la carte 
-						var map = L.map('map', {
-							center : [ 44.9250, 4.8900 ],
-							zoom : 13,
-						})
-						
-						L.tileLayer('../ressources/tiles/{z}/{x}/{y}.png', { //Serveur de tuiles à utiliser
-								attribution: 'UBPE 2013 - IUT Valence', //Nom du layer
-								maxZoom: 15,
-								minZoom: 10,
-							}).addTo(map);
-						
-						// POI
-						for (i in settings.POI) {
-							var marker = L.marker(
-									[ settings.POI[i][0], settings.POI[i][1] ])
-									.addTo(map);
-							marker.bindPopup("<div style=\"color : black\">"
-									+ settings.POI[i][2] + "</div>");
-						}
+			// Création de la carte 
+			var map = L.map('map',
+			{
+			    center : [ 44.9250, 4.8900 ],
+			    zoom : 13,
+			})
 
-						//Ouverture du json
-						var json = updateData();
+			L.tileLayer('../ressources/tiles/{z}/{x}/{y}.png',
+			{ //Serveur de tuiles à utiliser
+			    attribution : 'UBPE 2013 - IUT Valence', //Nom du layer
+			    maxZoom : 15,
+			    minZoom : 10,
+			}).addTo(map);
 
-						//Parcours du json afin de créer le chemin
-						var Path = new Array();
-						for (i = 0; i < (json['filtered'].length); i++) {
-							if (blacklist.activate == true
-									&& blacklist.frame
-											.indexOf(json['filtered'][i]['date']) > -1) {
-								continue; //Skip the process for this particular i
-							}
-							;
+			// POI
+			for (i in settings.POI)
+			{
+			    var marker = L.marker([ settings.POI[i][0], settings.POI[i][1] ]).addTo(map);
+			    marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
+			}
 
-							var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
-							var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
-							Path.push([ latGPSFormat, longGPSFormat ]);
-						}
+			//Ouverture du json
+			var json = updateData();
 
-						//Création du chemin
-						var polyline = L.polyline(Path, {
-							color : 'black'
-						}).addTo(map); //Create a polyline from an LatLng array object
+			//Parcours du json afin de créer le chemin
+			var Path = new Array();
+			for (i = 0; i < (json['filtered'].length); i++)
+			{
+			    if (blacklist.activate == true && blacklist.frame.indexOf(json['filtered'][i]['date']) > -1)
+			    {
+				continue; //Skip the process for this particular i
+			    }
+			    ;
 
-						//Icone personalisées
-						var orangeIcon = L.icon({
-							iconUrl : '../ressources/img/point-orange.png',
+			    var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
+			    var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
+			    Path.push([ latGPSFormat, longGPSFormat ]);
+			}
 
-							iconSize : [ 20, 20 ], // size of the icon
-							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-							popupAnchor : [ 0, -5 ]
-						// point from which the popup should open relative to the iconAnchor
-						});
+			//Création du chemin
+			var polyline = L.polyline(Path,
+			{
+			    color : 'black'
+			}).addTo(map); //Create a polyline from an LatLng array object
 
-						var blueIcon = L.icon({
-							iconUrl : '../ressources/img/point-bleu.png',
+			//Icone personalisées
+			var orangeIcon = L.icon(
+			{
+			    iconUrl : '../ressources/img/point-orange.png',
 
-							iconSize : [ 20, 20 ], // size of the icon
-							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-							popupAnchor : [ 0, -5 ]
-						// point from which the popup should open relative to the iconAnchor
-						});
+			    iconSize : [ 20, 20 ], // size of the icon
+			    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+			    popupAnchor : [ 0, -5 ]
+			// point from which the popup should open relative to the iconAnchor
+			});
 
-						var greenIcon = L.icon({
-							iconUrl : '../ressources/img/point-vert.png',
+			var blueIcon = L.icon(
+			{
+			    iconUrl : '../ressources/img/point-bleu.png',
 
-							iconSize : [ 20, 20 ], // size of the icon
-							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-							popupAnchor : [ 0, -5 ]
-						// point from which the popup should open relative to the iconAnchor
-						});
+			    iconSize : [ 20, 20 ], // size of the icon
+			    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+			    popupAnchor : [ 0, -5 ]
+			// point from which the popup should open relative to the iconAnchor
+			});
 
-						var redIcon = L.icon({
-							iconUrl : '../ressources/img/point-rouge.png',
+			var greenIcon = L.icon(
+			{
+			    iconUrl : '../ressources/img/point-vert.png',
 
-							iconSize : [ 20, 20 ], // size of the icon
-							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-							popupAnchor : [ 0, -5 ]
-						// point from which the popup should open relative to the iconAnchor
-						});
+			    iconSize : [ 20, 20 ], // size of the icon
+			    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+			    popupAnchor : [ 0, -5 ]
+			// point from which the popup should open relative to the iconAnchor
+			});
 
-						var greyIcon = L.icon({
-							iconUrl : '../ressources/img/point-gris.png',
+			var redIcon = L.icon(
+			{
+			    iconUrl : '../ressources/img/point-rouge.png',
 
-							iconSize : [ 20, 20 ], // size of the icon
-							iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-							popupAnchor : [ 0, -5 ]
-						// point from which the popup should open relative to the iconAnchor
-						});
+			    iconSize : [ 20, 20 ], // size of the icon
+			    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+			    popupAnchor : [ 0, -5 ]
+			// point from which the popup should open relative to the iconAnchor
+			});
 
-						//Parcours du chemin pour affichage des points sur la carte
-						for (i = 0; i < Path.length; i++) {
+			var greyIcon = L.icon(
+			{
+			    iconUrl : '../ressources/img/point-gris.png',
 
-							/* Traitement des points à cap */
-							if (i == 0) {
+			    iconSize : [ 20, 20 ], // size of the icon
+			    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+			    popupAnchor : [ 0, -5 ]
+			// point from which the popup should open relative to the iconAnchor
+			});
 
-								nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
+			//Parcours du chemin pour affichage des points sur la carte
+			for (i = 0; i < Path.length; i++)
+			{
 
-								var capIcon = L.icon({
-									iconUrl : '../ressources/img/' + nomIcon,
+			    /* Traitement des points à cap */
+			    if (i == 0)
+			    {
 
-									iconSize : [ 50, 50 ], // Taille de l'icone
-									iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
-									popupAnchor : [ 5, -10 ]
-								// Ajustement de l'emplacement du pop-up d'informations
-								});
+				nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
 
-								var marker = L.marker((Path[i]), {
-									icon : capIcon
-								}).addTo(map);
-							}
+				var capIcon = L.icon(
+				{
+				    iconUrl : '../ressources/img/' + nomIcon,
 
-							else { /* Point normal (sans cap) */
-								var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
+				    iconSize : [ 50, 50 ], // Taille de l'icone
+				    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+				    popupAnchor : [ 5, -10 ]
+				// Ajustement de l'emplacement du pop-up d'informations
+				});
 
-								//Déterlination de la couleur du point
-								if (iconName == "greenIcon") {
-									var marker = L.marker((Path[i]), {
-										icon : greenIcon
-									}).addTo(map);
-								}
-								if (iconName == "redIcon") {
-									var marker = L.marker((Path[i]), {
-										icon : redIcon
-									}).addTo(map);
-								}
-								if (iconName == "blueIcon") {
-									var marker = L.marker((Path[i]), {
-										icon : blueIcon
-									}).addTo(map);
-								}
-								if (iconName == "orangeIcon") {
-									var marker = L.marker((Path[i]), {
-										icon : orangeIcon
-									}).addTo(map);
-								}
-								if (iconName == "greyIcon") {
-									var marker = L.marker((Path[i]), {
-										icon : greyIcon
-									}).addTo(map);
-								}
-							}
+				var marker = L.marker((Path[i]),
+				{
+				    icon : capIcon
+				}).addTo(map);
+			    }
 
-							/* Remplissage du pop-up du marker */
-							marker
-									.bindPopup("<div style=\"color : black\">"
-											+ "<center>Point "
-											+ i
-											+ "</center>"
-											+ "<br/>"
-											+ "<center>"
-											+ json['filtered'][i]['date']
-											+ "</center>"
-											+ "<br/>"
-											+ "<u><b>Location</b></u> "
-											+ "<br/>"
-											+ "<b>Latitude</b> : "
-											+ (json['filtered'][i]['latGPS'])
-											+ ''
-											+ "<br/>"
-											+ "<b>Longitude</b> : "
-											+ (json['filtered'][i]['longGPS'])
-											+ ''
-											+ "<br/>"
-											+ "<b>Altitude</b> : "
-											+ (json['filtered'][i]['altGPS'])
-											+ ''
-											+ ' '
-											+ settings.fieldUnits['altGPS']
-											+ "<br/>"
-											+ "<u><b>Data</b></u>"
-											+ "<br/>"
-											+ "<b>Speed</b> : "
-											+ (json['filtered'][i]['speedGPS'])
-											+ ''
-											+ ' '
-											+ settings.fieldUnits['speedGPS']
-											+ "<br/>"
-											+ "<b>Pressure diff.</b> : "
-											+ (json['filtered'][i]['differentialPressureAnalogSensor'])
-											+ ''
-											+ ' '
-											+ settings.fieldUnits['differentialPressureAnalogSensor']
-											+ "<br/>"
-											+ "<b>Pressure abs.</b> : "
-											+ (json['filtered'][i]['absolutePressureAnalogSensor'])
-											+ ''
-											+ ' '
-											+ settings.fieldUnits['absolutePressureAnalogSensor']
-											+ "<br/>"
-											+ "<b>Temperature out</b> : "
-											+ (json['filtered'][i]['externalTemperatureAnalogSensor'])
-											+ ''
-											+ ' '
-											+ settings.fieldUnits['externalTemperatureAnalogSensor']
-											+ "<br/>"
-											+ "<b>Temperature in</b> : "
-											+ (json['filtered'][i]['internalTemperatureAnalogSensor'])
-											+ ''
-											+ ' '
-											+ settings.fieldUnits['internalTemperatureAnalogSensor']
-											+ "<br/>" + "</div>");
-						}
+			    else
+			    { /* Point normal (sans cap) */
+				var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
 
-						//Switch map layer
-						$('#layer')
-								.change(
-										function() {
-											layer.setOpacity(0);
-											var layerName = $("#layer").val();
-											if (settings.tabServers[layerName][1] == "") { //No layer subdomain specified
-												layer = L
-														.tileLayer(
-																settings.tabServers[layerName][0],
-																{
-																	attribution : settings.tabServers[layerName][2]
-																});
-											} else {
-												layer = L
-														.tileLayer(
-																settings.tabServers[layerName][0],
-																{
-																	subdomains : settings.tabServers[layerName][1],
-																	attribution : settings.tabServers[layerName][2]
-																});
-											}
-											layer.addTo(map);
-										});
+				//Déterlination de la couleur du point
+				if (iconName == "greenIcon")
+				{
+				    var marker = L.marker((Path[i]),
+				    {
+					icon : greenIcon
+				    }).addTo(map);
+				}
+				if (iconName == "redIcon")
+				{
+				    var marker = L.marker((Path[i]),
+				    {
+					icon : redIcon
+				    }).addTo(map);
+				}
+				if (iconName == "blueIcon")
+				{
+				    var marker = L.marker((Path[i]),
+				    {
+					icon : blueIcon
+				    }).addTo(map);
+				}
+				if (iconName == "orangeIcon")
+				{
+				    var marker = L.marker((Path[i]),
+				    {
+					icon : orangeIcon
+				    }).addTo(map);
+				}
+				if (iconName == "greyIcon")
+				{
+				    var marker = L.marker((Path[i]),
+				    {
+					icon : greyIcon
+				    }).addTo(map);
+				}
+			    }
 
-						//Set view to the last point received
-						map.setView(Path[0], 13);
-					</script>
+			    /* Remplissage du pop-up du marker */
+			    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + i + "</center>" + "<br/>" + "<center>"
+				    + json['filtered'][i]['date'] + "</center>" + "<br/>" + "<u><b>Location</b></u> " + "<br/>" + "<b>Latitude</b> : "
+				    + (json['filtered'][i]['latGPS']) + '' + "<br/>" + "<b>Longitude</b> : " + (json['filtered'][i]['longGPS']) + '' + "<br/>"
+				    + "<b>Altitude</b> : " + (json['filtered'][i]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>"
+				    + "<u><b>Data</b></u>" + "<br/>" + "<b>Speed</b> : " + (json['filtered'][i]['speedGPS']) + '' + ' '
+				    + settings.fieldUnits['speedGPS'] + "<br/>" + "<b>Pressure diff.</b> : "
+				    + (json['filtered'][i]['differentialPressureAnalogSensor']) + '' + ' '
+				    + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" + "<b>Pressure abs.</b> : "
+				    + (json['filtered'][i]['absolutePressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['absolutePressureAnalogSensor']
+				    + "<br/>" + "<b>Temperature out</b> : " + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' '
+				    + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>" + "<b>Temperature in</b> : "
+				    + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' '
+				    + settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>" + "</div>");
+			}
+
+			//Switch map layer
+			$('#layer').change(function()
+			{
+			    layer.setOpacity(0);
+			    var layerName = $("#layer").val();
+			    if (settings.tabServers[layerName][1] == "")
+			    { //No layer subdomain specified
+				layer = L.tileLayer(settings.tabServers[layerName][0],
+				{
+				    attribution : settings.tabServers[layerName][2]
+				});
+			    }
+			    else
+			    {
+				layer = L.tileLayer(settings.tabServers[layerName][0],
+				{
+				    subdomains : settings.tabServers[layerName][1],
+				    attribution : settings.tabServers[layerName][2]
+				});
+			    }
+			    layer.addTo(map);
+			});
+
+			//Set view to the last point received
+			map.setView(Path[0], 13);
+		    </script>
 				</div>
 			</div>
 			<!-- end page -->

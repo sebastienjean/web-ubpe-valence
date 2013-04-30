@@ -1,165 +1,208 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="Content-Language" content="fr" />
-		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
-		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
-		
-		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
-		
-		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
-		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
-		
-		<script type="text/javascript" src="../ressources/js/settings.js"></script>
-		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
-		
-		<meta http-equiv="refresh" content="15"> 
-		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-		
-		<title>UBPE 2013 | Carte - Map Quest)</title>
-	</head>
-	<body>
-		<div id="mapFullScreen" style="height : 100%; width : 100%"></div>
-		<script>
-		// Création de la carte 
-		var map = L.map('mapFullScreen',{
-			center: [44.9250, 4.8900],
-			zoom: 13,
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="fr" />
+<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+<link rel="stylesheet" href="../ressources/style.css" type="text/css" />
+
+<script type="text/javascript"
+	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+
+<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
+<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+
+<script type="text/javascript" src="../ressources/js/settings.js"></script>
+<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
+
+<meta http-equiv="refresh" content="15">
+<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
+
+<title>UBPE 2013 | Carte - Map Quest)</title>
+</head>
+<body>
+	<div id="mapFullScreen" style="height: 100%; width: 100%"></div>
+	<script>
+	// Création de la carte 
+	var map = L.map('mapFullScreen',
+	{
+	    center : [ 44.9250, 4.8900 ],
+	    zoom : 13,
+	});
+
+	layer = L.tileLayer(settings.tabServers['googleHybrid'][0],
+	{
+	    subdomains : settings.tabServers['googleHybrid'][1],
+	    attribution : settings.tabServers['googleHybrid'][2],
+	}).addTo(map);
+
+	// POI
+	for (i in settings.POI)
+	{
+	    var marker = L.marker([ settings.POI[i][0], settings.POI[i][1] ]).addTo(map);
+	    marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
+	}
+
+	//Ouverture du json
+	json = updateData();
+
+	//Parcours du json afin de cr�er le chemin
+	var Path = new Array();
+	for (i = 0; i < (json['filtered'].length); i++)
+	{
+	    if (blacklist.activate == true && blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1)
+	    {
+		continue; //Skip the process for this particular i
+	    }
+	    ;
+
+	    var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
+	    var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
+	    Path.push([ latGPSFormat, longGPSFormat ]);
+	}
+
+	//Cr�ation du chemin
+	var polyline = L.polyline(Path,
+	{
+	    color : 'black'
+	}).addTo(map); //Create a polyline from an LatLng array object
+
+	//Icone personalis�es
+	var orangeIcon = L.icon(
+	{
+	    iconUrl : '../ressources/img/point-orange.png',
+
+	    iconSize : [ 20, 20 ], // size of the icon
+	    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+	    popupAnchor : [ 0, -5 ]
+	// point from which the popup should open relative to the iconAnchor
+	});
+
+	var blueIcon = L.icon(
+	{
+	    iconUrl : '../ressources/img/point-bleu.png',
+
+	    iconSize : [ 20, 20 ], // size of the icon
+	    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+	    popupAnchor : [ 0, -5 ]
+	// point from which the popup should open relative to the iconAnchor
+	});
+
+	var greenIcon = L.icon(
+	{
+	    iconUrl : '../ressources/img/point-vert.png',
+
+	    iconSize : [ 20, 20 ], // size of the icon
+	    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+	    popupAnchor : [ 0, -5 ]
+	// point from which the popup should open relative to the iconAnchor
+	});
+
+	var redIcon = L.icon(
+	{
+	    iconUrl : '../ressources/img/point-rouge.png',
+
+	    iconSize : [ 20, 20 ], // size of the icon
+	    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+	    popupAnchor : [ 0, -5 ]
+	// point from which the popup should open relative to the iconAnchor
+	});
+
+	var greyIcon = L.icon(
+	{
+	    iconUrl : '../ressources/img/point-gris.png',
+
+	    iconSize : [ 20, 20 ], // size of the icon
+	    iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+	    popupAnchor : [ 0, -5 ]
+	// point from which the popup should open relative to the iconAnchor
+	});
+
+	//Parcours du chemin pour affichage des points sur la carte
+	for (i = 0; i < Path.length; i++)
+	{
+
+	    /* Traitement des points � cap */
+	    if (i == 0)
+	    {
+
+		nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
+
+		var capIcon = L.icon(
+		{
+		    iconUrl : '../ressources/img/' + nomIcon,
+
+		    iconSize : [ 50, 50 ], // Taille de l'icone
+		    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+		    popupAnchor : [ 5, -10 ]
+		// Ajustement de l'emplacement du pop-up d'informations
 		});
-		
-		layer = L.tileLayer(settings.tabServers['googleHybrid'][0], {
-			subdomains: settings.tabServers['googleHybrid'][1],
-			attribution: settings.tabServers['googleHybrid'][2],
+
+		var marker = L.marker((Path[i]),
+		{
+		    icon : capIcon
 		}).addTo(map);
+	    }
 
-		// POI
-		for (i in settings.POI){
-			var marker = L.marker([settings.POI[i][0], settings.POI[i][1]]).addTo(map);
-			marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
+	    else
+	    { /* Point normal (sans cap) */
+		var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
+
+		//D�terlination de la couleur du point
+		if (iconName == "greenIcon")
+		{
+		    var marker = L.marker((Path[i]),
+		    {
+			icon : greenIcon
+		    }).addTo(map);
 		}
-
-		//Ouverture du json
-		json = updateData();
-
-		//Parcours du json afin de cr�er le chemin
-		var Path = new Array();
-		for ( i = 0; i < (json['filtered'].length); i++){
-			if (blacklist.activate == true &&  blacklist.frame.indexOf(json['filtered'][i]['frameCounter']) > -1){
-				continue; //Skip the process for this particular i
-			};
-			
-			var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
-			var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
-			Path.push([latGPSFormat, longGPSFormat]);
+		if (iconName == "redIcon")
+		{
+		    var marker = L.marker((Path[i]),
+		    {
+			icon : redIcon
+		    }).addTo(map);
 		}
-				
-		//Cr�ation du chemin
-		var polyline = L.polyline(Path, {color: 'black'}).addTo(map); //Create a polyline from an LatLng array object
-
-		//Icone personalis�es
-		var orangeIcon = L.icon({
-					iconUrl: '../ressources/img/point-orange.png',
-
-					iconSize:     [20, 20], // size of the icon
-					iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-					popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-				});
-				
-		var blueIcon = L.icon({
-					iconUrl: '../ressources/img/point-bleu.png',
-
-					iconSize:     [20, 20], // size of the icon
-					iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-					popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-				});
-				
-		var greenIcon = L.icon({
-					iconUrl: '../ressources/img/point-vert.png',
-
-					iconSize:     [20, 20], // size of the icon
-					iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-					popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-				});
-				
-		var redIcon = L.icon({
-					iconUrl: '../ressources/img/point-rouge.png',
-
-					iconSize:     [20, 20], // size of the icon
-					iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-					popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-				});
-				
-		var greyIcon = L.icon({
-					iconUrl: '../ressources/img/point-gris.png',
-
-					iconSize:     [20, 20], // size of the icon
-					iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
-					popupAnchor:  [0,-5] // point from which the popup should open relative to the iconAnchor
-				});										
-
-		//Parcours du chemin pour affichage des points sur la carte
-		for (i = 0; i < Path.length; i++){
-			
-			/* Traitement des points � cap */
-			if (i == 0){
-			
-				nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
-				
-				var capIcon = L.icon({ 
-					iconUrl: '../ressources/img/' + nomIcon,
-
-					iconSize:     [50, 50], // Taille de l'icone
-					iconAnchor:   [20, 28], // Ajustement de l'emplcemant de l'icone
-					popupAnchor:  [5,-10] // Ajustement de l'emplacement du pop-up d'informations
-				});
-				
-				var marker = L.marker((Path[i]),{icon: capIcon}).addTo(map);
-			}
-			
-			else { /* Point normal (sans cap) */
-				var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
-				
-				//D�terlination de la couleur du point
-				if (iconName == "greenIcon"){
-					var marker = L.marker((Path[i]),{icon: greenIcon}).addTo(map);
-				}
-				if (iconName =="redIcon"){
-					var marker = L.marker((Path[i]),{icon: redIcon}).addTo(map);
-				}
-				if (iconName == "blueIcon"){
-					var marker = L.marker((Path[i]),{icon: blueIcon}).addTo(map);
-				}
-				if (iconName == "orangeIcon"){
-					var marker = L.marker((Path[i]),{icon: orangeIcon}).addTo(map);
-				}
-				if (iconName == "greyIcon"){
-					var marker = L.marker((Path[i]),{icon: greyIcon}).addTo(map);
-				}
-			}
-			
-			/* Remplissage du pop-up du marker */
-			var time = realDate(json['filtered'][i]['date'])+""
-			marker.bindPopup(	
-								"<div style=\"color : black\">" +
-								"<center>Point n°" + i + "</center>" + "<br/>" +
-								"<center>" + time.split(" ")[4] + "</center>" + "<br/>" +
-								"<u><b>Position</b></u> " + "<br/>" +
-								"<b>Lat</b> : " + (json['filtered'][i]['latGPS'])+'' + "<br/>" +
-								"<b>Long</b> : " + (json['filtered'][i]['longGPS'])+'' + "<br/>" +
-								"<u><b>Mesures</b></u>" + "<br/>" +
-								"<b>Altitude</b> : " + (json['filtered'][i]['altGPS'])+'' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" +
-								"<b>Vitesse</b> : " + (json['filtered'][i]['speedGPS'])+'' + ' ' + settings.fieldUnits['speedGPS'] + "<br/>" +
-								"<b>Sensor1</b> : " + (json['filtered'][i]['differentialPressureAnalogSensor'])+'' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" +
-								"<b>Sensor2</b> : " + (json['filtered'][i]['absolutePressureAnalogSensor'])+'' + ' ' + settings.fieldUnits['absolutePressureAnalogSensor'] + "<br/>" +
-								"<b>Sensor3</b> : " + (json['filtered'][i]['externalTemperatureAnalogSensor'])+'' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>" +
-								"<b>Sensor4</b> : " + (json['filtered'][i]['internalTemperatureAnalogSensor'])+'' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>" +
-								"</div>"
-							);
+		if (iconName == "blueIcon")
+		{
+		    var marker = L.marker((Path[i]),
+		    {
+			icon : blueIcon
+		    }).addTo(map);
 		}
+		if (iconName == "orangeIcon")
+		{
+		    var marker = L.marker((Path[i]),
+		    {
+			icon : orangeIcon
+		    }).addTo(map);
+		}
+		if (iconName == "greyIcon")
+		{
+		    var marker = L.marker((Path[i]),
+		    {
+			icon : greyIcon
+		    }).addTo(map);
+		}
+	    }
 
-		//Set view to the last point received
-		map.setView(Path[0], 13);					
-		</script>
-	</body>
+	    /* Remplissage du pop-up du marker */
+	    var time = realDate(json['filtered'][i]['date']) + ""
+	    marker.bindPopup("<div style=\"color : black\">" + "<center>Point n°" + i + "</center>" + "<br/>" + "<center>" + time.split(" ")[4] + "</center>"
+		    + "<br/>" + "<u><b>Position</b></u> " + "<br/>" + "<b>Lat</b> : " + (json['filtered'][i]['latGPS']) + '' + "<br/>" + "<b>Long</b> : "
+		    + (json['filtered'][i]['longGPS']) + '' + "<br/>" + "<u><b>Mesures</b></u>" + "<br/>" + "<b>Altitude</b> : "
+		    + (json['filtered'][i]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" + "<b>Vitesse</b> : "
+		    + (json['filtered'][i]['speedGPS']) + '' + ' ' + settings.fieldUnits['speedGPS'] + "<br/>" + "<b>Sensor1</b> : "
+		    + (json['filtered'][i]['differentialPressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>"
+		    + "<b>Sensor2</b> : " + (json['filtered'][i]['absolutePressureAnalogSensor']) + '' + ' '
+		    + settings.fieldUnits['absolutePressureAnalogSensor'] + "<br/>" + "<b>Sensor3</b> : "
+		    + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>"
+		    + "<b>Sensor4</b> : " + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' '
+		    + settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>" + "</div>");
+	}
+
+	//Set view to the last point received
+	map.setView(Path[0], 13);
+    </script>
+</body>
 </html>

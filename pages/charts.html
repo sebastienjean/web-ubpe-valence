@@ -56,206 +56,235 @@
 					<div id="button-holder-graphique">
 						<ul>
 							<li>X-axis: <select name="x" id="x" title="X">
-									<option selected="selected" value="date"><script>document.write(settings.fieldLabels["date"]);</script></option>
-									<option value="altGPS"><script>document.write(settings.fieldLabels["altGPS"]);</script></option>
+									<option selected="selected" value="date">
+										<script>
+					    document.write(settings.fieldLabels["date"]);
+					</script>
+									</option>
+									<option value="altGPS">
+										<script>
+					    document.write(settings.fieldLabels["altGPS"]);
+					</script>
+									</option>
 							</select></li>
-							<li>Y-axis: <select name="y" id="y" title="Y">								
-									<option selected="selected" value="altGPS"><script>document.write(settings.fieldLabels["altGPS"]);</script></option>
-									<option value="speedGPS"><script>document.write(settings.fieldLabels["speedGPS"]);</script></option>
-									<option value="differentialPressureAnalogSensor"><script>document.write(settings.fieldLabels["differentialPressureAnalogSensor"]);</script></option>
-									<option value="absolutePressureAnalogSensor"><script>document.write(settings.fieldLabels["absolutePressureAnalogSensor"]);</script></option>
-									<option value="externalTemperatureAnalogSensor"><script>document.write(settings.fieldLabels["externalTemperatureAnalogSensor"]);</script></option>
-									<option value="internalTemperatureAnalogSensor"><script>document.write(settings.fieldLabels["internalTemperatureAnalogSensor"]);</script></option>
-									<option value="voltageAnalogSensor"><script>document.write(settings.fieldLabels["voltageAnalogSensor"]);</script></option>
+							<li>Y-axis: <select name="y" id="y" title="Y">
+									<option selected="selected" value="altGPS">
+										<script>
+					    document.write(settings.fieldLabels["altGPS"]);
+					</script>
+									</option>
+									<option value="speedGPS">
+										<script>
+					    document.write(settings.fieldLabels["speedGPS"]);
+					</script>
+									</option>
+									<option value="differentialPressureAnalogSensor">
+										<script>
+					    document.write(settings.fieldLabels["differentialPressureAnalogSensor"]);
+					</script>
+									</option>
+									<option value="absolutePressureAnalogSensor">
+										<script>
+					    document.write(settings.fieldLabels["absolutePressureAnalogSensor"]);
+					</script>
+									</option>
+									<option value="externalTemperatureAnalogSensor">
+										<script>
+					    document.write(settings.fieldLabels["externalTemperatureAnalogSensor"]);
+					</script>
+									</option>
+									<option value="internalTemperatureAnalogSensor">
+										<script>
+					    document.write(settings.fieldLabels["internalTemperatureAnalogSensor"]);
+					</script>
+									</option>
+									<option value="voltageAnalogSensor">
+										<script>
+					    document.write(settings.fieldLabels["voltageAnalogSensor"]);
+					</script>
+									</option>
 							</select></li>
 						</ul>
 					</div>
 					<script>
-						var json = updateData();
-						
-						setInterval("reload()", 5000);
+			var json = updateData();
 
-						var graph = $("#graph");
+			setInterval("reload()", 5000);
 
-						var option = {
-							legend : {
-								show : true,
-								position : 'ne',
-								backgroundColor : null,
-								backgroundOpacity : 0
-							},
-							grid : {
-								show : true,
-								color : '#ff8c00',
-								backgroundColor : null,
-								hoverable : true,
-								mouseActiveRadius : 30
-							},
-							xaxis : {
-								color : 'orange'
-							},
-							yaxis : {
-								color : 'orange'
-							},
-						};
+			var graph = $("#graph");
 
-						var previousPoint = null;
+			var option =
+			{
+			    legend :
+			    {
+				show : true,
+				position : 'ne',
+				backgroundColor : null,
+				backgroundOpacity : 0
+			    },
+			    grid :
+			    {
+				show : true,
+				color : '#ff8c00',
+				backgroundColor : null,
+				hoverable : true,
+				mouseActiveRadius : 30
+			    },
+			    xaxis :
+			    {
+				color : 'orange'
+			    },
+			    yaxis :
+			    {
+				color : 'orange'
+			    },
+			};
 
-						if ($("#x").val() == "null" && $("#y").val() == "null") {
-							var vide = [];
-							$.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
-							graph
-									.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Select a chart</div>');
-						}
+			var previousPoint = null;
 
-						else {
-							createChart();
-						}
+			if ($("#x").val() == "null" && $("#y").val() == "null")
+			{
+			    var vide = [];
+			    $.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
+			    graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Select a chart</div>');
+			}
 
-						$("#x>option").click(function() {
-							createChart();
-						});
+			else
+			{
+			    createChart();
+			}
 
-						$("#x").change(function() {
-							createChart();
-						});
+			$("#x>option").click(function()
+			{
+			    createChart();
+			});
 
-						$("#y>option").click(function() {
-							createChart();
-						});
+			$("#x").change(function()
+			{
+			    createChart();
+			});
 
-						$("#y").change(function() {
-							createChart();
-						});
+			$("#y>option").click(function()
+			{
+			    createChart();
+			});
 
-						function createChart() {
-							xFieldName = $("#x option:selected").val();
-							yFieldName = $("#y option:selected").val();
-							xLabel = settings.fieldLabels[xFieldName];
-							yLabel = settings.fieldLabels[yFieldName];
+			$("#y").change(function()
+			{
+			    createChart();
+			});
 
-							var tab = new Array();
-							for (i = 0; i < (json['filtered'].length); i++) {
-								if (blacklist.activate == true
-										&& blacklist.frame
-												.indexOf(json['filtered'][i]['date']) > -1) {
-									continue; //Skip the process for this particular i
-								}
-								;
-								tab.push([ (json['raw'][i][xFieldName]),
-										(json['filtered'][i][yFieldName]) ]);
-							}
+			function createChart()
+			{
+			    xFieldName = $("#x option:selected").val();
+			    yFieldName = $("#y option:selected").val();
+			    xLabel = settings.fieldLabels[xFieldName];
+			    yLabel = settings.fieldLabels[yFieldName];
 
-							// Handle the time !
-							if (xFieldName == "date") {
-								option["xaxis"]["mode"] = "time";
-							} else {
-								option["xaxis"]["mode"] = "";
-							}
+			    var tab = new Array();
+			    for (i = 0; i < (json['filtered'].length); i++)
+			    {
+				if (blacklist.activate == true && blacklist.frame.indexOf(json['filtered'][i]['date']) > -1)
+				{
+				    continue; //Skip the process for this particular i
+				}
+				;
+				tab.push([ (json['raw'][i][xFieldName]), (json['filtered'][i][yFieldName]) ]);
+			    }
 
-							var xUnitString = "";
-							if (settings.fieldUnits[xFieldName] != null)
-								xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
+			    // Handle the time !
+			    if (xFieldName == "date")
+			    {
+				option["xaxis"]["mode"] = "time";
+			    }
+			    else
+			    {
+				option["xaxis"]["mode"] = "";
+			    }
 
-							var yUnitString = "";
-							if (settings.fieldUnits[yFieldName] != null)
-								yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
+			    var xUnitString = "";
+			    if (settings.fieldUnits[xFieldName] != null)
+				xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
 
-							var dTab = {
-								label : xLabel + xUnitString + " / " + yLabel
-										+ yUnitString,
-								data : tab,
-								color : 'red',
-								points : {
-									show : true
-								},
-							}
+			    var yUnitString = "";
+			    if (settings.fieldUnits[yFieldName] != null)
+				yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
 
-							$.plot(graph, [ dTab ], option);
-						};
+			    var dTab =
+			    {
+				label : xLabel + xUnitString + " / " + yLabel + yUnitString,
+				data : tab,
+				color : 'red',
+				points :
+				{
+				    show : true
+				},
+			    }
 
-						function reload() {
-							json = updateData();
-							createChart();
-						}
+			    $.plot(graph, [ dTab ], option);
+			};
 
-						// Allow the showTooltip action DO NOT MODIFY !
-						$("#graph")
-								.bind(
-										"plothover",
-										function(event, pos, item) {
+			function reload()
+			{
+			    json = updateData();
+			    createChart();
+			}
 
-											function showTooltip(x, y, contents) {
-												$(
-														"<div id='tooltip'>"
-																+ contents
-																+ "</div>")
-														.css(
-																{
-																	position : "absolute",
-																	display : "none",
-																	top : y + 5,
-																	left : x + 5,
-																	border : "1px solid #fdd",
-																	padding : "2px",
-																	"background-color" : "#fee",
-																	opacity : 0.80,
-																	color : "#000000",
-																}).appendTo(
-																"body").fadeIn(
-																200);
-											}
+			// Allow the showTooltip action DO NOT MODIFY !
+			$("#graph").bind(
+				"plothover",
+				function(event, pos, item)
+				{
 
-											if (item) {
-												if (previousPoint != item.dataIndex) {
-													previousPoint = item.dataIndex;
-													$("#tooltip").remove();
-													var xValue = item.datapoint[0];
-													if (settings.fieldFixedPoints[xFieldName] != null)
-														xValue
-																.toFixed(settings.fieldFixedPoints[FieldName]);
-													if (xFieldName == "date")
-														xValue = dateFormat(
-																new Date(
-																		parseInt(xValue)),
-																"HH:MM:ss");
-													var yValue = item.datapoint[1];
-													if (settings.fieldFixedPoints[yFieldName] != null)
-														yValue
-																.toFixed(settings.fieldFixedPoints[yFieldName]);
+				    function showTooltip(x, y, contents)
+				    {
+					$("<div id='tooltip'>" + contents + "</div>").css(
+					{
+					    position : "absolute",
+					    display : "none",
+					    top : y + 5,
+					    left : x + 5,
+					    border : "1px solid #fdd",
+					    padding : "2px",
+					    "background-color" : "#fee",
+					    opacity : 0.80,
+					    color : "#000000",
+					}).appendTo("body").fadeIn(200);
+				    }
 
-													var xUnitString = "";
-													if (settings.fieldUnits[xFieldName] != null)
-														xUnitString = " ("
-																+ settings.fieldUnits[xFieldName]
-																+ ")";
+				    if (item)
+				    {
+					if (previousPoint != item.dataIndex)
+					{
+					    previousPoint = item.dataIndex;
+					    $("#tooltip").remove();
+					    var xValue = item.datapoint[0];
+					    if (settings.fieldFixedPoints[xFieldName] != null)
+						xValue.toFixed(settings.fieldFixedPoints[FieldName]);
+					    if (xFieldName == "date")
+						xValue = dateFormat(new Date(parseInt(xValue)), "HH:MM:ss");
+					    var yValue = item.datapoint[1];
+					    if (settings.fieldFixedPoints[yFieldName] != null)
+						yValue.toFixed(settings.fieldFixedPoints[yFieldName]);
 
-													var yUnitString = "";
-													if (settings.fieldUnits[yFieldName] != null)
-														yUnitString = " ("
-																+ settings.fieldUnits[yFieldName]
-																+ ")";
-													showTooltip(
-															item.pageX,
-															item.pageY,
-															xLabel
-																	+ " = "
-																	+ xValue
-																	+ " "
-																	+ xUnitString
-																	+ "<br/>"
-																	+ yLabel
-																	+ " = "
-																	+ yValue
-																	+ " "
-																	+ yUnitString);
-												} else {
-													$("#tooltip").remove();
-													previousPoint = null;
-												}
-											}
-										});
-					</script>
+					    var xUnitString = "";
+					    if (settings.fieldUnits[xFieldName] != null)
+						xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
+
+					    var yUnitString = "";
+					    if (settings.fieldUnits[yFieldName] != null)
+						yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
+					    showTooltip(item.pageX, item.pageY, xLabel + " = " + xValue + " " + xUnitString + "<br/>" + yLabel + " = " + yValue
+						    + " " + yUnitString);
+					}
+					else
+					{
+					    $("#tooltip").remove();
+					    previousPoint = null;
+					}
+				    }
+				});
+		    </script>
 				</div>
 			</div>
 			<!-- end page -->
@@ -264,7 +293,8 @@
 
 		<div id="footer">
 			<div id="footer-left">
-				UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE project, IUT Valence</a>
+				UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE
+					project, IUT Valence</a>
 			</div>
 			<div id="footer-right">
 

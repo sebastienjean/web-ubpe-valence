@@ -1,136 +1,159 @@
 <html>
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="Content-Language" content="en" />
-		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
-		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
-		
-		<script type="text/javascript" src="../ressources/js/jquery-1.9.0.min.js"></script>
-		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
-		
-		<script type="text/javascript" src="../ressources/js/date.format.js"></script>
-		
-		<script type="text/javascript" src="../ressources/js/settings.js"></script>
-		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
-		
-		<meta http-equiv="refresh" content="15" > 
-		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+<link rel="stylesheet" href="../ressources/style.css" type="text/css" />
 
-		<title>UBPE2013@Valence | Data</title>
-	</head>
+<script type="text/javascript"
+	src="../ressources/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript"
+	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
 
-		<body>
-		<div id="big-frame">		
-			<div id="header">
-			</div> <!-- end header -->
-			
-			<div id="menu">
-				<ul>
-					<li>
-						<a href="../index.html" title="Home">Home</a>
-					</li>
-					<li>
-						<a href="" title="Data">Data</a>
-					</li>
-					<li>
-						<a href="./charts.html" title="Charts">Charts</a>
-					</li>
-					<li>
-						<a href="./map-offline.html" title="Map">Map</a>
-					</li>
-					<li>
-						<a href="#null" onclick="javascript:window.open('./data-raw-all.html')">Raw data</a>
-					</li>
-				</ul>
-			</div> <!-- end menu -->
-			
-			<div id="frame">
-				<div id="page">
-					<div id="title">
-						<div id="title-left">
-							<h2>Flight data</h2>							
-							The following array contains last 10 received frames, click <a href="#null" onclick="javascript:window.open('./data-filtered-all.html')"><button id="btn1">here</button></a> to see them all 												
-								
-						</div>
-					</div>
-					
-					
-					<br/><br/>
-					<div id="page-content">
-							<script>
-							//Ouverture du json
-							json = updateData();
-							
-							color = true;
-							document.write("<div id=\"tab\">");
-							document.write("<table>");
-							document.write("<tr id=\"type-tile\">");
-								document.write("<th>"+ settings.fieldLabels['date']+"</th>");
-								document.write("<th>"+ settings.fieldLabels['currentFlightPhaseNumber']+"</th>");
-								document.write("<th>"+ settings.fieldLabels['altGPS'] + "<br/>" + "(" + settings.fieldUnits["altGPS"] + ")" + "</th>");
-								document.write("<th>"+ settings.fieldLabels['speedGPS'] + "<br/>" + "(" + settings.fieldUnits["speedGPS"] + ")" + "</th>");
-								document.write("<th>"+ settings.fieldLabels['differentialPressureAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["differentialPressureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>"+ settings.fieldLabels['absolutePressureAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["absolutePressureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>"+ settings.fieldLabels['externalTemperatureAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["externalTemperatureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>"+ settings.fieldLabels['internalTemperatureAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["internalTemperatureAnalogSensor"] + ")" + "</th>");
-								document.write("<th>"+ settings.fieldLabels['voltageAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["voltageAnalogSensor"] + ")" + "</th>");
-							document.write("</tr>");
-							
-							for ( i = 0; i < (json['filtered'].length) && i < 10; i++){
-								if (blacklist.activate == true &&  blacklist.frame.indexOf(json['raw'][i]['date']) > -1){
-									continue; //Skip the process for this particular i
-								};
-							
-								if (color == true) {
-									document.write("<tr id=\"type-1\">");
-									color = !color
-								}
-								else {
-									document.write("<tr id=\"type-2\">");
-									color = !color
-								}
-									document.write("<td>" + json['filtered'][i]['date']  + "</td>");
-									document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
-									if (json['filtered'][i]['fixGPS'] == "V"){ // No GPS fix, the GPS data is replaced by null.png
-										document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-										document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-									}
-									else{
-										document.write("<td>" + parseFloat(json['filtered'][i]['altGPS']).toFixed(0) + "</td>");
-										document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(0) + "</td>");
-									}
-									document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(settings.fieldFixedPoints['differentialPressureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.fieldFixedPoints['absolutePressureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['externalTemperatureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['internalTemperatureAnalogSensor']) + "</td>");
-									document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.fieldFixedPoints['voltageAnalogSensor']) + "</td>");
-								document.write("</tr>");
-							}
-							document.write("</table>");
-							document.write("</div>");
-							</script>
-					
-					</div>
-				</div> <!-- end page -->
-			</div> <!-- end frame -->
-			
-			<div id="footer">
-				<div id="footer-left">
-					UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE project, IUT Valence</a>
-				</div>
-				<div id="footer-right">
-				
-					<ul>
-						<li>
-							<a href="http://iut-valence.fr"><img src="../ressources/img/logoiut2.png" title="IUT Valence" alt="Logo IUT Valence"></a>
-						</li>
-					</ul>
-					
-				</div>
-			</div> <!-- end footer -->	
+<script type="text/javascript" src="../ressources/js/date.format.js"></script>
+
+<script type="text/javascript" src="../ressources/js/settings.js"></script>
+<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
+
+<meta http-equiv="refresh" content="15">
+<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
+
+<title>UBPE2013@Valence | Data</title>
+</head>
+
+<body>
+	<div id="big-frame">
+		<div id="header"></div>
+		<!-- end header -->
+
+		<div id="menu">
+			<ul>
+				<li><a href="../index.html" title="Home">Home</a></li>
+				<li><a href="" title="Data">Data</a></li>
+				<li><a href="./charts.html" title="Charts">Charts</a></li>
+				<li><a href="./map-offline.html" title="Map">Map</a></li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./data-raw-all.html')">Raw
+						data</a></li>
+			</ul>
 		</div>
-		</body>
-	
+		<!-- end menu -->
+
+		<div id="frame">
+			<div id="page">
+				<div id="title">
+					<div id="title-left">
+						<h2>Flight data</h2>
+						The following array contains last 10 received frames, click <a
+							href="#null"
+							onclick="javascript:window.open('./data-filtered-all.html')"><button
+								id="btn1">here</button></a> to see them all
+
+					</div>
+				</div>
+
+
+				<br /> <br />
+				<div id="page-content">
+					<script>
+			//Ouverture du json
+			json = updateData();
+
+			color = true;
+			document.write("<div id=\"tab\">");
+			document.write("<table>");
+			document.write("<tr id=\"type-tile\">");
+			document.write("<th>" + settings.fieldLabels['date'] + "</th>");
+			document.write("<th>" + settings.fieldLabels['currentFlightPhaseNumber'] + "</th>");
+			document.write("<th>" + settings.fieldLabels['altGPS'] + "<br/>" + "(" + settings.fieldUnits["altGPS"] + ")" + "</th>");
+			document.write("<th>" + settings.fieldLabels['speedGPS'] + "<br/>" + "(" + settings.fieldUnits["speedGPS"] + ")" + "</th>");
+			document.write("<th>" + settings.fieldLabels['differentialPressureAnalogSensor'] + "<br/>" + "("
+				+ settings.fieldUnits["differentialPressureAnalogSensor"] + ")" + "</th>");
+			document.write("<th>" + settings.fieldLabels['absolutePressureAnalogSensor'] + "<br/>" + "("
+				+ settings.fieldUnits["absolutePressureAnalogSensor"] + ")" + "</th>");
+			document.write("<th>" + settings.fieldLabels['externalTemperatureAnalogSensor'] + "<br/>" + "("
+				+ settings.fieldUnits["externalTemperatureAnalogSensor"] + ")" + "</th>");
+			document.write("<th>" + settings.fieldLabels['internalTemperatureAnalogSensor'] + "<br/>" + "("
+				+ settings.fieldUnits["internalTemperatureAnalogSensor"] + ")" + "</th>");
+			document.write("<th>" + settings.fieldLabels['voltageAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["voltageAnalogSensor"] + ")"
+				+ "</th>");
+			document.write("</tr>");
+
+			for (i = 0; i < (json['filtered'].length) && i < 10; i++)
+			{
+			    if (blacklist.activate == true && blacklist.frame.indexOf(json['raw'][i]['date']) > -1)
+			    {
+				continue; //Skip the process for this particular i
+			    }
+			    ;
+
+			    if (color == true)
+			    {
+				document.write("<tr id=\"type-1\">");
+				color = !color
+			    }
+			    else
+			    {
+				document.write("<tr id=\"type-2\">");
+				color = !color
+			    }
+			    document.write("<td>" + json['filtered'][i]['date'] + "</td>");
+			    document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
+			    if (json['filtered'][i]['fixGPS'] == "V")
+			    { // No GPS fix, the GPS data is replaced by null.png
+				document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+				document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+			    }
+			    else
+			    {
+				document.write("<td>" + parseFloat(json['filtered'][i]['altGPS']).toFixed(0) + "</td>");
+				document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(0) + "</td>");
+			    }
+			    document.write("<td>"
+				    + (json['filtered'][i]['differentialPressureAnalogSensor'])
+					    .toFixed(settings.fieldFixedPoints['differentialPressureAnalogSensor']) + "</td>");
+			    document.write("<td>"
+				    + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.fieldFixedPoints['absolutePressureAnalogSensor'])
+				    + "</td>");
+			    document.write("<td>"
+				    + (json['filtered'][i]['externalTemperatureAnalogSensor'])
+					    .toFixed(settings.fieldFixedPoints['externalTemperatureAnalogSensor']) + "</td>");
+			    document.write("<td>"
+				    + (json['filtered'][i]['internalTemperatureAnalogSensor'])
+					    .toFixed(settings.fieldFixedPoints['internalTemperatureAnalogSensor']) + "</td>");
+			    document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.fieldFixedPoints['voltageAnalogSensor'])
+				    + "</td>");
+			    document.write("</tr>");
+			}
+			document.write("</table>");
+			document.write("</div>");
+		    </script>
+
+				</div>
+			</div>
+			<!-- end page -->
+		</div>
+		<!-- end frame -->
+
+		<div id="footer">
+			<div id="footer-left">
+				UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE
+					project, IUT Valence</a>
+			</div>
+			<div id="footer-right">
+
+				<ul>
+					<li><a href="http://iut-valence.fr"><img
+							src="../ressources/img/logoiut2.png" title="IUT Valence"
+							alt="Logo IUT Valence"></a></li>
+				</ul>
+
+			</div>
+		</div>
+		<!-- end footer -->
+	</div>
+</body>
+
 </html>

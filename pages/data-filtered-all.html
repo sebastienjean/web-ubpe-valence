@@ -1,101 +1,114 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="Content-Language" content="fr" />
-		<link rel="shortcut icon" href="../ressources/img/favicon.ico">
-		<link rel="stylesheet" href="../ressources/style.css" type="text/css"/>
-		
-		<script type="text/javascript" src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
-		
-		<script type="text/javascript" src="../ressources/js/date.format.js"></script>
-				
-		<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
-		<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
-		
-		<script type="text/javascript" src="../ressources/js/settings.js"></script>
-		<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
-		
-		<meta http-equiv="refresh" content="15" > 
-		<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-		
-		<title>UBPE 2013 | Data)</title>
-	</head>
-	<body>
-		<script>
-		//Ouverture du json
-		json = updateData();
-		
-		color = true;
-		document.write("<div id=\"tab2\">");
-		document.write("<table>");
-		document.write("<tr id=\"type-tile\">");
-		
-		for (i in json['filtered'][0])
-		{
-			if (settings.fieldUnits[i] == null)
-			{	
-				document.write("<th>"+settings.fieldLabels[i]+"</th>");
-			}
-			else
-			{
-				document.write("<th>" + settings.fieldLabels[i] + "<br/>" + "(" + settings.fieldUnits[i] + ")" + "</th>");
-			}
-		}
-		
-		document.write("</tr>");
-		
-		for ( i = 0; i < (json['filtered'].length); i++){			
-				if (blacklist.activate == true &&  blacklist.frame.indexOf(json['raw'][i]['date']) > -1){
-					continue; //Skip the process for this particular i
-				};
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="fr" />
+<link rel="shortcut icon" href="../ressources/img/favicon.ico">
+<link rel="stylesheet" href="../ressources/style.css" type="text/css" />
 
-			if (color == true) {
-				document.write("<tr id=\"type-1\">");
-				color = !color
-			}
-			else {
-				document.write("<tr id=\"type-2\">");
-				color = !color
-			}
-				document.write("<td>" +(json['filtered'][i]['date']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['stationName']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['objectName']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['frameCounter']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['resetCounter']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['currentFlightPhaseDurationInSeconds']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['secondsSinceLastReset']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['RTCTime']) + "</td>");				
-				if (json['filtered'][i]['fixGPS'] == "V"){ // No GPS fix, the GPS data is replaced by null.png
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-					document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-				}
-				else{
-					document.write("<td>" + (json['filtered'][i]['GPSTime']) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['fixGPS']) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['longGPS']) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['latGPS']) + "</td>");
-					document.write("<td>" + (parseFloat(json['filtered'][i]['altGPS']).toFixed(settings.fieldFixedPoints['altGPS'])) + "</td>");
-					document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(settings.fieldFixedPoints['speedGPS']) + "</td>");				
-					document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
-				}
-				document.write("<td>" + (json['filtered'][i]['numSatsGPS']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['hdop']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(settings.fieldFixedPoints['differentialPressureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.fieldFixedPoints['absolutePressureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['externalTemperatureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['internalTemperatureAnalogSensor']) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.fieldFixedPoints['voltageAnalogSensor']) + "</td>");
-			document.write("</tr>");
-		}
-		document.write("</table>");
-		document.write("</div>");
-		</script>
-	</body>
+<script type="text/javascript"
+	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
+
+<script type="text/javascript" src="../ressources/js/date.format.js"></script>
+
+<link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
+<script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
+
+<script type="text/javascript" src="../ressources/js/settings.js"></script>
+<script type="text/javascript" src="../ressources/js/blacklist.js"></script>
+
+<meta http-equiv="refresh" content="15">
+<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
+
+<title>UBPE 2013 | Data)</title>
+</head>
+<body>
+	<script>
+	//Ouverture du json
+	json = updateData();
+
+	color = true;
+	document.write("<div id=\"tab2\">");
+	document.write("<table>");
+	document.write("<tr id=\"type-tile\">");
+
+	for (i in json['filtered'][0])
+	{
+	    if (settings.fieldUnits[i] == null)
+	    {
+		document.write("<th>" + settings.fieldLabels[i] + "</th>");
+	    }
+	    else
+	    {
+		document.write("<th>" + settings.fieldLabels[i] + "<br/>" + "(" + settings.fieldUnits[i] + ")" + "</th>");
+	    }
+	}
+
+	document.write("</tr>");
+
+	for (i = 0; i < (json['filtered'].length); i++)
+	{
+	    if (blacklist.activate == true && blacklist.frame.indexOf(json['raw'][i]['date']) > -1)
+	    {
+		continue; //Skip the process for this particular i
+	    }
+	    ;
+
+	    if (color == true)
+	    {
+		document.write("<tr id=\"type-1\">");
+		color = !color
+	    }
+	    else
+	    {
+		document.write("<tr id=\"type-2\">");
+		color = !color
+	    }
+	    document.write("<td>" + (json['filtered'][i]['date']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['stationName']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['objectName']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['frameCounter']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['resetCounter']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['currentFlightPhaseDurationInSeconds']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['secondsSinceLastReset']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['RTCTime']) + "</td>");
+	    if (json['filtered'][i]['fixGPS'] == "V")
+	    { // No GPS fix, the GPS data is replaced by null.png
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
+	    }
+	    else
+	    {
+		document.write("<td>" + (json['filtered'][i]['GPSTime']) + "</td>");
+		document.write("<td>" + (json['filtered'][i]['fixGPS']) + "</td>");
+		document.write("<td>" + (json['filtered'][i]['longGPS']) + "</td>");
+		document.write("<td>" + (json['filtered'][i]['latGPS']) + "</td>");
+		document.write("<td>" + (parseFloat(json['filtered'][i]['altGPS']).toFixed(settings.fieldFixedPoints['altGPS'])) + "</td>");
+		document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(settings.fieldFixedPoints['speedGPS']) + "</td>");
+		document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
+	    }
+	    document.write("<td>" + (json['filtered'][i]['numSatsGPS']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['hdop']) + "</td>");
+	    document.write("<td>"
+		    + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(settings.fieldFixedPoints['differentialPressureAnalogSensor'])
+		    + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.fieldFixedPoints['absolutePressureAnalogSensor'])
+		    + "</td>");
+	    document.write("<td>"
+		    + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['externalTemperatureAnalogSensor']) + "</td>");
+	    document.write("<td>"
+		    + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['internalTemperatureAnalogSensor']) + "</td>");
+	    document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.fieldFixedPoints['voltageAnalogSensor']) + "</td>");
+	    document.write("</tr>");
+	}
+	document.write("</table>");
+	document.write("</div>");
+    </script>
+</body>
 </html>

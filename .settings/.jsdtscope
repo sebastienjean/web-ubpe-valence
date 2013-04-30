@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="**/jquery*|**/leaflet*" kind="src" path="ressources"/>
-	<classpathentry kind="src" path="pages"/>
-	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
-		<attributes>
-			<attribute name="hide" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>
-	<classpathentry kind="output" path=""/>
+	<classpathentry
+		excluding="**/tiles|ressources/flot/|ressources/img/|ressources/js/2012/js/jquery-1.7.1.min.js|ressources/js/date.format.js|ressources/js/jquery-1.9.0.min.js|ressources/leaflet/"
+		kind="src" path="" />
+	<classpathentry kind="con"
+		path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER" />
+	<classpathentry kind="con"
+		path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary" />
+	<classpathentry kind="output" path="" />
 </classpath>

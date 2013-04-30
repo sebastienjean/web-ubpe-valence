@@ -23,38 +23,44 @@
 </head>
 <body>
 	<script>
-		//Ouverture du json
-		json = updateData();
+	//Ouverture du json
+	json = updateData();
 
-		color = true;
-		document.write("<div id=\"tab2\">");
-		document.write("<table>");
-		document.write("<tr id=\"type-tile\">");
+	color = true;
+	document.write("<div id=\"tab2\">");
+	document.write("<table>");
+	document.write("<tr id=\"type-tile\">");
 
-		for (i in json['raw'][0]) {
-			document.write("<th>" + settings.fieldLabels[i] + "</th>");
-		}
+	for (i in json['raw'][0])
+	{
+	    document.write("<th>" + settings.fieldLabels[i] + "</th>");
+	}
 
-		document.write("</tr>");
+	document.write("</tr>");
 
-		for (i = 0; i < (json['raw'].length); i++) {
-			
-			if (color == true) {
-				document.write("<tr id=\"type-1\">");
-				color = !color
-			} else {
-				document.write("<tr id=\"type-2\">");
-				color = !color
-			}
-			
-			for (j in json['raw'][i]) {
-				document.write("<td>" + (json['raw'][i][j]) + "</td>");
-			}
+	for (i = 0; i < (json['raw'].length); i++)
+	{
 
-			document.write("</tr>");
-		}
-		document.write("</table>");
-		document.write("</div>");
-	</script>
+	    if (color == true)
+	    {
+		document.write("<tr id=\"type-1\">");
+		color = !color
+	    }
+	    else
+	    {
+		document.write("<tr id=\"type-2\">");
+		color = !color
+	    }
+
+	    for (j in json['raw'][i])
+	    {
+		document.write("<td>" + (json['raw'][i][j]) + "</td>");
+	    }
+
+	    document.write("</tr>");
+	}
+	document.write("</table>");
+	document.write("</div>");
+    </script>
 </body>
 </html>
