@@ -256,11 +256,7 @@ function updateData()
 	}
     }
 
-    return
-    {
-	raw : newRawData,
-	filtered : newData
-    };
+    return {raw : newRawData, filtered : newData};
 }
 
 function errorAccessFile()
