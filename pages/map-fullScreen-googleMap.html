@@ -9,6 +9,8 @@
 	src="../ressources/js/2012/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="../ressources/js/2012/js/common.js"></script>
 
+<script type="text/javascript" src="../ressources/js/date.format.js"></script>
+
 <link rel="stylesheet" href="../ressources/leaflet/leaflet.css">
 <script type="text/javascript" src="../ressources/leaflet/leaflet.js"></script>
 
@@ -187,7 +189,7 @@
 	    }
 
 	    /* Remplissage du pop-up du marker */
-	    var time = realDate(json['filtered'][i]['date']) + ""
+		var time = dateFormat(new Date(parseInt(json['filtered'][i]['date'])), "HH:MM:ss") + ""
 	    marker.bindPopup("<div style=\"color : black\">" + "<center>Point n°" + i + "</center>" + "<br/>" + "<center>" + time.split(" ")[4] + "</center>"
 		    + "<br/>" + "<u><b>Position</b></u> " + "<br/>" + "<b>Lat</b> : " + (json['filtered'][i]['latGPS']) + '' + "<br/>" + "<b>Long</b> : "
 		    + (json['filtered'][i]['longGPS']) + '' + "<br/>" + "<u><b>Mesures</b></u>" + "<br/>" + "<b>Altitude</b> : "
