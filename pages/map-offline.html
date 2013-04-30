@@ -59,17 +59,13 @@
 					</div>
 					<script>
 			// Création de la carte 
-			var map = L.map('map',
-			{
-			    center : [ 44.9250, 4.8900 ],
-			    zoom : 13,
-			})
+			var map = L.map('map', settings.map);
 
 			L.tileLayer('../ressources/tiles/{z}/{x}/{y}.png',
 			{ //Serveur de tuiles à utiliser
 			    attribution : 'UBPE 2013 - IUT Valence', //Nom du layer
 			    maxZoom : 15,
-			    minZoom : 10,
+			    minZoom : 10
 			}).addTo(map);
 
 			// POI

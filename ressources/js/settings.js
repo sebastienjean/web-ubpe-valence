@@ -65,6 +65,13 @@ settings.tabServers =
     "googleHybrid" : [ "http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}", "0123", "Google Hybrid" ],
     "mapQuest" : [ "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "1234", "Map Quest" ]
 };
+
+settings.map = 
+{
+	"center" : [ 44.91568, 4.91524],
+	"zoom"   : 15
+};
+
 // POI list
 settings.POI =
 { // "pointName" : [Lat, Lng, "popupText"]
