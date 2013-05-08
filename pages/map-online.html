@@ -116,7 +116,10 @@
 			    {
 				continue; //Skip the process for this particular i
 			    }
-			    ;
+				if (json['raw'][i]['fixGPS'] != "A") 
+				{
+					continue;
+				}	
 
 			    var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
 			    var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
