@@ -64,47 +64,10 @@
 		document.write("<tr id=\"type-2\">");
 		color = !color
 	    }
-	    document.write("<td>" + (json['filtered'][i]['date']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['stationName']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['objectName']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['frameCounter']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['resetCounter']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['currentFlightPhaseDurationInSeconds']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['secondsSinceLastReset']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['RTCTime']) + "</td>");
-	    if (json['filtered'][i]['fixGPS'] == "V")
-	    { // No GPS fix, the GPS data is replaced by null.png
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-		document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-	    }
-	    else
+	    for (j in json['filtered'][i])
 	    {
-		document.write("<td>" + (json['filtered'][i]['GPSTime']) + "</td>");
-		document.write("<td>" + (json['filtered'][i]['fixGPS']) + "</td>");
-		document.write("<td>" + (json['filtered'][i]['longGPS']) + "</td>");
-		document.write("<td>" + (json['filtered'][i]['latGPS']) + "</td>");
-		document.write("<td>" + (parseFloat(json['filtered'][i]['altGPS']).toFixed(settings.fieldFixedPoints['altGPS'])) + "</td>");
-		document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(settings.fieldFixedPoints['speedGPS']) + "</td>");
-		document.write("<td>" + "<img src=\"" + '../ressources/img/' + guessCapImgName(json['filtered'][i]['capGPS']) + "\">" + "</td>");
+		document.write("<td>" + json['filtered'][i][j] + "</td>");
 	    }
-	    document.write("<td>" + (json['filtered'][i]['numSatsGPS']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['hdop']) + "</td>");
-	    document.write("<td>"
-		    + (json['filtered'][i]['differentialPressureAnalogSensor']).toFixed(settings.fieldFixedPoints['differentialPressureAnalogSensor'])
-		    + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.fieldFixedPoints['absolutePressureAnalogSensor'])
-		    + "</td>");
-	    document.write("<td>"
-		    + (json['filtered'][i]['externalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['externalTemperatureAnalogSensor']) + "</td>");
-	    document.write("<td>"
-		    + (json['filtered'][i]['internalTemperatureAnalogSensor']).toFixed(settings.fieldFixedPoints['internalTemperatureAnalogSensor']) + "</td>");
-	    document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.fieldFixedPoints['voltageAnalogSensor']) + "</td>");
 	    document.write("</tr>");
 	}
 	document.write("</table>");

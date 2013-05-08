@@ -4,26 +4,35 @@
 //	Varaiables :
 //	Allow the user to quickly tune the website configuration
 //--------------------------------------------------------------------------------
-jsonPath = 'data/events.clean'; /*
-				 * Path of the JSON file. WARNING > The path is
-				 * from the location of the HTML page which uses
-				 * the script, not from the script's location !
-				 */
-jsonFrameLength = 23; /* Number of fields in the json : 23 for the 2013 flight */
+
+/*
+ * Path of the JSON file. WARNING > The path is
+ * from the location of the HTML page which uses
+ * the script, not from the script's location !
+ */
+
+jsonPath = 'data/events.clean';
+jsonFrameLength = 29; /* Number of fields in the json : 23 for the 2013 flight */
 sensorCalibration =
 { /*
      * An array containing the name of the data and a, b as calibratedData =
      * (data * a) + b
      */
-    "differentialPressureAnalogSensor" : [ 1, 1 ],
-    "absolutePressureAnalogSensor" : [ 1, 2 ],
-    "externalTemperatureAnalogSensor" : [ 1, 3 ],
-    "internalTemperatureAnalogSensor" : [ 1, 4 ],
+    "internalTemperatureAnalogSensor" : [ 1, 1 ],
+    "middleTemperatureAnalogSensor" : [ 1, 2 ],
+    "externalTemperatureAnalogSensor" : [ 1, 2 ],
+    "externalHumidityAnalogSensor" : [ 1, 3 ],
+    "differentialPressureAnalogSensor" : [ 1, 4 ],
+    "upLuminosityAnalogSensor" : [ 1, 5 ],
+    "side1LuminosityAnalogSensor" : [ 1, 6 ],
+    "side2LuminosityAnalogSensor" : [ 1, 7 ],
+    "soundLevelAnalogSensor" : [ 1, 8 ],
+    "batteryTemperatureAnalogSensor" : [ 1, 9 ],
     "voltageAnalogSensor" : [ 0.0097, 0 ],
     "speedGPS" : [ 1.852, 0 ]
 };
 // --------------------------------------------------------------------------------
-// End of Varaiables
+// End of Variables
 // --------------------------------------------------------------------------------
 
 var UBPE = {}
@@ -177,11 +186,17 @@ function createTrameObj(row)
 	capGPS : row[15],
 	numSatsGPS : row[16],
 	hdop : row[17],
-	differentialPressureAnalogSensor : row[18],
-	absolutePressureAnalogSensor : row[19],
+	internalTemperatureAnalogSensor : row[18],
+	middleTemperatureAnalogSensor : row[19],
 	externalTemperatureAnalogSensor : row[20],
-	internalTemperatureAnalogSensor : row[21],
-	voltageAnalogSensor : row[22]
+	externalHumidityAnalogSensor : row[21],
+	differentialPressureAnalogSensor : row[22],
+	upLuminosityAnalogSensor : row[23],
+	side1LuminosityAnalogSensor : row[24],
+	side2LuminosityAnalogSensor : row[25],
+	soundLevelAnalogSensor : row[26],
+	batteryTemperatureAnalogSensor : row[27],
+	voltageAnalogSensor : row[28]
     };
     return obj;
 }
@@ -256,7 +271,9 @@ function updateData()
 	}
     }
 
+    // format:off
     return {raw : newRawData, filtered : newData};
+    // format:on
 }
 
 function errorAccessFile()
@@ -344,7 +361,6 @@ function guessSpeedIconName(speedGPS)
  * // filterData : calibrate the data // IN : the not calibrated data // OUT :
  * the calibrated data
  */
-
 function filterData(dataArg)
 {
 
@@ -352,10 +368,9 @@ function filterData(dataArg)
 
     for (i in sensorCalibration)
     {
-	var sensor = data[i];
-	if (sensor != null)
+	if (data[i] != null)
 	{
-	    data[i] = (data[i] * sensorCalibration[i][0]) + sensorCalibration[i][1];
+	    data[i] = (parseFloat(data[i]) * sensorCalibration[i][0]) + sensorCalibration[i][1];
 	}
 	else
 	    data[i] = 0;
@@ -363,6 +378,23 @@ function filterData(dataArg)
 
     data['date'] = dateFormat(new Date(parseInt(data['date'])), "HH:MM:ss");
 
+    for (i in settings.fieldFixedPoints)
+    {
+	if (data[i] != null)
+	    data[i] = parseFloat(data[i]).toFixed(settings.fieldFixedPoints[i]);
+    }
+    if (data['fixGPS'] == "V")
+    {
+	data['GPSTime'] = "<img src=\"../ressources/img/null.png\">";
+	data['fixGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['longGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['latGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['altGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['speedGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['capGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['numSatsGPS'] = "<img src=\"../ressources/img/null.png\">";
+	data['hdop'] = "<img src=\"../ressources/img/null.png\">";
+    }
     return data;
 }
 

@@ -1,37 +1,9 @@
 var settings = {};
 
-// Measurment units
-settings.fieldUnits =
-{ // "fieldName" : "unit"
-    "currentFlightPhaseDurationInSeconds" : "s",
-    "secondsSinceLastReset" : "s",
-    "differentialPressureAnalogSensor" : "hPa",
-    "absolutePressureAnalogSensor" : "hPa",
-    "externalTemperatureAnalogSensor" : "°C",
-    "internalTemperatureAnalogSensor" : "°C",
-    "speedGPS" : "km/h",
-    "altGPS" : "m",
-    "voltageAnalogSensor" : "V"
-};
-
-// Measurment precision
-settings.fieldFixedPoints =
-{ // "fieldName" : "number of digit after floating point"
-    "currentFlightPhaseDurationInSeconds" : 0,
-    "secondsSinceLastReset" : 0,
-    "differentialPressureAnalogSensor" : 0,
-    "absolutePressureAnalogSensor" : 0,
-    "externalTemperatureAnalogSensor" : 1,
-    "internalTemperatureAnalogSensor" : 1,
-    "speedGPS" : 0,
-    "altGPS" : 0,
-    "voltageAnalogSensor" : 1
-};
-
 // Field labels (for charts and tables)
-
 settings.fieldLabels =
-{ // "fieldName" : "label"
+// "fieldName" : "label"
+{
     "date" : "Time",
     "stationName" : "Station",
     "objectName" : "Object",
@@ -50,12 +22,67 @@ settings.fieldLabels =
     "capGPS" : "Course",
     "numSatsGPS" : "Sats",
     "hdop" : "Precision",
-    "differentialPressureAnalogSensor" : "Pressure diff.",
-    "absolutePressureAnalogSensor" : "Pressure abs.",
-    "externalTemperatureAnalogSensor" : "Temperature out",
-    "internalTemperatureAnalogSensor" : "Temperature in",
+    "internalTemperatureAnalogSensor" : "Temp. in",
+    "middleTemperatureAnalogSensor" : "Temp. middle",
+    "externalTemperatureAnalogSensor" : "Temp. out",
+    "externalHumidityAnalogSensor" : "Hygro",
+    "differentialPressureAnalogSensor" : "Pressure",
+    "upLuminosityAnalogSensor" : "Lux up",
+    "side1LuminosityAnalogSensor" : "Lux side1",
+    "side2LuminosityAnalogSensor" : "Lux side2",
+    "soundLevelAnalogSensor" : "Sound level",
+    "batteryTemperatureAnalogSensor" : "Temp. Bat",
     "voltageAnalogSensor" : "Voltage"
 };
+
+// Measurement units
+settings.fieldUnits =
+// "fieldName" : "unit"
+{
+    "currentFlightPhaseDurationInSeconds" : "s",
+    "secondsSinceLastReset" : "s",
+    "longGPS" : "°",
+    "latGPS" : "°",
+    "altGPS" : "m",
+    "speedGPS" : "km/h",
+    "capGPS" : "°",
+    "internalTemperatureAnalogSensor" : "°C",
+    "middleTemperatureAnalogSensor" : "°C",
+    "externalTemperatureAnalogSensor" : "°C",
+    "externalHumidityAnalogSensor" : "%",
+    "differentialPressureAnalogSensor" : "hPa",
+    "upLuminosityAnalogSensor" : "lux",
+    "side1LuminosityAnalogSensor" : "%",
+    "side2LuminosityAnalogSensor" : "%",
+    "batteryTemperatureAnalogSensor" : "°C",
+    "voltageAnalogSensor" : "V"
+};
+
+// Measurement precision
+settings.fieldFixedPoints =
+// "fieldName" : "number of digit after floating point"
+{
+    "currentFlightPhaseDurationInSeconds" : 0,
+    "secondsSinceLastReset" : 0,
+    "altGPS" : 0,
+    "speedGPS" : 0,
+    "internalTemperatureAnalogSensor" : 1,
+    "middleTemperatureAnalogSensor" : 1,
+    "externalTemperatureAnalogSensor" : 1,
+    "externalHumidityAnalogSensor" : 0,
+    "differentialPressureAnalogSensor" : 0,
+    "upLuminosityAnalogSensor" : 0,
+    "side1LuminosityAnalogSensor" : 0,
+    "side2LuminosityAnalogSensor" : 0,
+    "batteryTemperatureAnalogSensor" : 1,
+    "voltageAnalogSensor" : 1
+};
+
+settings.dataBriefLabels = 
+    ["date","currentFlightPhaseNumber", "altGPS", "capGPS", 
+     "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor", 
+     "externalTemperatureAnalogSensor","externalHumidityAnalogSensor", 
+     "differentialPressureAnalogSensor", "voltageAnalogSensor" ];
 
 // Tiles server list
 settings.tabServers =
@@ -66,10 +93,10 @@ settings.tabServers =
     "mapQuest" : [ "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", "1234", "Map Quest" ]
 };
 
-settings.map = 
+settings.map =
 {
-	"center" : [ 44.91568, 4.91524],
-	"zoom"   : 15
+    "center" : [ 44.91568, 4.91524 ],
+    "zoom" : 15
 };
 
 // POI list

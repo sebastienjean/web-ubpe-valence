@@ -65,20 +65,15 @@
 			document.write("<div id=\"tab\">");
 			document.write("<table>");
 			document.write("<tr id=\"type-tile\">");
-			document.write("<th>" + settings.fieldLabels['date'] + "</th>");
-			document.write("<th>" + settings.fieldLabels['currentFlightPhaseNumber'] + "</th>");
-			document.write("<th>" + settings.fieldLabels['altGPS'] + "<br/>" + "(" + settings.fieldUnits["altGPS"] + ")" + "</th>");
-			document.write("<th>" + settings.fieldLabels['speedGPS'] + "<br/>" + "(" + settings.fieldUnits["speedGPS"] + ")" + "</th>");
-			document.write("<th>" + settings.fieldLabels['differentialPressureAnalogSensor'] + "<br/>" + "("
-				+ settings.fieldUnits["differentialPressureAnalogSensor"] + ")" + "</th>");
-			document.write("<th>" + settings.fieldLabels['absolutePressureAnalogSensor'] + "<br/>" + "("
-				+ settings.fieldUnits["absolutePressureAnalogSensor"] + ")" + "</th>");
-			document.write("<th>" + settings.fieldLabels['externalTemperatureAnalogSensor'] + "<br/>" + "("
-				+ settings.fieldUnits["externalTemperatureAnalogSensor"] + ")" + "</th>");
-			document.write("<th>" + settings.fieldLabels['internalTemperatureAnalogSensor'] + "<br/>" + "("
-				+ settings.fieldUnits["internalTemperatureAnalogSensor"] + ")" + "</th>");
-			document.write("<th>" + settings.fieldLabels['voltageAnalogSensor'] + "<br/>" + "(" + settings.fieldUnits["voltageAnalogSensor"] + ")"
-				+ "</th>");
+			for (i in settings.dataBriefLabels)
+			{
+			    if (settings.fieldUnits[settings.dataBriefLabels[i]])
+				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/>" + "("
+					+ settings.fieldUnits[settings.dataBriefLabels[i]] + ")" + "</th>");
+			    else
+				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/></th>");
+			}
+
 			document.write("</tr>");
 
 			for (i = 0; i < (json['filtered'].length) && i < 10; i++)
@@ -99,32 +94,11 @@
 				document.write("<tr id=\"type-2\">");
 				color = !color
 			    }
-			    document.write("<td>" + json['filtered'][i]['date'] + "</td>");
-			    document.write("<td>" + (json['filtered'][i]['currentFlightPhaseNumber']) + "</td>");
-			    if (json['filtered'][i]['fixGPS'] == "V")
-			    { // No GPS fix, the GPS data is replaced by null.png
-				document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-				document.write("<td><img src=\"../ressources/img/null.png\"></td>");
-			    }
-			    else
+			    for (j in settings.dataBriefLabels)
 			    {
-				document.write("<td>" + parseFloat(json['filtered'][i]['altGPS']).toFixed(0) + "</td>");
-				document.write("<td>" + (json['filtered'][i]['speedGPS']).toFixed(0) + "</td>");
+				document.write("<td>" + json['filtered'][i][settings.dataBriefLabels[j]] + "</td>");
 			    }
-			    document.write("<td>"
-				    + (json['filtered'][i]['differentialPressureAnalogSensor'])
-					    .toFixed(settings.fieldFixedPoints['differentialPressureAnalogSensor']) + "</td>");
-			    document.write("<td>"
-				    + (json['filtered'][i]['absolutePressureAnalogSensor']).toFixed(settings.fieldFixedPoints['absolutePressureAnalogSensor'])
-				    + "</td>");
-			    document.write("<td>"
-				    + (json['filtered'][i]['externalTemperatureAnalogSensor'])
-					    .toFixed(settings.fieldFixedPoints['externalTemperatureAnalogSensor']) + "</td>");
-			    document.write("<td>"
-				    + (json['filtered'][i]['internalTemperatureAnalogSensor'])
-					    .toFixed(settings.fieldFixedPoints['internalTemperatureAnalogSensor']) + "</td>");
-			    document.write("<td>" + (json['filtered'][i]['voltageAnalogSensor']).toFixed(settings.fieldFixedPoints['voltageAnalogSensor'])
-				    + "</td>");
+
 			    document.write("</tr>");
 			}
 			document.write("</table>");
