@@ -84,6 +84,17 @@ settings.dataBriefLabels =
      "externalTemperatureAnalogSensor","externalHumidityAnalogSensor", 
      "differentialPressureAnalogSensor", "voltageAnalogSensor" ];
 
+settings.chartXAxis = 
+    [ "date", "altGPS"];
+
+settings.chartYAxis = 
+    [ "altGPS", "date", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
+      "externalTemperatureAnalogSensor", "batteryTemperatureAnalogSensor", 
+      "externalHumidityAnalogSensor", "differentialPressureAnalogSensor", "upLuminosityAnalogSensor", 
+      "side1LuminosityAnalogSensor", "side2LuminosityAnalogSensor", "soundLevelAnalogSensor",
+      "voltageAnalogSensor", "fixGPS", "speedGPS", "capGPS", "numSatsGPS", 
+      "resetCounter", "currentFlightPhaseNumber"];
+
 // Tiles server list
 settings.tabServers =
 { // "layerName" : ["tileServerURL", "subdomains", "layerLabel"]

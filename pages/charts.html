@@ -56,53 +56,40 @@
 					<div id="button-holder-graphique">
 						<ul>
 							<li>X-axis: <select name="x" id="x" title="X">
-									<option selected="selected" value="date">
-										<script>
-					    document.write(settings.fieldLabels["date"]);
-					</script>
-									</option>
-									<option value="altGPS">
-										<script>
-					    document.write(settings.fieldLabels["altGPS"]);
-					</script>
-									</option>
+									<script>
+					for (i in settings.chartXAxis)
+					{
+					    if (i == 0)
+					    {
+						document.write("<option selected=\"selected\" value=\""+settings.chartXAxis[i]+"\">");
+					    }
+					    else
+					    {
+						document.write("<option value=\""+settings.chartXAxis[i]+"\">");
+					    }
+					    document.write(settings.fieldLabels[settings.chartXAxis[i]]);
+					    document.write("</option>");
+					}
+				    </script>
+
 							</select></li>
 							<li>Y-axis: <select name="y" id="y" title="Y">
-									<option selected="selected" value="altGPS">
-										<script>
-					    document.write(settings.fieldLabels["altGPS"]);
-					</script>
-									</option>
-									<option value="speedGPS">
-										<script>
-					    document.write(settings.fieldLabels["speedGPS"]);
-					</script>
-									</option>
-									<option value="differentialPressureAnalogSensor">
-										<script>
-					    document.write(settings.fieldLabels["differentialPressureAnalogSensor"]);
-					</script>
-									</option>
-									<option value="absolutePressureAnalogSensor">
-										<script>
-					    document.write(settings.fieldLabels["absolutePressureAnalogSensor"]);
-					</script>
-									</option>
-									<option value="externalTemperatureAnalogSensor">
-										<script>
-					    document.write(settings.fieldLabels["externalTemperatureAnalogSensor"]);
-					</script>
-									</option>
-									<option value="internalTemperatureAnalogSensor">
-										<script>
-					    document.write(settings.fieldLabels["internalTemperatureAnalogSensor"]);
-					</script>
-									</option>
-									<option value="voltageAnalogSensor">
-										<script>
-					    document.write(settings.fieldLabels["voltageAnalogSensor"]);
-					</script>
-									</option>
+					<script>
+					
+					for (i in settings.chartYAxis)
+					{
+					    if (i == 0)
+					    {
+						document.write("<option selected=\"selected\" value=\""+settings.chartYAxis[i]+"\">");
+					    }
+					    else
+					    {
+						document.write("<option value=\""+settings.chartYAxis[i]+"\">");
+					    }
+					    document.write(settings.fieldLabels[settings.chartYAxis[i]]);
+					    document.write("</option>");
+					}
+				    </script>
 							</select></li>
 						</ul>
 					</div>
