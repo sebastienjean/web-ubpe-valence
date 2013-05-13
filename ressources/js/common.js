@@ -18,11 +18,11 @@ sensorCalibration =
      * An array containing the name of the data and a, b as calibratedData =
      * (data * a) + b
      */
-    "internalTemperatureAnalogSensor" : [ 1, 1 ],
-    "middleTemperatureAnalogSensor" : [ 1, 2 ],
-    "externalTemperatureAnalogSensor" : [ 1, 2 ],
+    "internalTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
+    "middleTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
+    "externalTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
     "externalHumidityAnalogSensor" : [ 1, 3 ],
-    "differentialPressureAnalogSensor" : [ 1, 4 ],
+    "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
     "upLuminosityAnalogSensor" : [ 1, 5 ],
     "side1LuminosityAnalogSensor" : [ 1, 6 ],
     "side2LuminosityAnalogSensor" : [ 1, 7 ],
