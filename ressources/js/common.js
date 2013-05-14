@@ -385,15 +385,15 @@ function filterData(dataArg)
     }
     if (data['fixGPS'] == "V")
     {
-	data['GPSTime'] = "<img src=\"../ressources/img/null.png\">";
-	data['fixGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['longGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['latGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['altGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['speedGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['capGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['numSatsGPS'] = "<img src=\"../ressources/img/null.png\">";
-	data['hdop'] = "<img src=\"../ressources/img/null.png\">";
+	data['GPSTime'] = "<img src=\"ressources/img/null.png\">";
+	data['fixGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['longGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['latGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['altGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['speedGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['capGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['numSatsGPS'] = "<img src=\"ressources/img/null.png\">";
+	data['hdop'] = "<img src=\"ressources/img/null.png\">";
     }
     return data;
 }
