@@ -1,0 +1,191 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en" />
+<link rel="shortcut icon" href="./ressources/img/favicon.ico">
+<link rel="stylesheet" href="./ressources/style.css" type="text/css" />
+
+<script type="text/javascript" src="ressources/js/settings.js"></script>
+<script type="text/javascript" src="ressources/js/common.js"></script>
+
+<script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="ressources/js/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript" src="ressources/js/date.format.js"></script>
+
+<link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
+<script type="text/javascript" src="./ressources/leaflet/leaflet.js"></script>
+
+<title>UBPE2013@Valence | Home</title>
+</head>
+
+<body>
+	<div id="big-frame">
+		<div id="header">
+			<!--<div id="logo">
+					<img src="./ressources/img/logo2.png">
+				</div>-->
+		</div>
+		<!-- end header -->
+
+		<div id="menu">
+			<ul>
+				<li><a href="" title="Home">Home</a></li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./data-filtered-all.html')">Data</a>
+				</li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./charts.html')">Charts</a></li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./map-online.html')">Map</a></li>
+				<li><a href="#null"
+					onclick="javascript:window.open('./data-raw-all.html')">Raw
+						data</a></li>
+			</ul>
+		</div>
+		<!-- end menu -->
+
+		<div id="frame">
+			<div id="page-content">
+				<div id="lastFrame">
+					<script>
+			//Ouverture du json
+			var json = updateData();
+
+			var normalIcon = L.icon(
+			{
+			    iconUrl : './ressources/leaflet/images/marker-icon.png',
+			    iconSize : [ 20, 30 ], // Taille de l'icone
+			    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+			    popupAnchor : [ 5, -10 ]
+			// Ajustement de l'emplacement du pop-up d'informations
+			});
+
+			var disabledIcon = L.icon(
+			{
+			    iconUrl : './ressources/leaflet/images/marker-icon-disabled.png',
+
+			    iconSize : [ 20, 30 ], // Taille de l'icone
+			    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+			    popupAnchor : [ 5, -10 ]
+			// Ajustement de l'emplacement du pop-up d'informations
+			});
+			document.write("<div id=\"tab\">");
+			document.write("<table>");
+			document.write("<tr id=\"type-tile\">");
+			for (i in settings.dataBriefLabels)
+			{
+			    if (settings.fieldUnits[settings.dataBriefLabels[i]])
+				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/>" + "("
+					+ settings.fieldUnits[settings.dataBriefLabels[i]] + ")" + "</th>");
+			    else
+				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/></th>");
+			}
+
+			document.write("</tr>");
+
+			document.write("<tr id=\"type-1\">");
+
+			for (j in settings.dataBriefLabels)
+			    document.write("<td>" + json['filtered'][0][settings.dataBriefLabels[j]] + "</td>");
+
+			document.write("</tr>");
+			document.write("</table>");
+			document.write("</div>");
+		    </script>
+
+				</div>
+				<div id="map" style="width: 50%">
+					<script>
+			// Création de la carte 
+			var map = L.map('map', settings.map);
+
+			L.tileLayer("http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+			{ //Serveur de tuiles à utiliser
+			    subdomains : '0123',
+			    attribution : 'UBPE 2013 - IUT Valence', //Nom du layer
+			    maxZoom : 15,
+			    minZoom : 7
+			}).addTo(map);
+
+			var json = updateData();
+
+			for (i = 0; i < (json['filtered'].length); i++)
+			{
+			    if (json['filtered'][i]['fixGPS'] == "A")
+				break;
+			}
+
+			if (i < (json['filtered'].length))
+			{
+			    var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
+			    var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
+
+			    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 15);
+			    
+			    var marker;
+
+			    if (i == 0)
+			    {
+				marker = L.marker([ latGPSFormat, longGPSFormat ],
+				{
+				    icon : normalIcon
+				}).addTo(map);
+				/* center on last point */
+				/* Remplissage du pop-up du marker */
+				marker.bindPopup("<div style=\"color : black\">" + "<center>Last point</center>" + "<br/>" + "<center>"
+					+ json['filtered'][0]['date'] + "</center>" + "<br/>" + "<u><b>Location</b></u> " + "<br/>" + "<b>Latitude</b> : "
+					+ (json['filtered'][0]['latGPS']) + '' + "<br/>" + "<b>Longitude</b> : " + (json['filtered'][0]['longGPS']) + ''
+					+ "<br/>" + "<b>Altitude</b> : " + (json['filtered'][0]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>"
+					+ "<u><b>Data</b></u>" + "<br/>" + "<b>Speed</b> : " + (json['filtered'][0]['speedGPS']) + '' + ' '
+					+ settings.fieldUnits['speedGPS'] + "<br/>" + "<b>Pressure diff.</b> : "
+					+ (json['filtered'][0]['differentialPressureAnalogSensor']) + '' + ' '
+					+ settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" + "<b>Pressure abs.</b> : "
+					+ (json['filtered'][0]['absolutePressureAnalogSensor']) + '' + ' '
+					+ settings.fieldUnits['absolutePressureAnalogSensor'] + "<br/>" + "<b>Temperature out</b> : "
+					+ (json['filtered'][0]['externalTemperatureAnalogSensor']) + '' + ' '
+					+ settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>" + "<b>Temperature in</b> : "
+					+ (json['filtered'][0]['internalTemperatureAnalogSensor']) + '' + ' '
+					+ settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>" + "</div>");
+			    }
+			    else
+				{
+				marker = L.marker([ latGPSFormat, longGPSFormat ],
+				{
+				    icon : disabledIcon
+				}).addTo(map);
+				marker.bindPopup("<div style=\"color : black\">" + "<center>Last known point</center>" + "<br/>" + "<center>"
+					+ json['filtered'][0]['date'] + "</center> </div>");
+				}
+			    
+
+			}
+		    </script>
+				</div>
+			</div>
+			<!-- end page -->
+		</div>
+		<!-- end frame -->
+
+		<div id="footer">
+			<div id="footer-left">
+				UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE
+					project, IUT Valence</a>
+			</div>
+			<div id="footer-right">
+
+				<ul>
+					<li><a href="http://iut-valence.fr"><img
+							src="./ressources/img/logoiut2.png" title="IUT Valence"
+							alt="Logo IUT Valence"></a></li>
+				</ul>
+
+			</div>
+		</div>
+		<!-- end footer -->
+	</div>
+</body>
+
+
+</html>
