@@ -52,8 +52,8 @@ settings.fieldUnits =
     "externalHumidityAnalogSensor" : "%",
     "differentialPressureAnalogSensor" : "hPa",
     "upLuminosityAnalogSensor" : "lux",
-    "side1LuminosityAnalogSensor" : "%",
-    "side2LuminosityAnalogSensor" : "%",
+    "side1LuminosityAnalogSensor" : "lux",
+    "side2LuminosityAnalogSensor" : "lux",
     "batteryTemperatureAnalogSensor" : "°C",
     "voltageAnalogSensor" : "V"
 };
