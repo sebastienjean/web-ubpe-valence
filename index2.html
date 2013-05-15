@@ -22,12 +22,6 @@
 
 <body>
 	<div id="big-frame">
-		<div id="header">
-			<!--<div id="logo">
-					<img src="./ressources/img/logo2.png">
-				</div>-->
-		</div>
-		<!-- end header -->
 
 		<div id="menu">
 			<ul>
@@ -48,55 +42,7 @@
 
 		<div id="frame">
 			<div id="page-content">
-				<div id="lastFrame">
-					<script>
-			//Ouverture du json
-			var json = updateData();
-
-			var normalIcon = L.icon(
-			{
-			    iconUrl : './ressources/leaflet/images/marker-icon.png',
-			    iconSize : [ 20, 30 ], // Taille de l'icone
-			    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
-			    popupAnchor : [ 5, -10 ]
-			// Ajustement de l'emplacement du pop-up d'informations
-			});
-
-			var disabledIcon = L.icon(
-			{
-			    iconUrl : './ressources/leaflet/images/marker-icon-disabled.png',
-
-			    iconSize : [ 20, 30 ], // Taille de l'icone
-			    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
-			    popupAnchor : [ 5, -10 ]
-			// Ajustement de l'emplacement du pop-up d'informations
-			});
-			document.write("<div id=\"tab\">");
-			document.write("<table>");
-			document.write("<tr id=\"type-tile\">");
-			for (i in settings.dataBriefLabels)
-			{
-			    if (settings.fieldUnits[settings.dataBriefLabels[i]])
-				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/>" + "("
-					+ settings.fieldUnits[settings.dataBriefLabels[i]] + ")" + "</th>");
-			    else
-				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/></th>");
-			}
-
-			document.write("</tr>");
-
-			document.write("<tr id=\"type-1\">");
-
-			for (j in settings.dataBriefLabels)
-			    document.write("<td>" + json['filtered'][0][settings.dataBriefLabels[j]] + "</td>");
-
-			document.write("</tr>");
-			document.write("</table>");
-			document.write("</div>");
-		    </script>
-
-				</div>
-				<div id="map" style="width: 50%">
+				<div id="map" style="width: 50%; height: 50%">
 					<script>
 			// Création de la carte 
 			var map = L.map('map', settings.map);
@@ -109,6 +55,25 @@
 			    minZoom : 7
 			}).addTo(map);
 
+			var normalIcon = L.icon(
+				{
+				    iconUrl : './ressources/leaflet/images/marker-icon.png',
+				    iconSize : [ 20, 30 ], // Taille de l'icone
+				    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+				    popupAnchor : [ 5, -10 ]
+				// Ajustement de l'emplacement du pop-up d'informations
+				});
+
+				var disabledIcon = L.icon(
+				{
+				    iconUrl : './ressources/leaflet/images/marker-icon-disabled.png',
+
+				    iconSize : [ 20, 30 ], // Taille de l'icone
+				    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+				    popupAnchor : [ 5, -10 ]
+				// Ajustement de l'emplacement du pop-up d'informations
+				});
+				
 			var json = updateData();
 
 			for (i = 0; i < (json['filtered'].length); i++)
@@ -122,7 +87,7 @@
 			    var latGPSFormat = convertGPSToDecimal(json['filtered'][i]['latGPS']);
 			    var longGPSFormat = convertGPSToDecimal(json['filtered'][i]['longGPS']);
 
-			    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 15);
+			    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 8);
 			    
 			    var marker;
 
@@ -163,6 +128,38 @@
 			}
 		    </script>
 				</div>
+				<br/>
+				<div id="lastFrame">
+					<script>
+			//Ouverture du json
+			var json = updateData();
+
+		
+			document.write("<div id=\"tab2\">");
+			document.write("<table>");
+			document.write("<tr id=\"type-tile\">");
+			for (i in settings.dataBriefLabels)
+			{
+			    if (settings.fieldUnits[settings.dataBriefLabels[i]])
+				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/>" + "("
+					+ settings.fieldUnits[settings.dataBriefLabels[i]] + ")" + "</th>");
+			    else
+				document.write("<th>" + settings.fieldLabels[settings.dataBriefLabels[i]] + "<br/></th>");
+			}
+
+			document.write("</tr>");
+
+			document.write("<tr id=\"type-1\">");
+
+			for (j in settings.dataBriefLabels)
+			    document.write("<td>" + json['filtered'][0][settings.dataBriefLabels[j]] + "</td>");
+
+			document.write("</tr>");
+			document.write("</table>");
+			document.write("</div>");
+		    </script>
+				</div>
+		
 			</div>
 			<!-- end page -->
 		</div>
