@@ -279,7 +279,7 @@ function guessCapImgName(cap)
     {
 	name = 'null';
     }
-    else if (cap > 337.5 && cap <= 22.5 || cap == 0)
+    if ((cap > 337.5) || (cap <= 22.5))
     {
 	name = 'up';
     }
@@ -311,7 +311,6 @@ function guessCapImgName(cap)
     {
 	name = 'leftup';
     }
-
     return name + '.png';
 }
 
