@@ -124,7 +124,7 @@
 		var Path = new Array();
 		for (i = 0; i < (json['filtered'].length); i++)
 		{
-		    if (blacklist.activate == true && blacklist.frame.indexOf(json['filtered'][i]['date']) > -1)
+		    if (blacklist.activate == true && blacklist.frame.indexOf(json['raw'][i]['date']) > -1)
 		    {
 			continue; //Skip the process for this particular i
 		    }
