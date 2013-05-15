@@ -203,43 +203,31 @@ function createTrameObj(row)
 
 /**
  * // convertGPSToDecimal : convert DDDMM.MM / 0DDMM.MM / 00DMM.MM GPS to
- * deciaml GPS // IN : GPS coordinates in DDDMM.MM foramt // OUT : GPS
+ * decimal GPS // IN : GPS coordinates in DDDMM.MM foramt // OUT : GPS
  * coordinates in decimal foramt
  */
 function convertGPSToDecimal(GPS)
 {
-    if (GPS[5] == ".")
-    { // Format : DDDMM.MM
-	var strPartieEntiere = GPS[0] + GPS[1] + GPS[2]; // Get DDD
-	var strPartieDecimale = GPS[3] + GPS[4] + GPS[5] + GPS[6] + GPS[7]; // Get
-	// MM.MM
+    var pe;
+    var neg;
+    var pd;
+    if (GPS < 0) {
+	   pe = -Math.ceil(GPS);
+	   pd = -GPS - pe;
+	   neg = true;	
     }
-    else if (GPS[4] == ".")
-    { // Format : 0DDMM.MM
-	var strPartieEntiere = GPS[0] + GPS[1]; // Get 0DD
-	var strPartieDecimale = GPS[2] + GPS[3] + GPS[4] + GPS[5] + GPS[6]; // Get
-	// MM.MM
-    }
-    else if (GPS[3] == ".")
-    { // Format : 00DMM.MM
-	var strPartieEntiere = GPS[0]; // Get 00D
-	var strPartieDecimale = GPS[1] + GPS[2] + GPS[3] + GPS[4] + GPS[5]; // Get
-	// MM.MM
-    }
-    else
-    {
-	return ("I don't know how to handle this fucking GPS format !!!")
-    }
-    var partieEntiere = Number(strPartieEntiere); // Get the integer part
-    var partieDecimale = Number(strPartieDecimale) / 60 // Get the float part
-
-    return (Math.round((partieEntiere + partieDecimale) * 1000)) / 1000 // Round
-    // 3
-    // numbers
-    // after
-    // coma
+    else {
+	  pe = Math.floor(GPS);
+	  pd = GPS - pe;
+      neg = false;	
+	}
+    // pe et pd sont positifs
+    var degres = Math.floor(pe / 100); 
+    var minutes = pe % 100; 
+    var ddeg = +degres + ((+minutes + pd)/60*100)/100;
+    if (neg) return (-ddeg);
+    else return ddeg;
 }
-
 /**
  * Met à jour les données et retourne les nouvelles
  * 
@@ -272,7 +260,7 @@ function updateData()
     }
 
     // format:off
-    return {raw : newRawData, filtered : newData};
+    return  {raw : newRawData, filtered : newData};
     // format:on
 }
 
@@ -337,19 +325,19 @@ function guessSpeedIconName(speedGPS)
     {
 	name = 'grey';
     }
-    else if (speedGPS > 0 && speedGPS <= 10)
+    else if (speedGPS > 0 && speedGPS <= 20)
     {
 	name = 'blue';
     }
-    else if (speedGPS > 10 && speedGPS <= 20)
+    else if (speedGPS > 20 && speedGPS <= 50)
     {
 	name = 'green';
     }
-    else if (speedGPS > 20 && speedGPS <= 50)
+    else if (speedGPS > 50 && speedGPS <= 150)
     {
 	name = 'orange';
     }
-    else if (speedGPS > 50)
+    else if (speedGPS > 150)
     {
 	name = 'red';
     }
