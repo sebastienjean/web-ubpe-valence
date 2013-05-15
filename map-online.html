@@ -215,18 +215,18 @@
 		    tabMarker.push(marker);
 
 		    /* Remplissage du pop-up du marker */
-		    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + i + "</center>" + "<br/>" + "<center>" + json['filtered'][i]['date']
+		    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + (+json['filtered'].length - i) + "</center>" + "<br/>" + "<center>" + json['filtered'][i]['date']
 			    + "</center>" + "<br/>" + "<u><b>Location</b></u> " + "<br/>" + "<b>Latitude</b> : " + (json['filtered'][i]['latGPS']) + ''
 			    + "<br/>" + "<b>Longitude</b> : " + (json['filtered'][i]['longGPS']) + '' + "<br/>" + "<b>Altitude</b> : "
 			    + (json['filtered'][i]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" + "<u><b>Data</b></u>" + "<br/>"
 			    + "<b>Speed</b> : " + (json['filtered'][i]['speedGPS']) + '' + ' ' + settings.fieldUnits['speedGPS'] + "<br/>"
-			    + "<b>Pressure diff.</b> : " + (json['filtered'][i]['differentialPressureAnalogSensor']) + '' + ' '
-			    + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" + "<b>Pressure abs.</b> : "
-			    + (json['filtered'][i]['absolutePressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['absolutePressureAnalogSensor'] + "<br/>"
-			    + "<b>Temperature out</b> : " + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' '
-			    + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>" + "<b>Temperature in</b> : "
-			    + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor']
-			    + "<br/>" + "</div>");
+			    + "<b>Pressure: " + (json['filtered'][i]['differentialPressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" 
+			    + "<b>Temperature out</b> : " + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>"
+			    + "<b>Temperature middle</b> : " + (json['filtered'][i]['middleTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>"
+			    + "<b>Temperature in</b> : " + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>"
+			    + "<b>Humidity</b> : " + (json['filtered'][i]['externalHumidityAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>"
+			    + "<b>Voltage</b> : " + (json['filtered'][i]['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"
+			    + "</div>");
 		}
 	    }
 	</script>
