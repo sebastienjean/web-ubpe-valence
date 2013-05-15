@@ -13,87 +13,19 @@
 
 jsonPath = 'data/events.clean';
 jsonFrameLength = 29; /* Number of fields in the json : 23 for the 2013 flight */
-sensorCalibration =
-{ /*
-     * An array containing the name of the data and a, b as calibratedData =
-     * (data * a) + b
-     */
-    "internalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
-    "middleTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
-    "externalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
-    "externalHumidityAnalogSensor" : [ 0.1465, -21 ],
-    "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
-    "upLuminosityAnalogSensor" : [8.4179, 0 ],
-    "side1LuminosityAnalogSensor" : [ 0.8418, 0 ],
-    "side2LuminosityAnalogSensor" : [ 0.8418, 0 ],
-    "soundLevelAnalogSensor" : [ 1, 8 ],
-    "batteryTemperatureAnalogSensor" : [ 1, 9 ],
-    "voltageAnalogSensor" : [ 0.0097, 0 ],
-    "speedGPS" : [ 1.852, 0 ]
-};
+
 // --------------------------------------------------------------------------------
 // End of Variables
 // --------------------------------------------------------------------------------
 
-var UBPE = {}
 
-UBPE.__DEBUG__ = true;
-UBPE.dataFile = jsonPath;
-UBPE.timeout = 13000;
-UBPE.stations = [];
-UBPE.error = false;
-UBPE._timers = {};
-UBPE.timer = function(name, fn, time)
-{
-    var timer = setTimeout(fn, time || UBPE.timeout);
-
-    if (UBPE._timers[name])
-    {
-	clearTimeout(UBPE._timers[name]);
-    }
-
-    UBPE._timers[name] = timer;
-
-    return timer;
-};
-UBPE.clearTimer = function(name)
-{
-    if ($.isArray(name))
-    {
-	for (key in name)
-	{
-	    UBPE.clearTimer(name[key]);
-	}
-    }
-    else
-    {
-	if (UBPE._timers[name])
-	{
-	    clearTimeout(UBPE._timers[name]);
-	}
-    }
-};
-
-UBPE._onPageUnload = function()
-{
-    for (key in UBPE._timers)
-    {
-	if (UBPE._timers[key])
-	{
-	    clearTimeout(UBPE._timers[key]);
-	}
-    }
-
-    UBPE._timers = {};
-};
-
-function getFile(file)
+function getFile()
 {
     var data = [];
 
     $.ajax(
     {
-	url : file + '?' + $.now(), // Inutile, vu que "cache: false" ?
+	url : jsonPath + '?' + $.now(), // Inutile, vu que "cache: false" ?
 	async : false,
 	dataType : 'text', // Pas 'json' !!!
 	cache : false
@@ -134,21 +66,17 @@ function getFile(file)
 			    }
 			}
 
-			if (invalidLine && UBPE.__DEBUG__)
-			{
-			    alert('Attention, des lignes mal formées ont été ignorées.');
-			}
 		    }
 		}
 		catch (e)
 		{
 		    alert('Le fichier "' + file + '" contient une erreur de syntaxe qui n\'a pas pu être corrigée.\n\nErreur:\n' + e
 			    + '\n\nLes données n\'ont pas été chargées.');
-		    data = false;
+		    data = [];
 		}
 	    }).error(function()
     {
-	data = false;
+	data = [];
     });
 
     return data;
@@ -235,38 +163,17 @@ function convertGPSToDecimal(GPS)
 function updateData()
 {
     var newData = [];
-    var newRawData = getFile(UBPE.dataFile);
-
-    if (false == newRawData)
-    {
-	newRawData = [];
-	UBPE.error = true;
-    }
-    else
-    {
-	UBPE.error = false;
-    }
+    var newRawData = getFile();
 
     for (key in newRawData)
     {
 	var d = filterData(newRawData[key]);
-	var st = $.trim(d.stationName);
 	newData.push(d);
-
-	if ('' != st && -1 == jQuery.inArray(st, UBPE.stations))
-	{
-	    UBPE.stations.push(st);
-	}
     }
 
     // format:off
     return  {raw : newRawData, filtered : newData};
     // format:on
-}
-
-function errorAccessFile()
-{
-    alert("Erreur d'accès au fichier '" + UBPE.dataFile + "', actualisez la page.");
 }
 
 /**
@@ -350,14 +257,13 @@ function guessSpeedIconName(speedGPS)
  */
 function filterData(dataArg)
 {
-
     var data = $.extend({}, dataArg);
 
-    for (i in sensorCalibration)
+    for (i in settings.sensorCalibration)
     {
 	if (data[i] != null)
 	{
-	    data[i] = (parseFloat(data[i]) * sensorCalibration[i][0]) + sensorCalibration[i][1];
+	    data[i] = (parseFloat(data[i]) * settings.sensorCalibration[i][0]) + settings.sensorCalibration[i][1];
 	}
 	else
 	    data[i] = 0;
@@ -385,34 +291,3 @@ function filterData(dataArg)
     return data;
 }
 
-$(document).ready(function()
-{
-
-    $('nav ul li a').live('click', function()
-    {
-	var url = $(this).attr('href');
-	$.ajax(url).done(function(data)
-	{
-	    // UBPE.lastDates =
-	    // []; NE PAS
-	    // REMETTRE A ZERO
-	    // AU CHANGEMENT DE
-	    // PAGE !!!
-	    UBPE._onPageUnload();
-	    $('#content_wrapper').css('height', $('#content').height());
-	    $('#content').fadeOut(function()
-	    {
-		$('#content').html(data);
-		$('#content').fadeIn(function()
-		{
-		    $('#content_wrapper').css('height', $('#content').height());
-		});
-	    });
-	}).error(function()
-	{
-	    alert("Page introuvable.");
-	});
-	return false;
-    });
-
-});

@@ -84,6 +84,25 @@ settings.dataBriefLabels =
      "externalTemperatureAnalogSensor","externalHumidityAnalogSensor", 
      "differentialPressureAnalogSensor", "voltageAnalogSensor" ];
 
+settings.sensorCalibration =
+{ /*
+     * An array containing the name of the data and a, b as calibratedData =
+     * (data * a) + b
+     */
+    "internalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
+    "middleTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
+    "externalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
+    "externalHumidityAnalogSensor" : [ 0.1465, -21 ],
+    "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
+    "upLuminosityAnalogSensor" : [8.4179, 0 ],
+    "side1LuminosityAnalogSensor" : [ 0.8418, 0 ],
+    "side2LuminosityAnalogSensor" : [ 0.8418, 0 ],
+    "soundLevelAnalogSensor" : [ 1, 8 ],
+    "batteryTemperatureAnalogSensor" : [ 1, 9 ],
+    "voltageAnalogSensor" : [ 0.0097, 0 ],
+    "speedGPS" : [ 1.852, 0 ]
+};
+
 settings.chartXAxis = 
     [ "date", "altGPS"];
 
