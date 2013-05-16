@@ -97,8 +97,8 @@ settings.sensorCalibration =
     "upLuminosityAnalogSensor" : [8.4179, 0 ],
     "side1LuminosityAnalogSensor" : [ 0.8418, 0 ],
     "side2LuminosityAnalogSensor" : [ 0.8418, 0 ],
-    "soundLevelAnalogSensor" : [ 1, 8 ],
-    "batteryTemperatureAnalogSensor" : [ 1, 9 ],
+    "soundLevelAnalogSensor" : [ 0, 0 ],
+    "batteryTemperatureAnalogSensor" : [ -0.093, 71.903 ],
     "voltageAnalogSensor" : [ 0.0097, 0 ],
     "speedGPS" : [ 1.852, 0 ]
 };
