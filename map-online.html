@@ -36,7 +36,7 @@
 	    { //Serveur de tuiles à utiliser
 		subdomains : '0123',
 		attribution : 'UBPE 2013 - IUT Valence', //Nom du layer
-		maxZoom : 15,
+		maxZoom : 16,
 		minZoom : 7
 	    }).addTo(map);
 
@@ -101,12 +101,24 @@
 	    // point from which the popup should open relative to the iconAnchor
 	    });
 
+	    var burstIcon = L.icon(
+	    {
+		iconUrl : settings.map['speedIconsPath'] + "/burst.png",
+
+		iconSize : [ 30, 30 ], // size of the icon
+		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+		popupAnchor : [ 0, -5 ]
+	    // point from which the popup should open relative to the iconAnchor
+	    });
+
 	    // Initial path and markers generation
 	    updatePath();
 
 	    function updatePath()
 	    {
 		var json = updateData();
+
+		var burstFrame = getBurstFrameNumber(json['raw']);
 
 		//Remove the path
 		map.removeLayer(L.polyline);
@@ -146,7 +158,7 @@
 		    color : 'black'
 		}).addTo(map); //Create a polyline from an LatLng array object
 		//Parcours du chemin pour affichage des points sur la carte
-		for (i = 0; i < Path.length; i++)
+		for (i = Path.length-1; i >= 0; i--)
 		{
 
 		    /* Traitement des points à cap */
@@ -159,8 +171,8 @@
 			{
 			    iconUrl : settings.map['courseIconsPath'] + "/" + nomIcon,
 
-			    iconSize : [ 50, 50 ], // Taille de l'icone
-			    iconAnchor : [ 20, 28 ], // Ajustement de l'emplcemant de l'icone
+			    iconSize : [ 25, 25 ], // Taille de l'icone
+			    iconAnchor : [ 12, 25 ], // Ajustement de l'emplcemant de l'icone
 			    popupAnchor : [ 5, -10 ]
 			// Ajustement de l'emplacement du pop-up d'informations
 			});
@@ -175,45 +187,55 @@
 		    { /* Point normal (sans cap) */
 			var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
 
-			//Déterlination de la couleur du point
-			if (iconName == "greenIcon")
+			if (json['filtered'][i]['frameCounter'] == burstFrame)
 			{
 			    var marker = L.marker((Path[i]),
 			    {
-				icon : greenIcon
+				icon : burstIcon
 			    }).addTo(map);
 			}
-			if (iconName == "redIcon")
+			else
 			{
-			    var marker = L.marker((Path[i]),
+			    //Déterination de la couleur du point
+			    if (iconName == "greenIcon")
 			    {
-				icon : redIcon
-			    }).addTo(map);
-			}
-			if (iconName == "blueIcon")
-			{
-			    var marker = L.marker((Path[i]),
+				var marker = L.marker((Path[i]),
+				{
+				    icon : greenIcon
+				}).addTo(map);
+			    }
+			    if (iconName == "redIcon")
 			    {
-				icon : blueIcon
-			    }).addTo(map);
-			}
-			if (iconName == "orangeIcon")
-			{
-			    var marker = L.marker((Path[i]),
+				var marker = L.marker((Path[i]),
+				{
+				    icon : redIcon
+				}).addTo(map);
+			    }
+			    if (iconName == "blueIcon")
 			    {
-				icon : orangeIcon
-			    }).addTo(map);
-			}
-			if (iconName == "greyIcon")
-			{
-			    var marker = L.marker((Path[i]),
+				var marker = L.marker((Path[i]),
+				{
+				    icon : blueIcon
+				}).addTo(map);
+			    }
+			    if (iconName == "orangeIcon")
 			    {
-				icon : greyIcon
-			    }).addTo(map);
+				var marker = L.marker((Path[i]),
+				{
+				    icon : orangeIcon
+				}).addTo(map);
+			    }
+			    if (iconName == "greyIcon")
+			    {
+				var marker = L.marker((Path[i]),
+				{
+				    icon : greyIcon
+				}).addTo(map);
+			    }
 			}
 		    }
 
-		    tabMarker.push(marker);
+		   // tabMarker.push(marker);
 
 		    /* Remplissage du pop-up du marker */
 		    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + (+json['filtered'].length - i) + "</center>" + "<br/>" + "<center>"
