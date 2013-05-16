@@ -183,42 +183,12 @@ function updateData()
 function guessCapImgName(cap)
 {
     if (cap == 'null' || cap == '' || cap == null)
-    {
-	name = 'null';
-    }
-    if ((cap > 337.5) || (cap <= 22.5))
-    {
-	name = 'up';
-    }
-    else if (cap > 22.5 && cap <= 67.5)
-    {
-	name = 'rightup';
-    }
-    else if (cap > 67.5 && cap <= 112.5)
-    {
-	name = 'right';
-    }
-    else if (cap > 112.5 && cap <= 157.5)
-    {
-	name = 'rightdown';
-    }
-    else if (cap > 157.5 && cap <= 202.5)
-    {
-	name = 'down';
-    }
-    else if (cap > 202.5 && cap <= 247.5)
-    {
-	name = 'leftdown';
-    }
-    else if (cap > 247.5 && cap <= 292.5)
-    {
-	name = 'left';
-    }
-    else if (cap > 292.5 && cap <= 337.5)
-    {
-	name = 'leftup';
-    }
-    return name + '.png';
+	return 'null';
+    cap = Number(cap) + 22.5;
+    
+    if (cap > 360) 
+	cap = 0;
+    return (Math.floor(Math.abs(cap / 45)) * 45) + '.png';
 }
 
 /**
