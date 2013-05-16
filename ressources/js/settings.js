@@ -107,7 +107,7 @@ settings.chartXAxis =
     [ "date", "altGPS"];
 
 settings.chartYAxis = 
-    [ "altGPS", "date", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
+    [ "altGPS", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
       "externalTemperatureAnalogSensor", "batteryTemperatureAnalogSensor", 
       "externalHumidityAnalogSensor", "differentialPressureAnalogSensor", "upLuminosityAnalogSensor", 
       "side1LuminosityAnalogSensor", "side2LuminosityAnalogSensor", "soundLevelAnalogSensor",
