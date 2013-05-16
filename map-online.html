@@ -6,8 +6,7 @@
 <link rel="shortcut icon" href="./ressources/img/favicon.ico">
 <link rel="stylesheet" href="./ressources/style.css" type="text/css" />
 
-<script type="text/javascript"
-	src="./ressources/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="./ressources/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="./ressources/js/common.js"></script>
 
 <script type="text/javascript" src="./ressources/js/date.format.js"></script>
@@ -52,18 +51,19 @@
 
 	    //Icone personalisées
 
-	    var orangeIcon = L.icon(
+	    var greyIcon = L.icon(
 	    {
-		iconUrl : './ressources/img/point-orange.png',
+		iconUrl : settings.map['speedIconsPath'] + "/grey.png",
 
 		iconSize : [ 20, 20 ], // size of the icon
 		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
 		popupAnchor : [ 0, -5 ]
 	    // point from which the popup should open relative to the iconAnchor
 	    });
+
 	    var blueIcon = L.icon(
 	    {
-		iconUrl : './ressources/img/point-bleu.png',
+		iconUrl : settings.map['speedIconsPath'] + "/blue.png",
 
 		iconSize : [ 20, 20 ], // size of the icon
 		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
@@ -73,7 +73,17 @@
 
 	    var greenIcon = L.icon(
 	    {
-		iconUrl : './ressources/img/point-vert.png',
+		iconUrl : settings.map['speedIconsPath'] + "/green.png",
+
+		iconSize : [ 20, 20 ], // size of the icon
+		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
+		popupAnchor : [ 0, -5 ]
+	    // point from which the popup should open relative to the iconAnchor
+	    });
+
+	    var orangeIcon = L.icon(
+	    {
+		iconUrl : settings.map['speedIconsPath'] + "/orange.png",
 
 		iconSize : [ 20, 20 ], // size of the icon
 		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
@@ -83,17 +93,7 @@
 
 	    var redIcon = L.icon(
 	    {
-		iconUrl : './ressources/img/point-rouge.png',
-
-		iconSize : [ 20, 20 ], // size of the icon
-		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    var greyIcon = L.icon(
-	    {
-		iconUrl : './ressources/img/point-gris.png',
+		iconUrl : settings.map['speedIconsPath'] + "/red.png",
 
 		iconSize : [ 20, 20 ], // size of the icon
 		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
@@ -129,13 +129,14 @@
 			continue; //Skip the process for this particular i
 		    }
 		    if (json['raw'][i]['fixGPS'] == "A")
-		    {			
-			    // TODO experinced weird frames, so added this test
-			    if ((json['raw'][i]['latGPS'] == "0.000") || (json['raw'][i]['longGPS'] == "0.000")) continue;
-			    var latGPSFormat = convertGPSToDecimal(json['raw'][i]['latGPS']);
-			    var longGPSFormat = convertGPSToDecimal(json['raw'][i]['longGPS']);
-			    
-		    	Path.push([ latGPSFormat, longGPSFormat ]);
+		    {
+			// TODO experinced weird frames, so added this test
+			if ((json['raw'][i]['latGPS'] == "0.000") || (json['raw'][i]['longGPS'] == "0.000"))
+			    continue;
+			var latGPSFormat = convertGPSToDecimal(json['raw'][i]['latGPS']);
+			var longGPSFormat = convertGPSToDecimal(json['raw'][i]['longGPS']);
+
+			Path.push([ latGPSFormat, longGPSFormat ]);
 		    }
 		}
 
@@ -215,18 +216,20 @@
 		    tabMarker.push(marker);
 
 		    /* Remplissage du pop-up du marker */
-		    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + (+json['filtered'].length - i) + "</center>" + "<br/>" + "<center>" + json['filtered'][i]['date']
-			    + "</center>" + "<br/>" + "<u><b>Location</b></u> " + "<br/>" + "<b>Latitude</b> : " + (json['filtered'][i]['latGPS']) + ''
-			    + "<br/>" + "<b>Longitude</b> : " + (json['filtered'][i]['longGPS']) + '' + "<br/>" + "<b>Altitude</b> : "
-			    + (json['filtered'][i]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" + "<u><b>Data</b></u>" + "<br/>"
-			    + "<b>Speed</b> : " + (json['filtered'][i]['speedGPS']) + '' + ' ' + settings.fieldUnits['speedGPS'] + "<br/>"
-			    + "<b>Pressure: " + (json['filtered'][i]['differentialPressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" 
-			    + "<b>Temperature out</b> : " + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + "<br/>"
-			    + "<b>Temperature middle</b> : " + (json['filtered'][i]['middleTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>"
-			    + "<b>Temperature in</b> : " + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + "<br/>"
-			    + "<b>Humidity</b> : " + (json['filtered'][i]['externalHumidityAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>"
-			    + "<b>Voltage</b> : " + (json['filtered'][i]['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"
-			    + "</div>");
+		    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + (+json['filtered'].length - i) + "</center>" + "<br/>" + "<center>"
+			    + json['filtered'][i]['date'] + "</center>" + "<br/>" + "<u><b>Location</b></u> " + "<br/>" + "<b>Latitude</b> : "
+			    + (json['filtered'][i]['latGPS']) + '' + "<br/>" + "<b>Longitude</b> : " + (json['filtered'][i]['longGPS']) + '' + "<br/>"
+			    + "<b>Altitude</b> : " + (json['filtered'][i]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>"
+			    + "<u><b>Data</b></u>" + "<br/>" + "<b>Speed</b> : " + (json['filtered'][i]['speedGPS']) + '' + ' '
+			    + settings.fieldUnits['speedGPS'] + "<br/>" + "<b>Pressure: " + (json['filtered'][i]['differentialPressureAnalogSensor']) + ''
+			    + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" + "<b>Temperature out</b> : "
+			    + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor']
+			    + "<br/>" + "<b>Temperature middle</b> : " + (json['filtered'][i]['middleTemperatureAnalogSensor']) + '' + ' '
+			    + settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + "<b>Temperature in</b> : "
+			    + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor']
+			    + "<br/>" + "<b>Humidity</b> : " + (json['filtered'][i]['externalHumidityAnalogSensor']) + '' + ' '
+			    + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + "<b>Voltage</b> : "
+			    + (json['filtered'][i]['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>" + "</div>");
 		}
 	    }
 	</script>
