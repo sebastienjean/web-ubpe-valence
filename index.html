@@ -18,6 +18,7 @@
 <script type="text/javascript" src="./ressources/leaflet/leaflet.js"></script>
 
 <title>UBPE2013@Valence | Home</title>
+<meta http-equiv="refresh" content="15" >
 </head>
 
 <body>
@@ -25,7 +26,6 @@
 
 		<div id="menu">
 			<ul>
-				<li><a href="" title="Home">Home</a></li>
 				<li><a href="#null"
 					onclick="javascript:window.open('./data-filtered-all.html')">Data</a>
 				</li>
@@ -34,16 +34,16 @@
 				<li><a href="#null"
 					onclick="javascript:window.open('./map-online.html')">Map</a></li>
 				<li><a href="#null"
-					onclick="javascript:window.open('./data-raw-all.html')">Raw
-						data</a></li>
+					onclick="javascript:window.open('./data-raw-all.html')">Raw data</a></li>
 			</ul>
 		</div>
 		<!-- end menu -->
 
 		<div id="frame">
-			<div id="page-content">
+			<div id="page-content">			
 				<div id="map" style="width: 50%; height: 50%">
 					<script>
+										
 			// Création de la carte 
 			var map = L.map('map', settings.map);
 
@@ -131,8 +131,8 @@
 				<br/>
 				<div id="lastFrame">
 					<script>
-			//Ouverture du json
-			var json = updateData();
+			// Ouverture du json
+			// var json = updateData();
 
 		
 			document.write("<div id=\"tab2\">");
@@ -167,8 +167,7 @@
 
 		<div id="footer">
 			<div id="footer-left">
-				UBPE2013@Valence - <a href="./credits.html" title="Credits page">UBPE
-					project, IUT Valence</a>
+				UBPE2013@Valence - UBPE project team, IUT Valence
 			</div>
 			<div id="footer-right">
 
