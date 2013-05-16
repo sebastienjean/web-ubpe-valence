@@ -126,7 +126,7 @@ settings.tabServers =
 settings.map =
 {
     "center" : [ 44.91568, 4.91524 ],
-    "zoom" : 15,
+    "zoom" : 9,
     "maxZoom" : 16,
     "minZoom" : 7,
     "courseIconsPath" : './ressources/img/map-course',
