@@ -45,7 +45,7 @@
 	    // POI
 	    for (i in settings.POI)
 	    {
-		var marker = L.marker([ settings.POI[i][0], settings.POI[i][1] ]).addTo(map);
+		var marker = L.marker([ settings.POI[i][0], settings.POI[i][1] ], {zIndexOffset : 15000}).addTo(map);
 		marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
 	    }
 
@@ -179,7 +179,8 @@
 
 			var marker = L.marker((Path[i]),
 			{
-			    icon : capIcon
+			    icon : capIcon,
+			    zIndexOffset : 10000
 			}).addTo(map);
 		    }
 
@@ -191,7 +192,8 @@
 			{
 			    var marker = L.marker((Path[i]),
 			    {
-				icon : burstIcon
+				icon : burstIcon,
+				zIndexOffset : 10000
 			    }).addTo(map);
 			}
 			else
