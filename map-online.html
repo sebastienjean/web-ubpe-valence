@@ -36,8 +36,8 @@
 	    { //Serveur de tuiles à utiliser
 		subdomains : '0123',
 		attribution : 'UBPE 2013 - IUT Valence', //Nom du layer
-		maxZoom : 16,
-		minZoom : 7
+		maxZoom : settings.map['maxZoom'],
+		minZoom : settings.map['minZoom'],
 	    }).addTo(map);
 
 	    setInterval("updatePath()", 30000);
