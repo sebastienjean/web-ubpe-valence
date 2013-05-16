@@ -135,6 +135,5 @@ settings.map =
 // POI list
 settings.POI =
 { // "pointName" : [Lat, Lng, "popupText"]
-    "iut" : [ 44.91568, 4.91524, "IUT de Valence" ],
-    "pointArbitraire" : [ 44.91970, 4.9200, "Point arbitraire <br/> (Ne sert &agrave rien)" ],
+    "iut-radio" : [ 44.91568, 4.91524, "IUT de Valence, réception FM" ],
 };
