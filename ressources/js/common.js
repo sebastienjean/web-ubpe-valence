@@ -188,7 +188,7 @@ function guessCapImgName(cap)
     
     if (cap > 360) 
 	cap = 0;
-    return (Math.floor(Math.abs(cap / 45)) * 45) + '.png';
+    return (Math.floor(cap / 45) * 45) + '.png';
 }
 
 /**
