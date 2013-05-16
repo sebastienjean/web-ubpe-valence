@@ -261,3 +261,21 @@ function filterData(dataArg)
     return data;
 }
 
+function getBurstFrameNumber(rawData)
+{
+    var previousAltitude = -1;
+    
+    for (var i=0;i<rawData.length;i++)
+    {
+	var j = rawData.length - i - 1;
+	if (rawData[j]['fixGPS'] == "V") 
+	    continue;	
+	if (rawData[j]['currentFlightPhaseNumber'] < 3)
+	    continue;
+	if (previousAltitude > +Number(rawData[j]['altGPS']) + 300)
+	    return rawData[j]['frameCounter'] - 1;
+	previousAltitude = Number(rawData[j]['altGPS']);
+    }
+    return -1;
+}
+

@@ -5,14 +5,12 @@
 <meta http-equiv="Content-Language" content="en" />
 <link rel="shortcut icon" href="./ressources/img/favicon.ico">
 <link rel="stylesheet" href="./ressources/style.css" type="text/css" />
-<script type="text/javascript"
-	src="./ressources/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="./ressources/js/jquery-1.9.0.min.js"></script>
 <!--<script type="text/javascript" src="../ressources/flot/jquery.js"></script>-->
 
 <script type="text/javascript" src="./ressources/js/date.format.js"></script>
 
-<script type="text/javascript"
-	src="./ressources/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="./ressources/js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="./ressources/js/common.js"></script>
 
 <script type="text/javascript" src="./ressources/flot/jquery.flot.js"></script>
@@ -59,8 +57,7 @@
 
 							</select></li>
 							<li>Y-axis: <select name="y" id="y" title="Y">
-					<script>
-					
+									<script>
 					for (i in settings.chartYAxis)
 					{
 					    if (i == 0)
@@ -154,13 +151,22 @@
 			    yLabel = settings.fieldLabels[yFieldName];
 
 			    var tab = new Array();
+
+			    var burstFrame = getBurstFrameNumber(json['raw']);
+
 			    for (i = 0; i < (json['filtered'].length); i++)
 			    {
 				if (blacklist.activate == true && blacklist.frame.indexOf(json['filtered'][i]['date']) > -1)
 				{
 				    continue; //Skip the process for this particular i
 				}
-				;
+				if (((xFieldName == "altGPS") || (xFieldName == "altGPS")) && json['raw'][i]['fixGPS'] == "V")
+				{
+				    continue;
+				}
+				if ((xFieldName == "altGPS") && (burstFrame > -1) && (json['filtered'][i]['frameCounter'] > burstFrame))
+				    continue;
+
 				tab.push([ (json['raw'][i][xFieldName]), (json['filtered'][i][yFieldName]) ]);
 			    }
 
