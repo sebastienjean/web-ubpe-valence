@@ -197,11 +197,11 @@ function guessCapImgName(cap)
  */
 function guessSpeedIconName(speedGPS)
 {
-    if (speedGPS == null || speedGPS == '' || speedGPS == 0 || speedGPS <= 0)
+    if (speedGPS == null || speedGPS == '' || speedGPS <= 5)
     {
 	name = 'grey';
     }
-    else if (speedGPS > 0 && speedGPS <= 20)
+    else if (speedGPS > 5 && speedGPS <= 20)
     {
 	name = 'blue';
     }
