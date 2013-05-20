@@ -89,8 +89,8 @@ settings.sensorCalibration =
      * An array containing the name of the data and a, b as calibratedData =
      * (data * a) + b
      */
-    "internalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
-    "middleTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
+    "middleTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
+    "internalTemperatureAnalogSensor" : [ 0.1701, -56.66 ],
     "externalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
     "externalHumidityAnalogSensor" : [ 0.1465, -21 ],
     "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
