@@ -272,8 +272,9 @@ function getBurstFrameNumber(rawData)
 	    continue;	
 	if (rawData[j]['currentFlightPhaseNumber'] < 3)
 	    continue;
+	// TODO define trigger in settings.js
 	if (previousAltitude > +Number(rawData[j]['altGPS']) + 300)
-	    return rawData[j]['frameCounter'] - 1;
+	    return rawData[j+1]['frameCounter'];
 	previousAltitude = Number(rawData[j]['altGPS']);
     }
     return -1;
