@@ -161,11 +161,7 @@
 				{
 				    continue; //Skip the process for this particular i
 				}
-				if (((xFieldName == "altGPS") || (xFieldName == "altGPS")) && json['raw'][i]['fixGPS'] == "V")
-				{
-				    continue;
-				}
-				if ((xFieldName == "altGPS") && (burstFrame > -1) && (json['filtered'][i]['frameCounter'] > burstFrame))
+				if ( (xFieldName == "altGPS") && ( (json['raw'][i]['fixGPS'] == "V") || ( (burstFrame > -1) && (Number(json['raw'][i]['frameCounter']) > burstFrame) ) ))
 				    continue;
 
 				tab.push([ (json['raw'][i][xFieldName]), (json['filtered'][i][yFieldName]) ]);
