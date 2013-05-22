@@ -206,59 +206,52 @@
 			}
 
 			// Allow the showTooltip action DO NOT MODIFY !
-			$("#graph").bind(
-				"plothover",
-				function(event, pos, item)
-				{
+			$("#graph").bind("plothover", function(event, pos, item) {
 
-				    function showTooltip(x, y, contents)
-				    {
-					$("<div id='tooltip'>" + contents + "</div>").css(
-					{
-					    position : "absolute",
-					    display : "none",
-					    top : y + 5,
-					    left : x + 5,
-					    border : "1px solid #fdd",
-					    padding : "2px",
-					    "background-color" : "#fee",
-					    opacity : 0.80,
-					    color : "#000000",
-					}).appendTo("body").fadeIn(200);
-				    }
+								function showTooltip(x, y, contents) {
+									$("<div id='tooltip'>" + contents + "</div>").css({
+										position : "absolute",
+										display : "none",
+										top : y + 5,
+										left : x + 5,
+										border : "1px solid #fdd",
+										padding : "2px",
+										"background-color" : "#fee",
+										opacity : 0.80,
+										color : "#000000",
+									}).appendTo("body").fadeIn(200);
+								}
 
-				    if (item)
-				    {
-					if (previousPoint != item.dataIndex)
-					{
-					    previousPoint = item.dataIndex;
-					    $("#tooltip").remove();
-					    var xValue = item.datapoint[0];
-					    if (settings.fieldFixedPoints[xFieldName] != null)
-						xValue.toFixed(settings.fieldFixedPoints[FieldName]);
-					    if (xFieldName == "date")
-						xValue = dateFormat(new Date(parseInt(xValue)), "HH:MM:ss");
-					    var yValue = item.datapoint[1];
-					    if (settings.fieldFixedPoints[yFieldName] != null)
-						yValue.toFixed(settings.fieldFixedPoints[yFieldName]);
+								if (item) {
+									if (previousPoint != item.dataIndex) {
+										previousPoint = item.dataIndex;
+										$("#tooltip").remove();
 
-					    var xUnitString = "";
-					    if (settings.fieldUnits[xFieldName] != null)
-						xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
+										var xValue = item.datapoint[0];
+										if (settings.fieldFixedPoints[xFieldName] != null)
+											xValue.toFixed(settings.fieldFixedPoints[xFieldName]);
+										if (xFieldName == "date")
+											xValue = dateFormat(new Date(parseInt(xValue)), "HH:MM:ss");
 
-					    var yUnitString = "";
-					    if (settings.fieldUnits[yFieldName] != null)
-						yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
-					    showTooltip(item.pageX, item.pageY, xLabel + " = " + xValue + " " + xUnitString + "<br/>" + yLabel + " = " + yValue
-						    + " " + yUnitString);
-					}
-					else
-					{
-					    $("#tooltip").remove();
-					    previousPoint = null;
-					}
-				    }
-				});
+										var yValue = item.datapoint[1];
+										if (settings.fieldFixedPoints[yFieldName] != null)
+											yValue.toFixed(settings.fieldFixedPoints[yFieldName]);
+
+										var xUnitString = "";
+										if (settings.fieldUnits[xFieldName] != null)
+											xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
+
+										var yUnitString = "";
+										if (settings.fieldUnits[yFieldName] != null)
+											yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
+
+										showTooltip(item.pageX, item.pageY, xLabel + " = " + xValue + " " + xUnitString + "<br/>" + yLabel + " = " + yValue + " " + yUnitString);
+									}
+								} else {
+									$("#tooltip").remove();
+									previousPoint = null;
+								}
+							});
 		    </script>
 				</div>
 			</div>
