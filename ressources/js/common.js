@@ -51,7 +51,7 @@ function getFile()
         }
       }
     } catch (e) {
-      alert('Le fichier "' + file + '" contient une erreur de syntaxe qui n\'a pas pu être corrigée.\n\nErreur:\n' + e
+      alert('Le fichier "' + jsonPath + '" contient une erreur de syntaxe qui n\'a pas pu être corrigée.\n\nErreur:\n' + e
             + '\n\nLes données n\'ont pas été chargées.');
       data = [];
     }
