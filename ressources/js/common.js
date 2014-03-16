@@ -12,7 +12,7 @@
  */
 
 jsonPath = 'data/events.clean';
-jsonFrameLength = 29; /* Number of fields in the json : 23 for the 2013 flight */
+jsonFrameLength = 29; /* Number of fields in the json : 29 for the 2013 flight */
 
 // --------------------------------------------------------------------------------
 // End of Variables
