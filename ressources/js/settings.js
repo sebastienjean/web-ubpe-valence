@@ -114,9 +114,9 @@ settings.tabServers = {  // "layerName" : ["tileServerURL", "subdomains", "layer
 
 settings.map = {
   "center" : [ 44.91568, 4.91524 ],
-  "zoom" : 9,
-  "maxZoom" : 16,
-  "minZoom" : 7,
+  "zoom" : 0,
+  "maxZoom" : 18,
+  "minZoom" : 0,
   "courseIconsPath" : './ressources/img/map-course',
   "speedIconsPath" : './ressources/img/map-speed'
 };

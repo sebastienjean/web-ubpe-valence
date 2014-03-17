@@ -11,69 +11,64 @@
  * the script, not from the script's location !
  */
 
-jsonPath = 'data/events.clean';
-jsonFrameLength = 29; /* Number of fields in the json : 29 for the 2013 flight */
+var jsonPath = 'data/events.clean';
+var jsonFrameLength = 29; // Number of fields in the json : 29 for the 2013 flight.
+var raw_data = [];  // List of raw events.
+var data = [];  // List of events, filtered and processed.
 
 // --------------------------------------------------------------------------------
 // End of Variables
 // --------------------------------------------------------------------------------
 
 
-function getFile()
-{
-  var data = [];
-
-  $.ajax({url : jsonPath + '?' + $.now(), // Inutile, vu que "cache: false" ?
-          async : false,
-          dataType : 'text', // Pas 'json' !!!
-          cache : false
-  }).done(function(text) {
-    try {
-      var newText = text.replace(/\](\s*)\[/, '],$1[') // "][" --> "],["
-      .replace(/,(\s*),/, ',null$1,') // ",," --> ",null,"
-      .replace(/,(\s*)\]/, ',null$1]') // ",]" --> ",null]"
-      .replace(/\[(\s*),/, '[null$1,') // "[," --> "[null,"
-      ;
-
-      var json = jQuery.parseJSON(newText);
-
-      if (!$.isArray(json)) {
-        data = false;
-      } else {
-        var invalidLine = false;
-
-        for (k in json) {
-          if ($.isArray(json[k]) && json[k].length == jsonFrameLength) {
-            data.push(createTrameObj(json[k]));
-          } else {
-            invalidLine = true;
-          }
-        }
-      }
-    } catch (e) {
-      alert('Le fichier "' + jsonPath + '" contient une erreur de syntaxe qui n\'a pas pu être corrigée.\n\nErreur:\n' + e
-            + '\n\nLes données n\'ont pas été chargées.');
-      data = [];
+/**
+ * Get the (possibly updated) data, store it in raw_data, and store the
+ * filtered data in data.
+ */
+function updateData() {
+  $.ajax({url: jsonPath, dataType: 'json', cache: false})
+  .done(function(json) {
+    if (!$.isArray(json)) {
+      console.error("The json received isn't an array: " + json);
+      return;
     }
-  }).error(function() {
-    data = [];
-  });
 
-  return data;
+    data = [];
+    raw_data = [];
+    var frame;
+    var filtered;
+    json.forEach(function(row, index, array) {
+      if ($.isArray(row) && row.length == jsonFrameLength) {
+        frame = createFrameObj(row);
+        filtered = filterData(frame);
+        raw_data.push(frame);
+        data.push(filtered);
+        mapFrame(filtered, index);
+      } else {
+        console.warn('Encountered an invalid line (' + index + '): ' + row);
+      }
+    });
+    if (data.length) {  // There's at least one event.
+      updateSummary(data[0]);
+    }
+  })
+  .fail(function(jqXHR, textStatus, errorThrown) {
+    console.error('Failure while parsing the events json "' + jsonPath+ '": ' +
+                  errorThrown.message);
+  });
 }
 
 /**
- * // createTramObj : extract the data from the JSON and add a labels to it //
- * IN : // OUT :
+ * createFrameObj : extract the data from the JSON and add labels to it
  */
-function createTrameObj(row) {
+function createFrameObj(row) {
   var date = row[0] ? new Date(row[0]) : null;
 
-  // "1367221880630", "IUT-Radio", "STRATERRESTRE",
-  // "148", "0", "0", "801", "84", "271658", "001128", "V",
-  // "454.969", "4454.896", "0.0", "0.0", "0.0", "0", "0.0",
-  // "38", "824", "615", "614", "467"
-  var obj = { // Name of field: row of the field
+  // Exemple row:
+  // ["1367221880630", "IUT-Radio", "STRATERRESTRE",  "148", "0", "0", "801",
+  //  "84", "271658", "001128", "V", "454.969", "4454.896", "0.0", "0.0",
+  //  "0.0", "0", "0.0", "38", "824", "615", "614", "467"]
+  var obj = { // Name of field: value of the field
     date : row[0],
     stationName : row[1],
     objectName : row[2],
@@ -108,6 +103,47 @@ function createTrameObj(row) {
 }
 
 /**
+ * Map a frame.
+ */
+function mapFrame(frame, number) {
+  if (frame['fixGPS'] === "A") {
+    var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
+    var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
+
+    // Center on the last point received.
+    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 8);
+
+    /* Remplissage du pop-up du marker */
+    L.marker([latGPSFormat, longGPSFormat], {icon: blueIcon})
+    .addTo(map)
+    .bindPopup('<div style="color : black">' +
+                 '<center>Point ' + number + '</center><br/>' +
+                 '<center>' + frame['date'] + '</center><br/>' +
+                 '<u><b>Location</b></u><br/>' +
+                    '<b>Latitude</b> : ' + frame['latGPS'] + '<br/>' +
+                    '<b>Longitude</b> : ' + frame['longGPS'] + '<br/>' +
+                    '<b>Altitude</b> : ' + frame['altGPS'] + ' ' + settings.fieldUnits['altGPS'] + '<br/>' +
+                 '<u><b>Data</b></u>' + '<br/>' +
+                    '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
+                    '<b>Pressure diff.</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
+                    '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
+                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
+               '</div>');
+  }
+}
+
+/**
+ * updateSummary: Update the summary (last received measures) on the main page.
+ */
+function updateSummary(frame) {
+  var measures = [];
+  settings.dataBriefLabels.forEach(function(label, index, array) {
+    measures.push(frame[label]);
+  });
+  $('#type-1').replaceWith('<td>' + measures.join('</td><td>') + '</td>');
+}
+
+/**
  * // convertGPSToDecimal : convert DDDMM.MM / 0DDMM.MM / 00DMM.MM GPS to
  * decimal GPS // IN : GPS coordinates in DDDMM.MM foramt // OUT : GPS
  * coordinates in decimal foramt
@@ -134,24 +170,6 @@ function convertGPSToDecimal(GPS) {
   } else {
     return ddeg;
   }
-}
-
-/**
- * Met à jour les données et retourne les nouvelles
- *
- */
-function updateData() {
-  var newData = [];
-  var newRawData = getFile();
-
-  for (key in newRawData) {
-    var d = filterData(newRawData[key]);
-    newData.push(d);
-  }
-
-  // format:off
-  return  {raw : newRawData, filtered : newData};
-  // format:on
 }
 
 /**
@@ -197,6 +215,7 @@ function guessSpeedIconName(speedGPS) {
 function filterData(dataArg) {
   var data = $.extend({}, dataArg);
 
+  // Adjust values according to sensor calibration.
   for (i in settings.sensorCalibration) {
     if (data[i] != null) {
       data[i] = (parseFloat(data[i]) * settings.sensorCalibration[i][0]) + settings.sensorCalibration[i][1];
@@ -205,13 +224,17 @@ function filterData(dataArg) {
     }
   }
 
+  // Parse timestamp.
   data['date'] = dateFormat(new Date(parseInt(data['date'])), "HH:MM:ss");
 
-  for (i in settings.fieldFixedPoints) {
+  // Parse numbers.
+  for (var i in settings.fieldFixedPoints) {
     if (data[i] != null) {
       data[i] = parseFloat(data[i]).toFixed(settings.fieldFixedPoints[i]);
     }
   }
+
+  // "Cross" icons for invalid GPS data.
   if (data['fixGPS'] == "V") {
     data['GPSTime'] = "<img src=\"ressources/img/null.png\">";
     data['fixGPS'] = "<img src=\"ressources/img/null.png\">";
