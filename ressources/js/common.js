@@ -26,36 +26,29 @@ var data = [];  // List of events, filtered and processed.
  * filtered data in data.
  */
 function updateData() {
-  $.ajax({url: jsonPath, dataType: 'json', cache: false})
-  .done(function(json) {
-    if (!$.isArray(json)) {
-      console.error("The json received isn't an array: " + json);
-      return;
-    }
+  if (!$.isArray(json)) {
+    console.error("The json received isn't an array: " + json);
+    return;
+  }
 
-    data = [];
-    raw_data = [];
-    var frame;
-    var filtered;
-    json.forEach(function(row, index, array) {
-      if ($.isArray(row) && row.length == jsonFrameLength) {
-        frame = createFrameObj(row);
-        filtered = filterData(frame);
-        raw_data.push(frame);
-        data.push(filtered);
-        mapFrame(filtered, index);
-      } else {
-        console.warn('Encountered an invalid line (' + index + '): ' + row);
-      }
-    });
-    if (data.length) {  // There's at least one event.
-      updateSummary(data[0]);
+  data = [];
+  raw_data = [];
+  var frame;
+  var filtered;
+  json.forEach(function(row, index, array) {
+    if ($.isArray(row) && row.length == jsonFrameLength) {
+      frame = createFrameObj(row);
+      filtered = filterData(frame);
+      raw_data.push(frame);
+      data.push(filtered);
+      mapFrame(filtered, index);
+    } else {
+      console.warn('Encountered an invalid line (' + index + '): ' + row);
     }
-  })
-  .fail(function(jqXHR, textStatus, errorThrown) {
-    console.error('Failure while parsing the events json "' + jsonPath+ '": ' +
-                  errorThrown.message);
   });
+  if (data.length) {  // There's at least one event.
+    updateSummary(data[0]);
+  }
 }
 
 /**
@@ -111,7 +104,7 @@ function mapFrame(frame, number) {
     var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
 
     // Center on the last point received.
-    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 8);
+    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 10);
 
     /* Remplissage du pop-up du marker */
     L.marker([latGPSFormat, longGPSFormat], {icon: blueIcon})
