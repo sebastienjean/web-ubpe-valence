@@ -4,14 +4,8 @@
 //  Varaiables :
 //  Allow the user to quickly tune the website configuration
 //--------------------------------------------------------------------------------
+'use strict';
 
-/*
- * Path of the JSON file. WARNING > The path is
- * from the location of the HTML page which uses
- * the script, not from the script's location !
- */
-
-var jsonPath = 'data/events.clean';
 var jsonFrameLength = 29; // Number of fields in the json : 29 for the 2013 flight.
 var raw_data = [];  // List of raw events.
 var data = [];  // List of events, filtered and processed.
