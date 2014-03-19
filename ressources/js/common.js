@@ -6,9 +6,9 @@
 //--------------------------------------------------------------------------------
 'use strict';
 
-var jsonFrameLength = 29; // Number of fields in the json : 29 for the 2013 flight.
-var raw_data = [];  // List of raw events.
-var data = [];  // List of events, filtered and processed.
+var rawData;  // List of raw events.
+var filteredData;  // List of events, filtered and processed.
+var latestTimestamp = 0;  // Store EPOCH in the latest timestamp.
 
 // --------------------------------------------------------------------------------
 // End of Variables
@@ -16,32 +16,35 @@ var data = [];  // List of events, filtered and processed.
 
 
 /**
- * Get the (possibly updated) data, store it in raw_data, and store the
+ * Get the (possibly updated) data, store it in rawData, and store the
  * filtered data in data.
  */
-function updateData() {
-  if (!$.isArray(json)) {
-    console.error("The json received isn't an array: " + json);
+function updateData(data) {
+  console.log('Updating data: ' + data.length + ' events');
+  if (!$.isArray(data)) {
+    console.error("The data received isn't an array: " + data);
     return;
   }
 
-  data = [];
-  raw_data = [];
+  filteredData = [];
+  rawData = [];
   var frame;
   var filtered;
-  json.forEach(function(row, index, array) {
-    if ($.isArray(row) && row.length == jsonFrameLength) {
+  data.forEach(function(row, index, array) {
+    if ($.isArray(row) && row.length == settings.dataFrameLength) {
       frame = createFrameObj(row);
       filtered = filterData(frame);
-      raw_data.push(frame);
-      data.push(filtered);
+      rawData.push(frame);
+      filteredData.push(filtered);
       mapFrame(filtered, index);
     } else {
       console.warn('Encountered an invalid line (' + index + '): ' + row);
     }
   });
-  if (data.length) {  // There's at least one event.
-    updateSummary(data[0]);
+  if (filteredData.length) {  // There's at least one event.
+    updateSummary(filteredData[0]);
+    latestTimestamp = data[0][0];
+    console.log("Updated latest timestamp: " + dateFormat(new Date(parseInt(latestTimestamp)), "HH:MM:ss"));
   }
 }
 
@@ -254,4 +257,36 @@ function getBurstFrameNumber(rawData) {
     previousAltitude = Number(rawData[j]['altGPS']);
   }
   return -1;
+}
+
+/* Load a JavaScript or JSON file to use its data */
+function loadJsFile(filename, callback){
+  console.log("Reloading events");
+  var body = document.getElementsByTagName("body")[0];
+  var fileref = document.getElementById('events-file');
+  body.removeChild(fileref);
+
+  // Recreate the node from scratch to make sure the file is reloaded.
+  fileref = document.createElement('script');
+  fileref.setAttribute("type","text/javascript");
+  fileref.setAttribute("src", filename);
+  fileref.setAttribute("id", "events-file");
+  fileref.onload = callback;
+
+  body.appendChild(fileref);
+}
+
+// Map the updated data.
+function getNewData() {
+  var newData = [];
+  var timestamp;
+  for (var i = 0; i < data.length; i++) {
+    timestamp = data[i][0];
+    if (timestamp > latestTimestamp) {
+      newData.push(data[i]);
+    } else {
+      break;
+    }
+  };
+  updateData(newData);
 }

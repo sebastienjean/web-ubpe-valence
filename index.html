@@ -53,7 +53,7 @@
   <script type="text/javascript" src="ressources/js/date.format.js"></script>
 
   <script type="text/javascript" src="ressources/js/settings.js"></script>
-  <script type="text/javascript" src="data/events.clean"></script>
+  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
   <script type="text/javascript" src="ressources/js/map.js"></script>
   <script type="text/javascript" src="ressources/js/common.js"></script>
 
@@ -71,7 +71,10 @@
       $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
     })();
 
-    updateData();
+    updateData(data);
+    //loadJsFile('data/events.clean', getNewData);
+    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', getNewData) }, 30000);
+    // window.clearInterval(reloadTimer);
   </script>
 </body>
 </html>

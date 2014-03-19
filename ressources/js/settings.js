@@ -1,6 +1,8 @@
 'use strict';
 var settings = {};
 
+settings.dataFrameLength = 29; // Number of fields in the frame : 29 for the 2013 flight.
+
 // Field labels (for charts and tables)
 settings.fieldLabels = {  // "fieldName" : "label"
   "date" : "Time",
