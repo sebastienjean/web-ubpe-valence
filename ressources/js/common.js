@@ -104,7 +104,7 @@ function mapFrame(frame, number) {
     map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 10);
 
     /* Remplissage du pop-up du marker */
-    L.marker([latGPSFormat, longGPSFormat], {icon: blueIcon})
+    L.marker([latGPSFormat, longGPSFormat], {icon: getSpeedIcon(frame['speedGPS'])})
     .addTo(map)
     .bindPopup('<div style="color : black">' +
                  '<center>Point ' + number + '</center><br/>' +
@@ -118,6 +118,7 @@ function mapFrame(frame, number) {
                     '<b>Pressure diff.</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
                     '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
                     '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
+                    '<b>Speed</b> : ' + frame['speedGPS'] + '<br/>' +
                '</div>');
   }
 }
@@ -178,24 +179,21 @@ function guessCapImgName(cap) {
   return (Math.floor(cap / 45) * 45) + '.png';
 }
 
-/**
- * // guessSpeedIconName : get the point icon name according to the GPS speed //
- * IN : GPS speed // OUT : image name corresponding to the speed
- */
-function guessSpeedIconName(speedGPS) {
-  if (speedGPS == null || speedGPS == '' || speedGPS <= 5) {
-    name = 'grey';
-  } else if (speedGPS > 5 && speedGPS <= 20) {
-    name = 'blue';
-  } else if (speedGPS > 20 && speedGPS <= 50) {
-    name = 'green';
-  } else if (speedGPS > 50 && speedGPS <= 150) {
-    name = 'orange';
-  } else if (speedGPS > 150) {
-    name = 'red';
+// Get the icon depending on the GPS speed.
+function getSpeedIcon(speedGPS) {
+  if (speedGPS > 75) {
+    return redIcon;
   }
-
-  return name + "Icon";
+  if (speedGPS > 50) {
+    return orangeIcon;
+  }
+  if (speedGPS > 25) {
+    return greenIcon;
+  }
+  if (speedGPS > 5) {
+    return blueIcon;
+  }
+  return greyIcon;
 }
 
 /**
