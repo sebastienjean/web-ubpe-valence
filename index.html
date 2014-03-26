@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="en" />
+  <meta http-equiv="Content-Language" content="fr" />
   <link rel="shortcut icon" href="./ressources/img/favicon.ico">
   <link rel="stylesheet" href="./ressources/style.css" type="text/css" />
   <link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
@@ -23,7 +24,7 @@
 
     <div id="frame">
       <div id="page-content">
-        <div id="map" style="width: 100%; height: 100%"></div>
+        <div id="map" style="width: 100%; height: 800px"></div>
         <br/>
         <div id="lastFrame">
           <div id="tab2">
@@ -71,12 +72,12 @@
       $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
     })();
 
-    updateData(data);
+    updateData(data, mapNewData);
 
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
 
-    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', getNewData) }, 30000);
+    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', mapNewData) }, 30000);
     // window.clearInterval(reloadTimer);
   </script>
 </body>
