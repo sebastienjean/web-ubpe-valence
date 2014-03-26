@@ -55,42 +55,17 @@ function updateData(data) {
  * createFrameObj : extract the data from the JSON and add labels to it
  */
 function createFrameObj(row) {
-  var date = row[0] ? new Date(row[0]) : null;
+  // Initialize a frame object from raw json data.
 
   // Exemple row:
   // ["1367221880630", "IUT-Radio", "STRATERRESTRE",  "148", "0", "0", "801",
   //  "84", "271658", "001128", "V", "454.969", "4454.896", "0.0", "0.0",
   //  "0.0", "0", "0.0", "38", "824", "615", "614", "467"]
-  var obj = { // Name of field: value of the field
-    date : row[0],
-    stationName : row[1],
-    objectName : row[2],
-    frameCounter : row[3],
-    resetCounter : row[4],
-    currentFlightPhaseNumber : row[5],
-    currentFlightPhaseDurationInSeconds : row[6],
-    secondsSinceLastReset : row[7],
-    RTCTime : row[8],
-    GPSTime : row[9],
-    fixGPS : row[10],
-    longGPS : row[11],
-    latGPS : row[12],
-    altGPS : row[13],
-    speedGPS : row[14],
-    capGPS : row[15],
-    numSatsGPS : row[16],
-    hdop : row[17],
-    middleTemperatureAnalogSensor : row[18],
-    internalTemperatureAnalogSensor : row[19],
-    externalTemperatureAnalogSensor : row[20],
-    externalHumidityAnalogSensor : row[21],
-    differentialPressureAnalogSensor : row[22],
-    upLuminosityAnalogSensor : row[23],
-    side1LuminosityAnalogSensor : row[24],
-    side2LuminosityAnalogSensor : row[25],
-    soundLevelAnalogSensor : row[26],
-    batteryTemperatureAnalogSensor : row[27],
-    voltageAnalogSensor : row[28]
+  var obj = {};
+  var counter = 0;
+  for (var propName in settings.fieldLabels) {
+    obj[propName] = row[counter];
+    counter++;
   };
   return obj;
 }
@@ -103,7 +78,7 @@ function mapFrame(frame, number) {
     var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
     var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
 
-    var icon = getSpeedIcon(frame['speedGPS']);
+    var icon = getSpeedIcon(parseInt(frame['speedGPS']));
     var height = parseInt(frame['altGPS']);
     if ((highestAltitude > (height + 300)) && !bursted) {
       icon = burstIcon;
