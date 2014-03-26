@@ -16,7 +16,6 @@
 
   <script type="text/javascript" src="./ressources/js/settings.js"></script>
   <script type="text/javascript" src="./ressources/js/blacklist.js"></script>
-  <script type="text/javascript" src="./ressources/js/filtered_table.js"></script>
   <script type="text/javascript" src="data/events.clean" id="events-file"></script>
 
   <title>UBPE2013@Valence | Home</title>
@@ -44,7 +43,16 @@
         titles.push(title);
       };
       headers.append('<th>' + titles.join('</th><th>') + '</th>');
+
     })();
+
+    function updateTable(data) {
+      var values = [];
+      for (var propName in settings.fieldLabels) {
+        values.push(data[propName]);
+      };
+      $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>').insertAfter('#headers');
+    }
 
     updateData(data, updateTable);
 
