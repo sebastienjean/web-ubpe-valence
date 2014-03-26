@@ -9,6 +9,8 @@
 var rawData;  // List of raw events.
 var filteredData;  // List of events, filtered and processed.
 var latestTimestamp = 0;  // Store EPOCH in the latest timestamp.
+var highestAltitude = 0;  // Highest altitude attained.
+var bursted = false;  // Has the balloon poped yet?
 
 // --------------------------------------------------------------------------------
 // End of Variables
@@ -30,17 +32,18 @@ function updateData(data) {
   rawData = [];
   var frame;
   var filtered;
-  data.forEach(function(row, index, array) {
+  for (var i=data.length - 1; i >= 0; i--) {
+    var row = data[i];
     if ($.isArray(row) && row.length == settings.dataFrameLength) {
       frame = createFrameObj(row);
       filtered = filterData(frame);
       rawData.push(frame);
       filteredData.push(filtered);
-      mapFrame(filtered, index);
+      mapFrame(filtered, data.length - i);
     } else {
-      console.warn('Encountered an invalid line (' + index + '): ' + row);
+      console.warn('Encountered an invalid line: ' + row);
     }
-  });
+  };
   if (filteredData.length) {  // There's at least one event.
     updateSummary(filteredData[0]);
     latestTimestamp = data[0][0];
@@ -100,12 +103,21 @@ function mapFrame(frame, number) {
     var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
     var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
 
+    var icon = getSpeedIcon(frame['speedGPS']);
+    var height = parseInt(frame['altGPS']);
+    if ((highestAltitude > (height + 300)) && !bursted) {
+      icon = burstIcon;
+      bursted = true;
+    } else {
+      highestAltitude = height;
+    }
+
     // Center on the last point received.
     map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 10);
 
-    /* Remplissage du pop-up du marker */
-    L.marker([latGPSFormat, longGPSFormat], {icon: getSpeedIcon(frame['speedGPS'])})
+    L.marker([latGPSFormat, longGPSFormat], {icon: icon})
     .addTo(map)
+    /* Remplissage du pop-up du marker */
     .bindPopup('<div style="color : black">' +
                  '<center>Point ' + number + '</center><br/>' +
                  '<center>' + frame['date'] + '</center><br/>' +
@@ -235,26 +247,6 @@ function filterData(dataArg) {
     data['hdop'] = "<img src=\"ressources/img/null.png\">";
   }
   return data;
-}
-
-function getBurstFrameNumber(rawData) {
-  var previousAltitude = -1;
-
-  for (var i=0;i<rawData.length;i++) {
-    var j = rawData.length - i - 1;
-    if (rawData[j]['fixGPS'] == "V") {
-      continue;
-    }
-    if (rawData[j]['currentFlightPhaseNumber'] < 3) {
-      continue;
-    }
-    // TODO define trigger in settings.js
-    if (previousAltitude > +Number(rawData[j]['altGPS']) + 300) {
-      return rawData[j+1]['frameCounter'];
-    }
-    previousAltitude = Number(rawData[j]['altGPS']);
-  }
-  return -1;
 }
 
 /* Load a JavaScript or JSON file to use its data */
