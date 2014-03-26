@@ -1,66 +1,62 @@
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Language" content="fr" />
-<link rel="shortcut icon" href="./ressources/img/favicon.ico">
-<link rel="stylesheet" href="./ressources/style.css" type="text/css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="fr" />
+  <link rel="shortcut icon" href="./ressources/img/favicon.ico">
+  <link rel="stylesheet" href="./ressources/style.css" type="text/css" />
 
-<script type="text/javascript"
-	src="./ressources/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="./ressources/js/common.js"></script>
+  <script type="text/javascript" src="./ressources/js/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="./ressources/js/common.js"></script>
 
-<script type="text/javascript" src="./ressources/js/date.format.js"></script>
+  <script type="text/javascript" src="./ressources/js/date.format.js"></script>
 
-<link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
-<script type="text/javascript" src="./ressources/leaflet/leaflet.js"></script>
+  <link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
+  <script type="text/javascript" src="./ressources/leaflet/leaflet.js"></script>
 
-<script type="text/javascript" src="./ressources/js/settings.js"></script>
+  <script type="text/javascript" src="./ressources/js/settings.js"></script>
+  <script type="text/javascript" src="./ressources/js/blacklist.js"></script>
+  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
 
-<meta http-equiv="refresh" content="30">
-<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-
-<title>UBPE 2013 | Data)</title>
+  <title>UBPE2013@Valence | Raw data</title>
 </head>
 <body>
-	<script>
-	//Ouverture du json
-	json = updateData();
 
-	color = true;
-	document.write("<div id=\"tab2\">");
-	document.write("<table>");
-	document.write("<tr id=\"type-tile\">");
+  <div id="tab2">
+    <table id="filtered-data">
+      <tr id="headers"></tr>
+    </table>
+  </div>
 
-	for (i in json['raw'][0])
-	{
-	    document.write("<th>" + settings.fieldLabels[i] + "</th>");
-	}
+  <script>
+    'use strict';
 
-	document.write("</tr>");
+    (function initTable() {
+      var headers = $('#headers');
 
-	for (i = 0; i < (json['raw'].length); i++)
-	{
+      var titles = [];
+      for (var propName in settings.fieldLabels) {
+        var title = settings.fieldLabels[propName];
+        if (settings.fieldUnits[propName]) {
+          title += "<br />(" + settings.fieldUnits[propName] + ")";
+        }
+        titles.push(title);
+      };
+      headers.append('<th>' + titles.join('</th><th>') + '</th>');
 
-	    if (color == true)
-	    {
-		document.write("<tr id=\"type-1\">");
-		color = !color
-	    }
-	    else
-	    {
-		document.write("<tr id=\"type-2\">");
-		color = !color
-	    }
+    })();
 
-	    for (j in json['raw'][i])
-	    {
-		document.write("<td>" + (json['raw'][i][j]) + "</td>");
-	    }
+    function updateTable(data) {
+      var values = [];
+      for (var propName in settings.fieldLabels) {
+        values.push(data[propName]);
+      };
+      $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>').insertAfter('#headers');
+    }
 
-	    document.write("</tr>");
-	}
-	document.write("</table>");
-	document.write("</div>");
-    </script>
+    updateData(data, updateTable, true);
+
+    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', displayRawData) }, 30000);
+  </script>
 </body>
 </html>

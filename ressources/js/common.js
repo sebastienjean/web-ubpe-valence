@@ -21,7 +21,7 @@ var bursted = false;  // Has the balloon poped yet?
  * Get the (possibly updated) data, store it in rawData, and store the
  * filtered data in data.
  */
-function updateData(data, callback) {
+function updateData(data, callback, raw) {
   console.log('Updating data: ' + data.length + ' events');
   if (!$.isArray(data)) {
     console.error("The data received isn't an array: " + data);
@@ -39,7 +39,11 @@ function updateData(data, callback) {
       filtered = filterData(frame);
       rawData.push(frame);
       filteredData.push(filtered);
-      callback(filtered);
+      if (raw) {
+        callback(frame);
+      } else {
+        callback(filtered);
+      }
     } else {
       console.warn('Encountered an invalid line: ' + row);
     }
@@ -260,6 +264,10 @@ function mapNewData() {
 
 // Display the updated data in a table.
 function displayFilteredData() {
-  alert('tutu');
   updateData(getNewData(), updateTable);
+}
+
+// Display the raw data in a table.
+function displayRawData() {
+  updateData(getNewData(), updateTable, true);
 }
