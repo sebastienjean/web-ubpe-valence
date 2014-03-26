@@ -1,6 +1,6 @@
 'use strict';
 
-function updateTable(data, index) {
+function updateTable(data) {
   var values = [];
   for (var propName in settings.fieldLabels) {
     values.push(data[propName]);

@@ -39,7 +39,7 @@ function updateData(data, callback) {
       filtered = filterData(frame);
       rawData.push(frame);
       filteredData.push(filtered);
-      callback(filtered, data.length - i);
+      callback(filtered);
     } else {
       console.warn('Encountered an invalid line: ' + row);
     }
@@ -73,7 +73,7 @@ function createFrameObj(row) {
 /**
  * Map a frame.
  */
-function mapFrame(frame, number) {
+function mapFrame(frame) {
   if (frame['fixGPS'] === "A") {
     var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
     var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
@@ -90,7 +90,7 @@ function mapFrame(frame, number) {
     var marker = L.marker([latGPSFormat, longGPSFormat], {icon: icon})
     /* Remplissage du pop-up du marker */
     .bindPopup('<div style="color : black">' +
-                 '<center>Point ' + number + '</center><br/>' +
+                 '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
                  '<center>' + frame['date'] + '</center><br/>' +
                  '<u><b>Location</b></u><br/>' +
                     '<b>Latitude</b> : ' + frame['latGPS'] + '<br/>' +
