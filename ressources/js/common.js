@@ -87,11 +87,7 @@ function mapFrame(frame, number) {
       highestAltitude = height;
     }
 
-    // Center on the last point received.
-    map.setView(new L.LatLng(latGPSFormat, longGPSFormat), 10);
-
-    L.marker([latGPSFormat, longGPSFormat], {icon: icon})
-    .addTo(map)
+    var marker = L.marker([latGPSFormat, longGPSFormat], {icon: icon})
     /* Remplissage du pop-up du marker */
     .bindPopup('<div style="color : black">' +
                  '<center>Point ' + number + '</center><br/>' +
@@ -107,6 +103,7 @@ function mapFrame(frame, number) {
                     '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
                     '<b>Speed</b> : ' + frame['speedGPS'] + '<br/>' +
                '</div>');
+    markers.addLayer(marker).addTo(map);
   }
 }
 

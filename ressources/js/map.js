@@ -4,6 +4,7 @@
 
 // Create the map.
 var map = L.map('map', settings.map);
+var markers = L.featureGroup();
 
 // Configure leaflet, specify the tile server.
 L.tileLayer("http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",

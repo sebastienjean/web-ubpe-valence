@@ -72,7 +72,10 @@
     })();
 
     updateData(data);
-    //loadJsFile('data/events.clean', getNewData);
+
+    // Center and zoom the map to display all the known points to date.
+    map.fitBounds(markers.getBounds());
+
     var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', getNewData) }, 30000);
     // window.clearInterval(reloadTimer);
   </script>
