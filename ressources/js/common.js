@@ -1,132 +1,123 @@
-//	commons.js
-//	Main functions to handle the data processing
+//  commons.js
+//  Main functions to handle the data processing
 //--------------------------------------------------------------------------------
-//	Varaiables :
-//	Allow the user to quickly tune the website configuration
+//  Varaiables :
+//  Allow the user to quickly tune the website configuration
 //--------------------------------------------------------------------------------
+'use strict';
 
-/*
- * Path of the JSON file. WARNING > The path is
- * from the location of the HTML page which uses
- * the script, not from the script's location !
- */
-
-jsonPath = 'data/events.clean';
-jsonFrameLength = 29; /* Number of fields in the json : 23 for the 2013 flight */
+var rawData = [];  // List of raw events.
+var filteredData = [];  // List of events, filtered and processed.
+var latestTimestamp = 0;  // Store EPOCH in the latest timestamp.
+var highestAltitude = 0;  // Highest altitude attained.
+var bursted = false;  // Has the balloon poped yet?
 
 // --------------------------------------------------------------------------------
 // End of Variables
 // --------------------------------------------------------------------------------
 
 
-function getFile()
-{
-    var data = [];
+/**
+ * Get the (possibly updated) data, store it in rawData, and store the
+ * filtered data in data.
+ */
+function updateData(data, callback, raw) {
+  console.log('Updating data: ' + data.length + ' events');
+  if (!$.isArray(data)) {
+    console.error("The data received isn't an array: " + data);
+    return;
+  }
 
-    $.ajax(
-    {
-	url : jsonPath + '?' + $.now(), // Inutile, vu que "cache: false" ?
-	async : false,
-	dataType : 'text', // Pas 'json' !!!
-	cache : false
-    }).done(
-	    function(text)
-	    {
-		try
-		{
-		    var newText = text.replace(/\](\s*)\[/, '],$1[') // "]["
-		    // -->
-		    // "],["
-		    .replace(/,(\s*),/, ',null$1,') // ",," --> ",null,"
-		    .replace(/,(\s*)\]/, ',null$1]') // ",]" -->
-		    // ",null]"
-		    .replace(/\[(\s*),/, '[null$1,') // "[," -->
-		    // "[null,"
-		    ;
-
-		    var json = jQuery.parseJSON(newText);
-
-		    if (!$.isArray(json))
-		    {
-			data = false;
-		    }
-		    else
-		    {
-			var invalidLine = false;
-
-			for (k in json)
-			{
-			    if ($.isArray(json[k]) && json[k].length == jsonFrameLength)
-			    {
-				data.push(createTrameObj(json[k]));
-			    }
-			    else
-			    {
-				invalidLine = true;
-			    }
-			}
-
-		    }
-		}
-		catch (e)
-		{
-		    alert('Le fichier "' + file + '" contient une erreur de syntaxe qui n\'a pas pu être corrigée.\n\nErreur:\n' + e
-			    + '\n\nLes données n\'ont pas été chargées.');
-		    data = [];
-		}
-	    }).error(function()
-    {
-	data = [];
-    });
-
-    return data;
+  var frame;
+  var filtered;
+  for (var i=data.length - 1; i >= 0; i--) {
+    var row = data[i];
+    if ($.isArray(row) && row.length == settings.dataFrameLength) {
+      frame = createFrameObj(row);
+      filtered = filterData(frame);
+      rawData.push(frame);
+      filteredData.push(filtered);
+      if (raw) {
+        callback(frame);
+      } else {
+        callback(filtered);
+      }
+    } else {
+      console.warn('Encountered an invalid line: ' + row);
+    }
+  };
+  if (data.length) {  // There's at least one event.
+    updateSummary(filteredData[0]);
+    latestTimestamp = data[0][0];
+    console.log("Updated latest timestamp: " + dateFormat(new Date(parseInt(latestTimestamp)), "HH:MM:ss"));
+  }
 }
 
 /**
- * // createTramObj : extract the data from the JSON and add a labels to it //
- * IN : // OUT :
+ * createFrameObj : extract the data from the JSON and add labels to it
  */
-function createTrameObj(row)
-{
-    var date = row[0] ? new Date(row[0]) : null;
+function createFrameObj(row) {
+  // Initialize a frame object from raw json data.
 
-    // "1367221880630", "IUT-Radio", "STRATERRESTRE",
-    // "148", "0", "0", "801", "84", "271658", "001128", "V",
-    // "454.969", "4454.896", "0.0", "0.0", "0.0", "0", "0.0",
-    // "38", "824", "615", "614", "467"
-    var obj =
-    { // Name of field: row of the field
-	date : row[0],
-	stationName : row[1],
-	objectName : row[2],
-	frameCounter : row[3],
-	resetCounter : row[4],
-	currentFlightPhaseNumber : row[5],
-	currentFlightPhaseDurationInSeconds : row[6],
-	secondsSinceLastReset : row[7],
-	RTCTime : row[8],
-	GPSTime : row[9],
-	fixGPS : row[10],
-	longGPS : row[11],
-	latGPS : row[12],
-	altGPS : row[13],
-	speedGPS : row[14],
-	capGPS : row[15],
-	numSatsGPS : row[16],
-	hdop : row[17],
-	middleTemperatureAnalogSensor : row[18],
-	internalTemperatureAnalogSensor : row[19],	
-	externalTemperatureAnalogSensor : row[20],
-	externalHumidityAnalogSensor : row[21],
-	differentialPressureAnalogSensor : row[22],
-	upLuminosityAnalogSensor : row[23],
-	side1LuminosityAnalogSensor : row[24],
-	side2LuminosityAnalogSensor : row[25],
-	soundLevelAnalogSensor : row[26],
-	batteryTemperatureAnalogSensor : row[27],
-	voltageAnalogSensor : row[28]
-    };
-    return obj;
+  // Exemple row:
+  // ["1367221880630", "IUT-Radio", "STRATERRESTRE",  "148", "0", "0", "801",
+  //  "84", "271658", "001128", "V", "454.969", "4454.896", "0.0", "0.0",
+  //  "0.0", "0", "0.0", "38", "824", "615", "614", "467"]
+  var obj = {};
+  var counter = 0;
+  for (var propName in settings.fieldLabels) {
+    obj[propName] = row[counter];
+    counter++;
+  };
+  return obj;
+}
+
+/**
+ * Map a frame.
+ */
+function mapFrame(frame) {
+  if (frame['fixGPS'] === "A") {
+    var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
+    var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
+
+    var icon = getSpeedIcon(parseInt(frame['speedGPS']));
+    var height = parseInt(frame['altGPS']);
+    if ((highestAltitude > (height + 300)) && !bursted) {
+      icon = burstIcon;
+      bursted = true;
+    } else {
+      highestAltitude = height;
+    }
+
+    var marker = L.marker([latGPSFormat, longGPSFormat], {icon: icon})
+    /* Remplissage du pop-up du marker */
+    .bindPopup('<div style="color : black">' +
+                 '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
+                 '<center>' + frame['date'] + '</center><br/>' +
+                 '<u><b>Location</b></u><br/>' +
+                    '<b>Latitude</b> : ' + frame['latGPS'] + '<br/>' +
+                    '<b>Longitude</b> : ' + frame['longGPS'] + '<br/>' +
+                    '<b>Altitude</b> : ' + frame['altGPS'] + ' ' + settings.fieldUnits['altGPS'] + '<br/>' +
+                 '<u><b>Data</b></u>' + '<br/>' +
+                    '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
+                    '<b>Pressure diff.</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
+                    '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
+                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
+                    '<b>Speed</b> : ' + frame['speedGPS'] + '<br/>' +
+               '</div>');
+    markers.addLayer(marker).addTo(map);
+  }
+}
+
+/**
+ * updateSummary: Update the summary (last received measures) on the main page.
+ */
+function updateSummary(frame) {
+  var measures = [];
+  settings.dataBriefLabels.forEach(function(label, index, array) {
+    measures.push(frame[label]);
+  });
+  $('#type-1').replaceWith('<td>' + measures.join('</td><td>') + '</td>');
 }
 
 /**
@@ -134,149 +125,152 @@ function createTrameObj(row)
  * decimal GPS // IN : GPS coordinates in DDDMM.MM foramt // OUT : GPS
  * coordinates in decimal foramt
  */
-function convertGPSToDecimal(GPS)
-{
-    var pe;
-    var neg;
-    var pd;
-    if (GPS < 0) {
-	   pe = -Math.ceil(GPS);
-	   pd = -GPS - pe;
-	   neg = true;	
-    }
-    else {
-	  pe = Math.floor(GPS);
-	  pd = GPS - pe;
-      neg = false;	
-	}
-    // pe et pd sont positifs
-    var degres = Math.floor(pe / 100); 
-    var minutes = pe % 100; 
-    var ddeg = +degres + ((+minutes + pd)/60*100)/100;
-    if (neg) return (-ddeg);
-    else return ddeg;
-}
-/**
- * Met à jour les données et retourne les nouvelles
- * 
- */
-function updateData()
-{
-    var newData = [];
-    var newRawData = getFile();
-
-    for (key in newRawData)
-    {
-	var d = filterData(newRawData[key]);
-	newData.push(d);
-    }
-
-    // format:off
-    return  {raw : newRawData, filtered : newData};
-    // format:on
+function convertGPSToDecimal(GPS) {
+  var pe;
+  var neg;
+  var pd;
+  if (GPS < 0) {
+     pe = -Math.ceil(GPS);
+     pd = -GPS - pe;
+     neg = true;
+  } else {
+    pe = Math.floor(GPS);
+    pd = GPS - pe;
+    neg = false;
+  }
+  // pe et pd sont positifs
+  var degres = Math.floor(pe / 100);
+  var minutes = pe % 100;
+  var ddeg = +degres + ((+minutes + pd)/60*100)/100;
+  if (neg) {
+    return (-ddeg);
+  } else {
+    return ddeg;
+  }
 }
 
 /**
  * // guessCapImgName : get the cap icon name according to the GPS cap // IN :
  * GPS cap // OUT : image name corresponding to the cap
  */
-function guessCapImgName(cap)
-{
-    if (cap == 'null' || cap == '' || cap == null)
-	return 'null';
-    cap = Number(cap) + 22.5;
-    
-    if (cap > 360) 
-	cap = 0;
-    return (Math.floor(cap / 45) * 45) + '.png';
+function guessCapImgName(cap) {
+  if (cap == 'null' || cap == '' || cap == null) {
+    return 'null';
+  }
+  cap = Number(cap) + 22.5;
+
+  if (cap > 360) {
+    cap = 0;
+  }
+  return (Math.floor(cap / 45) * 45) + '.png';
 }
 
-/**
- * // guessSpeedIconName : get the point icon name according to the GPS speed //
- * IN : GPS speed // OUT : image name corresponding to the speed
- */
-function guessSpeedIconName(speedGPS)
-{
-    if (speedGPS == null || speedGPS == '' || speedGPS <= 5)
-    {
-	name = 'grey';
-    }
-    else if (speedGPS > 5 && speedGPS <= 20)
-    {
-	name = 'blue';
-    }
-    else if (speedGPS > 20 && speedGPS <= 50)
-    {
-	name = 'green';
-    }
-    else if (speedGPS > 50 && speedGPS <= 150)
-    {
-	name = 'orange';
-    }
-    else if (speedGPS > 150)
-    {
-	name = 'red';
-    }
-
-    return name + "Icon";
+// Get the icon depending on the GPS speed.
+function getSpeedIcon(speedGPS) {
+  if (speedGPS > 75) {
+    return redIcon;
+  }
+  if (speedGPS > 50) {
+    return orangeIcon;
+  }
+  if (speedGPS > 25) {
+    return greenIcon;
+  }
+  if (speedGPS > 5) {
+    return blueIcon;
+  }
+  return greyIcon;
 }
 
 /**
  * // filterData : calibrate the data // IN : the not calibrated data // OUT :
  * the calibrated data
  */
-function filterData(dataArg)
-{
-    var data = $.extend({}, dataArg);
+function filterData(dataArg) {
+  var data = $.extend({}, dataArg);
 
-    for (i in settings.sensorCalibration)
-    {
-	if (data[i] != null)
-	{
-	    data[i] = (parseFloat(data[i]) * settings.sensorCalibration[i][0]) + settings.sensorCalibration[i][1];
-	}
-	else
-	    data[i] = 0;
+  // Adjust values according to sensor calibration.
+  for (i in settings.sensorCalibration) {
+    if (data[i] != null) {
+      data[i] = (parseFloat(data[i]) * settings.sensorCalibration[i][0]) + settings.sensorCalibration[i][1];
+    } else {
+      data[i] = 0;
     }
+  }
 
-    data['date'] = dateFormat(new Date(parseInt(data['date'])), "HH:MM:ss");
+  // Parse timestamp.
+  data['date'] = dateFormat(new Date(parseInt(data['date'])), "HH:MM:ss");
 
-    for (i in settings.fieldFixedPoints)
-    {
-	if (data[i] != null)
-	    data[i] = parseFloat(data[i]).toFixed(settings.fieldFixedPoints[i]);
+  // Parse numbers.
+  for (var i in settings.fieldFixedPoints) {
+    if (data[i] != null) {
+      data[i] = parseFloat(data[i]).toFixed(settings.fieldFixedPoints[i]);
     }
-    if (data['fixGPS'] == "V")
-    {
-	data['GPSTime'] = "<img src=\"ressources/img/null.png\">";
-	data['fixGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['longGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['latGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['altGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['speedGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['capGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['numSatsGPS'] = "<img src=\"ressources/img/null.png\">";
-	data['hdop'] = "<img src=\"ressources/img/null.png\">";
-    }
-    return data;
+  }
+
+  // "Cross" icons for invalid GPS data.
+  if (data['fixGPS'] == "V") {
+    data['GPSTime'] = "<img src=\"ressources/img/null.png\">";
+    data['fixGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['longGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['latGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['altGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['speedGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['capGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['numSatsGPS'] = "<img src=\"ressources/img/null.png\">";
+    data['hdop'] = "<img src=\"ressources/img/null.png\">";
+  }
+  return data;
 }
 
-function getBurstFrameNumber(rawData)
-{
-    var previousAltitude = -1;
-    
-    for (var i=0;i<rawData.length;i++)
-    {
-	var j = rawData.length - i - 1;
-	if (rawData[j]['fixGPS'] == "V") 
-	    continue;	
-	if (rawData[j]['currentFlightPhaseNumber'] < 3)
-	    continue;
-	// TODO define trigger in settings.js
-	if (previousAltitude > +Number(rawData[j]['altGPS']) + 300)
-	    return rawData[j+1]['frameCounter'];
-	previousAltitude = Number(rawData[j]['altGPS']);
-    }
-    return -1;
+/* Load a JavaScript or JSON file to use its data */
+function loadJsFile(filename, callback){
+  console.log("Reloading events");
+  var body = document.getElementsByTagName("body")[0];
+  var fileref = document.getElementById('events-file');
+  body.removeChild(fileref);
+
+  // Recreate the node from scratch to make sure the file is reloaded.
+  fileref = document.createElement('script');
+  fileref.setAttribute("type","text/javascript");
+  fileref.setAttribute("src", filename);
+  fileref.setAttribute("id", "events-file");
+  fileref.onload = callback;
+
+  body.appendChild(fileref);
 }
 
+// Get the new data from the file (if any).
+function getNewData() {
+  var newData = [];
+  var timestamp;
+  for (var i = 0; i < data.length; i++) {
+    timestamp = data[i][0];
+    if (timestamp > latestTimestamp) {
+      newData.push(data[i]);
+    } else {
+      break;
+    }
+  };
+  return newData;
+}
+
+// Map the updated data.
+function mapNewData() {
+  updateData(getNewData(), mapFrame);
+}
+
+// Display the updated data in a table.
+function displayFilteredData() {
+  updateData(getNewData(), updateTable);
+}
+
+// Display the raw data in a table.
+function displayRawData() {
+  updateData(getNewData(), updateTable, true);
+}
+
+// Display the charts.
+function displayCharts() {
+  updateData(getNewData(), plotPoint, true);
+}

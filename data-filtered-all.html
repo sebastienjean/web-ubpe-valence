@@ -1,76 +1,62 @@
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Language" content="fr" />
-<link rel="shortcut icon" href="./ressources/img/favicon.ico">
-<link rel="stylesheet" href="./ressources/style.css" type="text/css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="fr" />
+  <link rel="shortcut icon" href="ressources/img/favicon.ico">
+  <link rel="stylesheet" href="ressources/style.css" type="text/css" />
+  <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
 
-<script type="text/javascript" src="./ressources/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="./ressources/js/common.js"></script>
-
-<script type="text/javascript" src="./ressources/js/date.format.js"></script>
-
-<link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
-<script type="text/javascript" src="./ressources/leaflet/leaflet.js"></script>
-
-<script type="text/javascript" src="./ressources/js/settings.js"></script>
-<script type="text/javascript" src="./ressources/js/blacklist.js"></script>
-
-<meta http-equiv="refresh" content="30">
-<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-
-<title>UBPE 2013 | Data)</title>
+  <title>UBPE2013@Valence | Filtered data</title>
 </head>
 <body>
 
-	<script>
-	//Ouverture du json
-	json = updateData();
+  <div id="tab2">
+    <table id="filtered-data">
+      <tr id="headers"></tr>
+    </table>
+  </div>
 
-	color = true;
-	document.write("<div id=\"tab2\">");
-	document.write("<table>");
-	document.write("<tr id=\"type-tile\">");
+  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" src="ressources/js/common.js"></script>
 
-	for (i in json['filtered'][0])
-	{
-	    if (settings.fieldUnits[i] == null)
-	    {
-		document.write("<th>" + settings.fieldLabels[i] + "</th>");
-	    }
-	    else
-	    {
-		document.write("<th>" + settings.fieldLabels[i] + "<br/>" + "(" + settings.fieldUnits[i] + ")" + "</th>");
-	    }
-	}
+  <script type="text/javascript" src="ressources/js/date.format.js"></script>
 
-	document.write("</tr>");
+  <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
 
-	for (i = 0; i < (json['filtered'].length); i++)
-	{
-	    if (blacklist.activate == true && blacklist.frame.indexOf(json['raw'][i]['date']) > -1)
-	    {
-		continue; //Skip the process for this particular i
-	    }
+  <script type="text/javascript" src="ressources/js/settings.js"></script>
+  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
+  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
 
-	    if (color == true)
-	    {
-		document.write("<tr id=\"type-1\">");
-		color = !color
-	    }
-	    else
-	    {
-		document.write("<tr id=\"type-2\">");
-		color = !color
-	    }
-	    for (j in json['filtered'][i])
-	    {
-		document.write("<td>" + json['filtered'][i][j] + "</td>");
-	    }
-	    document.write("</tr>");
-	}
-	document.write("</table>");
-	document.write("</div>");
-    </script>
+  <script>
+    'use strict';
+
+    (function initTable() {
+      var headers = $('#headers');
+
+      var titles = [];
+      for (var propName in settings.fieldLabels) {
+        var title = settings.fieldLabels[propName];
+        if (settings.fieldUnits[propName]) {
+          title += "<br />(" + settings.fieldUnits[propName] + ")";
+        }
+        titles.push(title);
+      };
+      headers.append('<th>' + titles.join('</th><th>') + '</th>');
+
+    })();
+
+    function updateTable(data) {
+      var values = [];
+      for (var propName in settings.fieldLabels) {
+        values.push(data[propName]);
+      };
+      $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>').insertAfter('#headers');
+    }
+
+    updateData(data, updateTable);
+
+    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', displayFilteredData) }, 30000);
+  </script>
 </body>
 </html>
