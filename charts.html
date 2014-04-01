@@ -1,264 +1,143 @@
+<!DOCTYPE html>
 <html>
-
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Language" content="en" />
-<link rel="shortcut icon" href="./ressources/img/favicon.ico">
-<link rel="stylesheet" href="./ressources/style.css" type="text/css" />
-<script type="text/javascript" src="./ressources/js/jquery-1.9.0.min.js"></script>
-<!--<script type="text/javascript" src="../ressources/flot/jquery.js"></script>-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="fr" />
+  <link rel="shortcut icon" href="ressources/img/favicon.ico">
+  <link rel="stylesheet" href="ressources/style.css" type="text/css" />
+  <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
 
-<script type="text/javascript" src="./ressources/js/date.format.js"></script>
-
-<script type="text/javascript" src="./ressources/js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="./ressources/js/common.js"></script>
-
-<script type="text/javascript" src="./ressources/flot/jquery.flot.js"></script>
-
-<script type="text/javascript" src="./ressources/js/settings.js"></script>
-<script type="text/javascript" src="./ressources/js/blacklist.js"></script>
-
-<!-- <meta http-equiv="refresh" content="15"> -->
-<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-
-<title>UBPE2013@Valence | Charts</title>
+  <title>UBPE2013@Valence | Charts</title>
 </head>
-
 <body>
-	<div id="big-frame">
+  <div id="big-frame">
+    <div id="frame">
+      <div id="page">
+        <div id="title">
+          <div id="title-left">
+            <h2>Charts</h2>
+          </div>
+        </div>
+        <div id="page-content">
+          <div id="graph"></div>
+          <div id="button-holder-graphique">
+            <ul>
+              <li>X-axis: <select name="x" id="x"></select></li>
+              <li>Y-axis: <select name="y" id="y"></select></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- end page -->
+    </div>
+    <!-- end frame -->
+  </div>
 
-		<div id="frame">
-			<div id="page">
-				<div id="title">
-					<div id="title-left">
-						<h2>Charts</h2>
-					</div>
-				</div>
-				<div id="page-content">
-					<div id="graph"></div>
-					<div id="button-holder-graphique">
-						<ul>
-							<li>X-axis: <select name="x" id="x" title="X">
-									<script>
-					for (i in settings.chartXAxis)
-					{
-					    if (i == 0)
-					    {
-						document.write("<option selected=\"selected\" value=\""+settings.chartXAxis[i]+"\">");
-					    }
-					    else
-					    {
-						document.write("<option value=\""+settings.chartXAxis[i]+"\">");
-					    }
-					    document.write(settings.fieldLabels[settings.chartXAxis[i]]);
-					    document.write("</option>");
-					}
-				    </script>
+  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" src="ressources/flot/jquery.flot.js"></script>
+  <script type="text/javascript" src="ressources/flot/jquery.flot.time.js"></script>
+  <script type="text/javascript" src="ressources/flot/jquery.flot.axislabels.js"></script>
+  <script type="text/javascript" src="ressources/flot/jquery.flot.tooltip.js"></script>
+  <script type="text/javascript" src="ressources/js/common.js"></script>
 
-							</select></li>
-							<li>Y-axis: <select name="y" id="y" title="Y">
-									<script>
-					for (i in settings.chartYAxis)
-					{
-					    if (i == 0)
-					    {
-						document.write("<option selected=\"selected\" value=\""+settings.chartYAxis[i]+"\">");
-					    }
-					    else
-					    {
-						document.write("<option value=\""+settings.chartYAxis[i]+"\">");
-					    }
-					    document.write(settings.fieldLabels[settings.chartYAxis[i]]);
-					    document.write("</option>");
-					}
-				    </script>
-							</select></li>
-						</ul>
-					</div>
-					<script>
-			var json = updateData();
+  <script type="text/javascript" src="ressources/js/date.format.js"></script>
 
-			setInterval("reload()", 30000);
+  <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
 
-			var graph = $("#graph");
+  <script type="text/javascript" src="ressources/js/settings.js"></script>
+  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
+  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
 
-			var option =
-			{
-			    legend :
-			    {
-				show : true,
-				position : 'ne',
-				backgroundColor : null,
-				backgroundOpacity : 0
-			    },
-			    grid :
-			    {
-				show : true,
-				color : '#ff8c00',
-				backgroundColor : null,
-				hoverable : true,
-				mouseActiveRadius : 30
-			    },
-			    xaxis :
-			    {
-				color : 'orange'
-			    },
-			    yaxis :
-			    {
-				color : 'orange'
-			    },
-			};
+  <script>
+    (function initSelects() {
+      var x = $('#x');
+      for (var i in settings.chartXAxis) {
+        var val = settings.chartXAxis[i];
+        x.append('<option value="' + val + '">' + settings.fieldLabels[val] +  '</option>');
+      }
+      var y = $('#y');
+      for (var i in settings.chartYAxis) {
+        var val = settings.chartYAxis[i];
+        y.append('<option value="' + val + '">' + settings.fieldLabels[val] +  '</option>');
+      }
+      x.find('option:first-child').attr('selected', 'selected');
+      y.find('option:first-child').attr('selected', 'selected');
 
-			var previousPoint = null;
+      $('#x, #y').bind('change', displayChart);
+    })();
 
-			if ($("#x").val() == "null" && $("#y").val() == "null")
-			{
-			    var vide = [];
-			    $.plot(graph, vide, option); /*  Créer un graphique vide pour commencer sur la page*/
-			    graph.append('<div style="position:absolute; left : 27%; top : 43%; color:orange; font-size:24pt">Select a chart</div>');
-			}
+    var graph = $("#graph");
 
-			else
-			{
-			    createChart();
-			}
+    var graph_options = {
+      legend : {
+        show : true,
+        position : 'ne',
+        backgroundColor : null,
+        backgroundOpacity : 0
+      },
+      grid : {
+        show : true,
+        color : '#ff8c00',
+        backgroundColor : null,
+        hoverable : true,
+        mouseActiveRadius : 30
+      },
+      tooltip: true,
+      tooltipOpts: {
+        content: "%lx = %x<br />%ly = %y",
+        xDateFormat: "%H:%M:%S",
+        yDateFormat: "%H:%M:%S",
+      },
+      xaxis : {color : 'orange'},
+      yaxis : {color : 'orange'},
+    };
 
-			$("#x>option").click(function()
-			{
-			    createChart();
-			});
+    function displayChart() {
+      var xFieldName = $("#x").val();
+      var yFieldName = $("#y").val();
+      var xLabel = settings.fieldLabels[xFieldName];
+      var yLabel = settings.fieldLabels[yFieldName];
 
-			$("#x").change(function()
-			{
-			    createChart();
-			});
+      // Handle the time.
+      if (xFieldName == "date") {
+        graph_options["xaxis"]["mode"] = "time";
+      } else {
+        graph_options["xaxis"]["mode"] = "";
+      }
+      var xUnitString = "";
+      if (settings.fieldUnits[xFieldName] != null) {
+        xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
+      }
 
-			$("#y>option").click(function()
-			{
-			    createChart();
-			});
+      var yUnitString = "";
+      if (settings.fieldUnits[yFieldName] != null) {
+        yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
+      }
 
-			$("#y").change(function()
-			{
-			    createChart();
-			});
+      graph_options["xaxes"] = [{axisLabel: xLabel + xUnitString}];
+      graph_options["yaxes"] = [{axisLabel: yLabel + yUnitString}];
 
-			function createChart()
-			{
-			    xFieldName = $("#x option:selected").val();
-			    yFieldName = $("#y option:selected").val();
-			    xLabel = settings.fieldLabels[xFieldName];
-			    yLabel = settings.fieldLabels[yFieldName];
+      var tab = [];
+      for (var i = 0; i < rawData.length; i++) {
+        if ((xFieldName == "altGPS") && (data[i]['fixGPS'] == "V")) {  // Invalid GPS data, don't try to plot it.
+          return;
+        }
+        tab.push([rawData[i][xFieldName], filteredData[i][yFieldName]]);
+      }
 
-			    var tab = new Array();
+      var dTab = {
+        data: tab,
+        color: 'red',
+        points: {show : true},
+      }
 
-			    var burstFrame = getBurstFrameNumber(json['raw']);
+      $.plot(graph, [dTab], graph_options);
+    }
 
-			    for (i = 0; i < (json['filtered'].length); i++)
-			    {
-				if (json['raw'][i]['date'] < 1369141367845) continue;
-				if (blacklist.activate == true && blacklist.frame.indexOf(json['filtered'][i]['date']) > -1)
-				{
-				    continue; //Skip the process for this particular i
-				}
-				if ( (xFieldName == "altGPS") && ( (json['raw'][i]['fixGPS'] == "V") || ( (burstFrame > -1) && (Number(json['raw'][i]['frameCounter']) > burstFrame) ) ))
-				    continue;
+    updateData(data, function() {});
+    displayChart();
 
-				tab.push([ (json['raw'][i][xFieldName]), (json['filtered'][i][yFieldName]) ]);
-			    }
-
-			    // Handle the time !
-			    if (xFieldName == "date")
-			    {
-				option["xaxis"]["mode"] = "time";
-			    }
-			    else
-			    {
-				option["xaxis"]["mode"] = "";
-			    }
-
-			    var xUnitString = "";
-			    if (settings.fieldUnits[xFieldName] != null)
-				xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
-
-			    var yUnitString = "";
-			    if (settings.fieldUnits[yFieldName] != null)
-				yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
-
-			    var dTab =
-			    {
-				label : yLabel + yUnitString + " Vs " + xLabel + xUnitString,
-				data : tab,
-				color : 'red',
-				points :
-				{
-				    show : true
-				},
-			    }
-
-			    $.plot(graph, [ dTab ], option);
-			};
-
-			function reload()
-			{
-			    json = updateData();
-			    createChart();
-			}
-
-			// Allow the showTooltip action DO NOT MODIFY !
-			$("#graph").bind("plothover", function(event, pos, item) {
-
-								function showTooltip(x, y, contents) {
-									$("<div id='tooltip'>" + contents + "</div>").css({
-										position : "absolute",
-										display : "none",
-										top : y + 5,
-										left : x + 5,
-										border : "1px solid #fdd",
-										padding : "2px",
-										"background-color" : "#fee",
-										opacity : 0.80,
-										color : "#000000",
-									}).appendTo("body").fadeIn(200);
-								}
-
-								if (item) {
-									if (previousPoint != item.dataIndex) {
-										previousPoint = item.dataIndex;
-										$("#tooltip").remove();
-
-										var xValue = item.datapoint[0];
-										if (settings.fieldFixedPoints[xFieldName] != null)
-											xValue.toFixed(settings.fieldFixedPoints[xFieldName]);
-										if (xFieldName == "date")
-											xValue = dateFormat(new Date(parseInt(xValue)), "HH:MM:ss");
-
-										var yValue = item.datapoint[1];
-										if (settings.fieldFixedPoints[yFieldName] != null)
-											yValue.toFixed(settings.fieldFixedPoints[yFieldName]);
-
-										var xUnitString = "";
-										if (settings.fieldUnits[xFieldName] != null)
-											xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
-
-										var yUnitString = "";
-										if (settings.fieldUnits[yFieldName] != null)
-											yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
-
-										showTooltip(item.pageX, item.pageY, xLabel + " = " + xValue + " " + xUnitString + "<br/>" + yLabel + " = " + yValue + " " + yUnitString);
-									}
-								} else {
-									$("#tooltip").remove();
-									previousPoint = null;
-								}
-							});
-		    </script>
-				</div>
-			</div>
-			<!-- end page -->
-		</div>
-		<!-- end frame -->
-	</div>
+    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', function() { updateData(getNewData(), function() {}); displayChart();}) }, 30000);
+  </script>
 </body>
-
 </html>

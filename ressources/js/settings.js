@@ -101,11 +101,11 @@ settings.chartXAxis = [ "date", "altGPS"];
 
 settings.chartYAxis = [
   "altGPS", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
-  "externalTemperatureAnalogSensor", "batteryTemperatureAnalogSensor",
-  "externalHumidityAnalogSensor", "differentialPressureAnalogSensor", "upLuminosityAnalogSensor",
-  "side1LuminosityAnalogSensor", "side2LuminosityAnalogSensor", "soundLevelAnalogSensor",
-  "voltageAnalogSensor", "fixGPS", "speedGPS", "capGPS", "numSatsGPS",
-  "resetCounter", "currentFlightPhaseNumber"];
+    "externalTemperatureAnalogSensor", "batteryTemperatureAnalogSensor",
+    "externalHumidityAnalogSensor", "differentialPressureAnalogSensor", "upLuminosityAnalogSensor",
+    "side1LuminosityAnalogSensor", "side2LuminosityAnalogSensor",
+    "voltageAnalogSensor", "speedGPS", "capGPS", "numSatsGPS",
+    "resetCounter", "currentFlightPhaseNumber"];
 
 // Tiles server list
 settings.tabServers = {  // "layerName" : ["tileServerURL", "subdomains", "layerLabel"]

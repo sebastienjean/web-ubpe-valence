@@ -6,8 +6,8 @@
 //--------------------------------------------------------------------------------
 'use strict';
 
-var rawData;  // List of raw events.
-var filteredData;  // List of events, filtered and processed.
+var rawData = [];  // List of raw events.
+var filteredData = [];  // List of events, filtered and processed.
 var latestTimestamp = 0;  // Store EPOCH in the latest timestamp.
 var highestAltitude = 0;  // Highest altitude attained.
 var bursted = false;  // Has the balloon poped yet?
@@ -28,8 +28,6 @@ function updateData(data, callback, raw) {
     return;
   }
 
-  filteredData = [];
-  rawData = [];
   var frame;
   var filtered;
   for (var i=data.length - 1; i >= 0; i--) {
@@ -48,7 +46,7 @@ function updateData(data, callback, raw) {
       console.warn('Encountered an invalid line: ' + row);
     }
   };
-  if (filteredData.length) {  // There's at least one event.
+  if (data.length) {  // There's at least one event.
     updateSummary(filteredData[0]);
     latestTimestamp = data[0][0];
     console.log("Updated latest timestamp: " + dateFormat(new Date(parseInt(latestTimestamp)), "HH:MM:ss"));
@@ -270,4 +268,9 @@ function displayFilteredData() {
 // Display the raw data in a table.
 function displayRawData() {
   updateData(getNewData(), updateTable, true);
+}
+
+// Display the charts.
+function displayCharts() {
+  updateData(getNewData(), plotPoint, true);
 }
