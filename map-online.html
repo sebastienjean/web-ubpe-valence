@@ -16,6 +16,7 @@
 
 <script type="text/javascript" src="./ressources/js/settings.js"></script>
 <script type="text/javascript" src="./ressources/js/blacklist.js"></script>
+<script type="text/javascript" src="ressources/js/map.js"></script>
 
 <!-- <meta http-equiv="refresh" content="15"> -->
 <!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
@@ -24,238 +25,17 @@
 </head>
 
 <body>
+
+<script type="text/javascript" src="data/events.clean" id="events-file"></script>
+
 	<div id="mapFullScreen" style="height: 100%; width: 100%">
 		<script>
-	    //Contain the map markers
-	    tabMarker = new Array();
-
 	    // Création de la carte 
-	    var map = L.map('mapFullScreen', settings.map);
-
-	    L.tileLayer("http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-	    { //Serveur de tuiles à utiliser
-		subdomains : '0123',
-		attribution : 'UBPE 2013 - IUT Valence', //Nom du layer
-		maxZoom : settings.map['maxZoom'],
-		minZoom : settings.map['minZoom'],
-	    }).addTo(map);
-
-	    setInterval("updatePath()", 30000);
-
-	    // POI
-	    for (i in settings.POI)
-	    {
-		var marker = L.marker([ settings.POI[i][0], settings.POI[i][1] ], {zIndexOffset : 15000}).addTo(map);
-		marker.bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
-	    }
-
-	    //Icone personalisées
-
-	    var greyIcon = L.icon(
-	    {
-		iconUrl : settings.map['speedIconsPath'] + "/grey.png",
-
-		iconSize : [ 20, 20 ], // size of the icon
-		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    var blueIcon = L.icon(
-	    {
-		iconUrl : settings.map['speedIconsPath'] + "/blue.png",
-
-		iconSize : [ 20, 20 ], // size of the icon
-		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    var greenIcon = L.icon(
-	    {
-		iconUrl : settings.map['speedIconsPath'] + "/green.png",
-
-		iconSize : [ 20, 20 ], // size of the icon
-		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    var orangeIcon = L.icon(
-	    {
-		iconUrl : settings.map['speedIconsPath'] + "/orange.png",
-
-		iconSize : [ 20, 20 ], // size of the icon
-		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    var redIcon = L.icon(
-	    {
-		iconUrl : settings.map['speedIconsPath'] + "/red.png",
-
-		iconSize : [ 20, 20 ], // size of the icon
-		iconAnchor : [ 10, 10 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    var burstIcon = L.icon(
-	    {
-		iconUrl : settings.map['speedIconsPath'] + "/burst.png",
-
-		iconSize : [ 60, 60 ], // size of the icon
-		iconAnchor : [ 30, 30 ], // point of the icon which will correspond to marker's location
-		popupAnchor : [ 0, -5 ]
-	    // point from which the popup should open relative to the iconAnchor
-	    });
-
-	    // Initial path and markers generation
-	    updatePath();
-
-	    function updatePath()
-	    {
-		var json = updateData();
-
-		var burstFrame = getBurstFrameNumber(json['raw']);
-
-		//Remove the path
-		map.removeLayer(L.polyline);
-		//Remove all the markers
-		if (tabMarker.length != 0)
-		{
-		    for (i = 0; i < tabMarker.length; i++)
-		    {
-			map.removeLayer(tabMarker[i]);
-		    }
-		    tabMarker = new Array();
-		}
-
-		//Parcours du json afin de créer le chemin
-		var Path = new Array();
-		for (i = 0; i < (json['filtered'].length); i++)
-		{
-		    if (blacklist.activate == true && blacklist.frame.indexOf(json['raw'][i]['date']) > -1)
-		    {
-			continue; //Skip the process for this particular i
-		    }
-		    if (json['raw'][i]['fixGPS'] == "A")
-		    {
-			// TODO experinced weird frames, so added this test
-			if ((json['raw'][i]['latGPS'] == "0.000") || (json['raw'][i]['longGPS'] == "0.000"))
-			    continue;
-			var latGPSFormat = convertGPSToDecimal(json['raw'][i]['latGPS']);
-			var longGPSFormat = convertGPSToDecimal(json['raw'][i]['longGPS']);
-
-			Path.push([ latGPSFormat, longGPSFormat ]);
-		    }
-		}
-
-		//Création du chemin
-		var polyline = L.polyline(Path,
-		{
-		    color : 'black'
-		}).addTo(map); //Create a polyline from an LatLng array object
-		//Parcours du chemin pour affichage des points sur la carte
-		for (i = 0; i < Path.length; i++)
-		{
-
-		    /* Traitement des points à cap */
-		    if (i == 0)
-		    {
-
-			nomIcon = guessCapImgName(json['filtered'][i]['capGPS']);
-
-			var capIcon = L.icon(
-			{
-			    iconUrl : settings.map['courseIconsPath'] + "/" + nomIcon,
-
-			    iconSize : [ 25, 25 ], // Taille de l'icone
-			    iconAnchor : [ 12, 25 ], // Ajustement de l'emplcemant de l'icone
-			    popupAnchor : [ 5, -10 ]
-			// Ajustement de l'emplacement du pop-up d'informations
-			});
-
-			var marker = L.marker((Path[i]),
-			{
-			    icon : capIcon,
-			    zIndexOffset : 10000
-			}).addTo(map);
-		    }
-
-		    else
-		    { /* Point normal (sans cap) */
-			var iconName = guessSpeedIconName(json['filtered'][i]['speedGPS']);
-
-			if (json['filtered'][i]['frameCounter'] == burstFrame)
-			{
-			    var marker = L.marker((Path[i]),
-			    {
-				icon : burstIcon,
-				zIndexOffset : 10000
-			    }).addTo(map);
-			}
-			else
-			{
-			    //Déterination de la couleur du point
-			    if (iconName == "greenIcon")
-			    {
-				var marker = L.marker((Path[i]),
-				{
-				    icon : greenIcon
-				}).addTo(map);
-			    }
-			    if (iconName == "redIcon")
-			    {
-				var marker = L.marker((Path[i]),
-				{
-				    icon : redIcon
-				}).addTo(map);
-			    }
-			    if (iconName == "blueIcon")
-			    {
-				var marker = L.marker((Path[i]),
-				{
-				    icon : blueIcon
-				}).addTo(map);
-			    }
-			    if (iconName == "orangeIcon")
-			    {
-				var marker = L.marker((Path[i]),
-				{
-				    icon : orangeIcon
-				}).addTo(map);
-			    }
-			    if (iconName == "greyIcon")
-			    {
-				var marker = L.marker((Path[i]),
-				{
-				    icon : greyIcon
-				}).addTo(map);
-			    }
-			}
-		    }
-
-		   tabMarker.push(marker);
-
-		    /* Remplissage du pop-up du marker */
-		    marker.bindPopup("<div style=\"color : black\">" + "<center>Point " + (+json['filtered'].length - i) + "</center>" + "<br/>" + "<center>"
-			    + json['filtered'][i]['date'] + "</center>" + "<br/>" + "<u><b>Location</b></u> " + "<br/>" + "<b>Latitude</b> : "
-			    + (json['filtered'][i]['latGPS']) + '' + "<br/>" + "<b>Longitude</b> : " + (json['filtered'][i]['longGPS']) + '' + "<br/>"
-			    + "<b>Altitude</b> : " + (json['filtered'][i]['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>"
-			    + "<u><b>Data</b></u>" + "<br/>" + "<b>Speed</b> : " + (json['filtered'][i]['speedGPS']) + '' + ' '
-			    + settings.fieldUnits['speedGPS'] + "<br/>" + "<b>Pressure: " + (json['filtered'][i]['differentialPressureAnalogSensor']) + ''
-			    + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" + "<b>Temperature out</b> : "
-			    + (json['filtered'][i]['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor']
-			    + "<br/>" + "<b>Temperature middle</b> : " + (json['filtered'][i]['middleTemperatureAnalogSensor']) + '' + ' '
-			    + settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + "<b>Temperature in</b> : "
-			    + (json['filtered'][i]['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor']
-			    + "<br/>" + "<b>Humidity</b> : " + (json['filtered'][i]['externalHumidityAnalogSensor']) + '' + ' '
-			    + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + "<b>Voltage</b> : "
-			    + (json['filtered'][i]['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>" + "</div>");
-		}
-	    }
+	    setupMap('mapFullScreen', settings.map['maxZoom'], settings.map['minZoom']);
+	    
+	    updateData(data, mapNewDataOnFullMap);
+	    map.fitBounds(markers.getBounds());
+	    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', mapNewDataOnFullMap) }, 30000);
 	</script>
 	</div>
 </body>
