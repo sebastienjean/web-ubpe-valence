@@ -1,25 +1,27 @@
 // Anything related to the map. Uses leaflet.
 
 'use strict';
+var map = null;
+var markers = null;
 
-// Create the map.
-var map = L.map('map', settings.map);
-var markers = L.featureGroup();
-
-// Configure leaflet, specify the tile server.
-L.tileLayer("http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+function setupMap(name, maxZ, minZ) {
+  map = L.map(name, settings.map);
+  markers = L.featureGroup();
+  L.tileLayer("http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
             {
               subdomains : '0123',
               attribution : 'UBPE 2013 - IUT Valence',
-              maxZoom : 18,
-              minZoom : 0
+              maxZoom : maxZ,
+              minZoom : minZ
             }).addTo(map);
 
-for (var i in settings.POI) {
+  for (var i in settings.POI) {
   L.marker([ settings.POI[i][0], settings.POI[i][1] ], {zIndexOffset : 15000})
   .addTo(map)
   .bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
+  }
 }
+
 
 // Custom icons.
 var SmallIcon = L.Icon.extend({  // Create the "small icon" class.
