@@ -21,7 +21,7 @@ var bursted = false;  // Has the balloon poped yet?
  * Get the (possibly updated) data, store it in rawData, and store the
  * filtered data in data.
  */
-function updateData(data, callback, raw) {
+function updateData(data, callback, raw, popUpCreator) {
   console.log('Updating data: ' + data.length + ' events');
   if (!$.isArray(data)) {
     console.error("The data received isn't an array: " + data);
@@ -38,9 +38,9 @@ function updateData(data, callback, raw) {
       rawData.push(frame);
       filteredData.push(filtered);
       if (raw) {
-        callback(frame);
+        callback(frame, popUpCreator);
       } else {
-        callback(filtered);
+        callback(filtered,popUpCreator);
       }
     } else {
       console.warn('Encountered an invalid line: ' + row);
@@ -75,7 +75,7 @@ function createFrameObj(row) {
 /**
  * Map a frame.
  */
-function mapFrame(frame) {
+function mapFrame(frame,isFullPopPup) {
   if (frame['fixGPS'] === "A") {
     var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
     var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
@@ -91,7 +91,13 @@ function mapFrame(frame) {
 
     var marker = L.marker([latGPSFormat, longGPSFormat], {icon: icon})
     /* Remplissage du pop-up du marker */
-    .bindPopup('<div style="color : black">' +
+    .bindPopup(getMinPopUpFromFrame(frame,isFullPopPup ));
+    markers.addLayer(marker).addTo(map);
+  }
+}
+
+function getMinPopUpFromFrame(frame, fullInfo){
+  var result = '<div style="color : black">' +
                  '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
                  '<center>' + frame['date'] + '</center><br/>' +
                  '<u><b>Location</b></u><br/>' +
@@ -100,13 +106,34 @@ function mapFrame(frame) {
                     '<b>Altitude</b> : ' + frame['altGPS'] + ' ' + settings.fieldUnits['altGPS'] + '<br/>' +
                  '<u><b>Data</b></u>' + '<br/>' +
                     '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
-                    '<b>Pressure diff.</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
+                    '<b>Pressure:</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
                     '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
-                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
-                    '<b>Speed</b> : ' + frame['speedGPS'] + '<br/>' +
-               '</div>');
-    markers.addLayer(marker).addTo(map);
+                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>';
+  if(fullInfo){
+    result+="<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' '+ settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + 
+            "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' '          + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + 
+            "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>";
   }
+  result += "</div>";
+  return result;
+}
+function getFullPopUpFromFrame(frame) {
+  return "<div style=\"color : black\">" + 
+          "<center>Point " + frame['frameCounter'] + "</center>" + "<br/>" + 
+          "<center>"  + frame['date'] + "</center>" + "<br/>" + 
+          "<u><b>Location</b></u> " + "<br/>" + 
+              "<b>Latitude</b> : "  + (frame['latGPS']) + '' + "<br/>" + 
+              "<b>Longitude</b> : " + (frame['longGPS']) + '' + "<br/>" + 
+              "<b>Altitude</b> : " + (frame['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" +
+          "<u><b>Data</b></u>" + "<br/>" + 
+              "<b>Speed</b> : " + (frame['speedGPS']) + '' + ' '+ settings.fieldUnits['speedGPS'] + "<br/>" + 
+              "<b>Pressure: " + (frame['differentialPressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" +
+              "<b>Temperature out</b> : "  + (frame['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor']+ "<br/>" + 
+              "<b>Temperature in</b> : " + (frame['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor']+ "<br/>" + 
+              "<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' '+ settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + 
+          
+          "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' '          + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + 
+          "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>" + "</div>";
 }
 
 /**
@@ -257,7 +284,10 @@ function getNewData() {
 
 // Map the updated data.
 function mapNewData() {
-  updateData(getNewData(), mapFrame);
+  updateData(getNewData(), mapFrame, false, false);
+}
+function mapNewDataOnFullMap(){
+  updateData(getNewData(), mapFrame, false, true);
 }
 
 // Display the updated data in a table.
