@@ -21,7 +21,7 @@ var bursted = false;  // Has the balloon poped yet?
  * Get the (possibly updated) data, store it in rawData, and store the
  * filtered data in data.
  */
-function updateData(data, callback, raw, popUpCreator) {
+function updateData(data, callback, raw) {
   console.log('Updating data: ' + data.length + ' events');
   if (!$.isArray(data)) {
     console.error("The data received isn't an array: " + data);
@@ -38,9 +38,9 @@ function updateData(data, callback, raw, popUpCreator) {
       rawData.push(frame);
       filteredData.push(filtered);
       if (raw) {
-        callback(frame, popUpCreator);
+        callback(frame);
       } else {
-        callback(filtered,popUpCreator);
+        callback(filtered);
       }
     } else {
       console.warn('Encountered an invalid line: ' + row);
@@ -75,7 +75,7 @@ function createFrameObj(row) {
 /**
  * Map a frame.
  */
-function mapFrame(frame,isFullPopPup) {
+function mapFrame(frame) {
   if (frame['fixGPS'] === "A") {
     var latGPSFormat = convertGPSToDecimal(frame['latGPS']);
     var longGPSFormat = convertGPSToDecimal(frame['longGPS']);
@@ -91,12 +91,12 @@ function mapFrame(frame,isFullPopPup) {
 
     var marker = L.marker([latGPSFormat, longGPSFormat], {icon: icon})
     /* Remplissage du pop-up du marker */
-    .bindPopup(getMinPopUpFromFrame(frame,isFullPopPup ));
+    .bindPopup(getPopUpFromFrame(frame ));
     markers.addLayer(marker).addTo(map);
   }
 }
 
-function getMinPopUpFromFrame(frame, fullInfo){
+function getPopUpFromFrame(frame){
   var result = '<div style="color : black">' +
                  '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
                  '<center>' + frame['date'] + '</center><br/>' +
@@ -108,32 +108,11 @@ function getMinPopUpFromFrame(frame, fullInfo){
                     '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
                     '<b>Pressure:</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
                     '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
-                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>';
-  if(fullInfo){
-    result+="<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' '+ settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + 
-            "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' '          + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + 
-            "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>";
-  }
-  result += "</div>";
-  return result;
-}
-function getFullPopUpFromFrame(frame) {
-  return "<div style=\"color : black\">" + 
-          "<center>Point " + frame['frameCounter'] + "</center>" + "<br/>" + 
-          "<center>"  + frame['date'] + "</center>" + "<br/>" + 
-          "<u><b>Location</b></u> " + "<br/>" + 
-              "<b>Latitude</b> : "  + (frame['latGPS']) + '' + "<br/>" + 
-              "<b>Longitude</b> : " + (frame['longGPS']) + '' + "<br/>" + 
-              "<b>Altitude</b> : " + (frame['altGPS']) + '' + ' ' + settings.fieldUnits['altGPS'] + "<br/>" +
-          "<u><b>Data</b></u>" + "<br/>" + 
-              "<b>Speed</b> : " + (frame['speedGPS']) + '' + ' '+ settings.fieldUnits['speedGPS'] + "<br/>" + 
-              "<b>Pressure: " + (frame['differentialPressureAnalogSensor']) + '' + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + "<br/>" +
-              "<b>Temperature out</b> : "  + (frame['externalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor']+ "<br/>" + 
-              "<b>Temperature in</b> : " + (frame['internalTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor']+ "<br/>" + 
-              "<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' '+ settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + 
-          
-          "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' '          + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + 
-          "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>" + "</div>";
+                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
+    				"<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' '+ settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + 
+           			"<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' '          + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + 
+            		"<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"; + "</div>";
+    return result;
 }
 
 /**
@@ -265,6 +244,7 @@ function loadJsFile(filename, callback){
   fileref.onload = callback;
 
   body.appendChild(fileref);
+
 }
 
 // Get the new data from the file (if any).
@@ -284,10 +264,7 @@ function getNewData() {
 
 // Map the updated data.
 function mapNewData() {
-  updateData(getNewData(), mapFrame, false, false);
-}
-function mapNewDataOnFullMap(){
-  updateData(getNewData(), mapFrame, false, true);
+  updateData(getNewData(), mapFrame);
 }
 
 // Display the updated data in a table.
@@ -298,9 +275,54 @@ function displayFilteredData() {
 // Display the raw data in a table.
 function displayRawData() {
   updateData(getNewData(), updateTable, true);
+
 }
 
 // Display the charts.
 function displayCharts() {
   updateData(getNewData(), plotPoint, true);
+}
+
+/*
+ * Handles the pages dynamic refresh.
+ * If it detects the offline mode, the reload process is not triggered.
+ * Handled pages:
+ * /index.html
+ * /data-filtered-all.html
+ * /data-raw-all.html
+ * /charts.html
+ * /map-online.html
+ * If the page is not handled, throws an error.
+ */ 
+function handlePageUpdate() {
+	var sPath = window.location.pathname;
+	var page_name = sPath.substring(sPath.lastIndexOf('/') + 1);
+	var func = null;
+	switch(page_name)
+	{
+		case "index.html":
+		case "map-online.html":
+			func = mapNewData;
+		  break;
+
+		case "data-filtered-all.html":
+			func = displayFilteredData;
+			break;
+		case "data-raw-all.html":
+			func = displayRawData;
+		  break;
+
+		case "charts.html":
+		  func = function() { 
+	        updateData(getNewData(), function() {}); 
+	        displayChart();
+	      };
+	      break;
+
+		default:
+			throw "PAGE NOT HANDLED BY common.js:handlePageUpdate()";
+	}
+	if(navigator.onLine) {
+    	var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', func) }, 3000);
+	}
 }
