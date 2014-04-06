@@ -79,9 +79,8 @@
 
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
-
-    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', mapNewData) }, 30000);
-    // window.clearInterval(reloadTimer);
+    
+	handlePageUpdate();
   </script>
 </body>
 </html>

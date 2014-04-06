@@ -137,7 +137,7 @@
     updateData(data, function() {});
     displayChart();
 
-    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', function() { updateData(getNewData(), function() {}); displayChart();}) }, 30000);
+    handlePageUpdate();
   </script>
 </body>
 </html>

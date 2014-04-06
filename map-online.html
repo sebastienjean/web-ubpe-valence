@@ -33,9 +33,9 @@
 	    // Création de la carte 
 	    setupMap('mapFullScreen', settings.map['maxZoom'], settings.map['minZoom']);
 	    
-	    updateData(data, mapNewDataOnFullMap);
+	    updateData(data, mapNewData);
 	    map.fitBounds(markers.getBounds());
-	    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', mapNewDataOnFullMap) }, 30000);
+	    handlePageUpdate();
 	</script>
 	</div>
 </body>
