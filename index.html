@@ -60,6 +60,9 @@
 
   <script>
     'use strict';
+
+    setupMap('map', 18, 0);
+
     (function initSummary() {
       var titles = [];
       settings.dataBriefLabels.forEach(function(label, index, array) {
@@ -76,9 +79,8 @@
 
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
-
-    var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', mapNewData) }, 30000);
-    // window.clearInterval(reloadTimer);
+    
+	handlePageUpdate();
   </script>
 </body>
 </html>
