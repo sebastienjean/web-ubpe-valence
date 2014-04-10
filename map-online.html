@@ -32,10 +32,8 @@
 		<script>
 	    // Création de la carte 
 	    setupMap('mapFullScreen', settings.map['maxZoom'], settings.map['minZoom']);
-	    
-	    updateData(data, mapNewData);
-	    map.fitBounds(markers.getBounds());
 	    handlePageUpdate();
+	    map.fitBounds(markers.getBounds());
 	</script>
 	</div>
 </body>

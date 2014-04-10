@@ -73,14 +73,11 @@
         titles.push(title);
       });
       $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
-    })();
+    })();   
 
-    updateData(data, mapNewData);
-
+  	handlePageUpdate();
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
-    
-	handlePageUpdate();
   </script>
 </body>
 </html>
