@@ -1,17 +1,13 @@
 'use strict';
 var settings = {};
 
-settings.dataFrameLength = 29; // Number of fields in the frame : 29 for the 2013 flight.
+settings.dataFrameLength = 28; // Number of fields in the frame : 29 for the 2013 flight.
 
 // Field labels (for charts and tables)
 settings.fieldLabels = {  // "fieldName" : "label"
-  "date" : "Time",
-  "stationName" : "Station",
   "objectName" : "Object",
   "frameCounter" : "Frame",
   "resetCounter" : "Reset",
-  "currentFlightPhaseNumber" : "Phase",
-  "currentFlightPhaseDurationInSeconds" : "Phase duration",
   "secondsSinceLastReset" : "System time",
   "RTCTime" : "RTC time",
   "GPSTime" : "GPS time",
@@ -24,21 +20,23 @@ settings.fieldLabels = {  // "fieldName" : "label"
   "numSatsGPS" : "Sats",
   "hdop" : "Precision",
   "internalTemperatureAnalogSensor" : "Temp. in",
-  "middleTemperatureAnalogSensor" : "Temp. middle",
   "externalTemperatureAnalogSensor" : "Temp. out",
+  "middleTemperatureAnalogSensor" : "Temp. middle",  
   "externalHumidityAnalogSensor" : "Hygro",
   "differentialPressureAnalogSensor" : "Pressure",
-  "upLuminosityAnalogSensor" : "Lux up",
-  "side1LuminosityAnalogSensor" : "Lux side1",
-  "side2LuminosityAnalogSensor" : "Lux side2",
-  "soundLevelAnalogSensor" : "Sound level",
+  "xAccelerationAnalogSensor" : "Acc. X",
+  "yAccelerationAnalogSensor" : "Acc. Y",
+  "zAccelerationAnalogSensor" : "Acc. Z",
+  "visibleLuminosityAnalogSensor" : "Lux visible",
+  "irLuminosityAnalogSensor" : "Lux ir",
+  "uvLuminosityAnalogSensor" : "Lux uv",
   "batteryTemperatureAnalogSensor" : "Temp. Bat",
+  "headingPseudoAnalogSensor" : "Head. pseudo",
   "voltageAnalogSensor" : "Voltage"
 };
 
 // Measurement units
 settings.fieldUnits = {  // "fieldName" : "unit"
-  "currentFlightPhaseDurationInSeconds" : "s",
   "secondsSinceLastReset" : "s",
   "longGPS" : "°",
   "latGPS" : "°",
@@ -50,16 +48,15 @@ settings.fieldUnits = {  // "fieldName" : "unit"
   "externalTemperatureAnalogSensor" : "°C",
   "externalHumidityAnalogSensor" : "%",
   "differentialPressureAnalogSensor" : "hPa",
-  "upLuminosityAnalogSensor" : "lux",
-  "side1LuminosityAnalogSensor" : "lux",
-  "side2LuminosityAnalogSensor" : "lux",
+  "visibleLuminosityAnalogSensor" : "lux",
+  "irLuminosityAnalogSensor" : "lux",
+  "uvLuminosityAnalogSensor" : "lux",
   "batteryTemperatureAnalogSensor" : "°C",
   "voltageAnalogSensor" : "V"
 };
 
 // Measurement precision
 settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating point"
-  "currentFlightPhaseDurationInSeconds" : 0,
   "secondsSinceLastReset" : 0,
   "altGPS" : 0,
   "speedGPS" : 0,
@@ -68,15 +65,14 @@ settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating 
   "externalTemperatureAnalogSensor" : 1,
   "externalHumidityAnalogSensor" : 0,
   "differentialPressureAnalogSensor" : 0,
-  "upLuminosityAnalogSensor" : 0,
-  "side1LuminosityAnalogSensor" : 0,
-  "side2LuminosityAnalogSensor" : 0,
+  "visibleLuminosityAnalogSensor" : 0,
+  "irLuminosityAnalogSensor" : 0,
+  "uvLuminosityAnalogSensor" : 0,
   "batteryTemperatureAnalogSensor" : 1,
   "voltageAnalogSensor" : 1
 };
 
-settings.dataBriefLabels = [
-  "date","currentFlightPhaseNumber", "altGPS", "capGPS",
+settings.dataBriefLabels = ["altGPS", "capGPS",
   "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
   "externalTemperatureAnalogSensor","externalHumidityAnalogSensor",
   "differentialPressureAnalogSensor", "voltageAnalogSensor" ];
@@ -88,24 +84,23 @@ settings.sensorCalibration = {
   "externalTemperatureAnalogSensor" : [ 0.15625, -79.5 ],
   "externalHumidityAnalogSensor" : [ 0.1465, -21 ],
   "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
-  "upLuminosityAnalogSensor" : [8.4179, 0 ],
-  "side1LuminosityAnalogSensor" : [ 0.8418, 0 ],
-  "side2LuminosityAnalogSensor" : [ 0.8418, 0 ],
-  "soundLevelAnalogSensor" : [ 0, 0 ],
+  "visibleLuminosityAnalogSensor" : [8.4179, 0 ],
+  "irLuminosityAnalogSensor" : [ 0.8418, 0 ],
+  "uvLuminosityAnalogSensor" : [ 0.8418, 0 ],
   "batteryTemperatureAnalogSensor" : [ -0.0542, 50.31 ],
   "voltageAnalogSensor" : [ 0.0097, 0 ],
   "speedGPS" : [ 1.852, 0 ]
 };
 
-settings.chartXAxis = [ "date", "altGPS"];
+settings.chartXAxis = [ "frameCounter", "altGPS"];
 
 settings.chartYAxis = [
   "altGPS", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
     "externalTemperatureAnalogSensor", "batteryTemperatureAnalogSensor",
-    "externalHumidityAnalogSensor", "differentialPressureAnalogSensor", "upLuminosityAnalogSensor",
-    "side1LuminosityAnalogSensor", "side2LuminosityAnalogSensor",
+    "externalHumidityAnalogSensor", "differentialPressureAnalogSensor", "visibleLuminosityAnalogSensor",
+    "irLuminosityAnalogSensor", "uvLuminosityAnalogSensor",
     "voltageAnalogSensor", "speedGPS", "capGPS", "numSatsGPS",
-    "resetCounter", "currentFlightPhaseNumber"];
+    "resetCounter"];
 
 // Tiles server list
 settings.mapServers = {
