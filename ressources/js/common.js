@@ -276,13 +276,14 @@ function handlePageUpdate() {
 	var sPath = window.location.pathname;
 	var page_name = sPath.substring(sPath.lastIndexOf('/') + 1);
 	var callbackFunction = null;
-  var intervalFunction = null;
+  var loadJSCallbackFunction = null;
+  var optionnalFunction = function() {};
   var raw = false;
 	switch(page_name)
 	{
 		case "index.html":
 		case "map-online.html":
-      intervalFunction = function(){
+      loadJSCallbackFunction = function(){
 
         updateData(getNewData(), mapFrame);
       }
@@ -290,21 +291,31 @@ function handlePageUpdate() {
 		  break;
 
 		case "data-filtered-all.html":
-      intervalFunction = function(){
+      loadJSCallbackFunction = function(){
         updateData(getNewData(), updateTable);
       }
       callbackFunction = updateTable;
+      var optionnalFunction = function() {
+        $(function() {
+      $("table").tablesorter({sortList: [[3,1]]});
+    });
+      };
 			break;
 		case "data-raw-all.html":
-      intervalFunction = function(){
+      loadJSCallbackFunction = function(){
         updateData(getNewData(), updateTable, true);
       }
       callbackFunction = updateTable;
       raw = true;
+      var optionnalFunction = function() {
+        $(function() {
+          $("table").tablesorter({sortList: [[3,1]]});
+        });
+      };
 		  break;
 
 		case "charts.html":
-		  intervalFunction = function() { 
+		  loadJSCallbackFunction = function() { 
 	        updateData(getNewData(), function(){});
           displayChart(); 
 	      };
@@ -316,9 +327,13 @@ function handlePageUpdate() {
 			throw "PAGE NOT HANDLED BY common.js:handlePageUpdate()";
 	}
   
-  updateData(data, callbackFunction, raw);  //we need this one to let the leaflet API correctly.
+  updateData(data, callbackFunction, raw);  //we need this one to let the leaflet API starts correctly.
+  optionnalFunction();
 
 	if(navigator.onLine) {
-    	var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', intervalFunction);}, 30000);
+    	var reloadTimer = window.setInterval(function() { 
+        loadJsFile('data/events.clean', loadJSCallbackFunction);
+        optionnalFunction();
+      }, 10000);
 	}
 }
