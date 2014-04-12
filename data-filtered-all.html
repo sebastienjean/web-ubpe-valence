@@ -4,20 +4,31 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="Content-Language" content="fr" />
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
-  <link rel="stylesheet" href="ressources/style.css" type="text/css" />
-  <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
+
+<!--Related to tablesorter-->
+  <link rel="stylesheet" href="ressources/tablesorter/themes/custom/style.css" type="text/css" id="" media="print, projection, screen" />
+  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" src="ressources/tablesorter/jquery.tablesorter.js"></script>
+
+  <script type="text/javascript">
+
+  </script>
+  <!--Related to tablesorter-->
+
 
   <title>UBPE2013@Valence | Filtered data</title>
 </head>
 <body>
-
-  <div id="tab2">
-    <table id="filtered-data">
-      <tr id="headers"></tr>
+  <div id="tab2" >
+    <table id="filtered-data" class="tablesorter" >
+    <thead id="headers">
+      <tr id="header_row"></tr>
+    </thead>
+    <tbody id="body_table">
+    </tbody>
     </table>
   </div>
 
-  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
   <script type="text/javascript" src="ressources/js/common.js"></script>
 
   <script type="text/javascript" src="ressources/js/date.format.js"></script>
@@ -28,11 +39,11 @@
   <script type="text/javascript" src="ressources/js/blacklist.js"></script>
   <script type="text/javascript" src="data/events.clean" id="events-file"></script>
 
-  <script>
+ <script>
     'use strict';
 
     (function initTable() {
-      var headers = $('#headers');
+      var headers = $('#header_row');
 
       var titles = [];
       for (var propName in settings.fieldLabels) {
@@ -51,10 +62,16 @@
       for (var propName in settings.fieldLabels) {
         values.push(data[propName]);
       };
-      $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>').insertAfter('#headers');
+      var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>')
+      $('#body_table').prepend(x);
+
+
+
+
     }
 
     handlePageUpdate();
+
   </script>
 </body>
 </html>
