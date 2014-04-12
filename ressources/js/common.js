@@ -8,7 +8,7 @@
 
 var rawData = [];  // List of raw events.
 var filteredData = [];  // List of events, filtered and processed.
-var latestTimestamp = 0;  // Store EPOCH in the latest timestamp.
+var latestFrame = 0;  // Store EPOCH in the latest timestamp.
 var highestAltitude = 0;  // Highest altitude attained.
 var bursted = false;  // Has the balloon poped yet?
 
@@ -48,8 +48,8 @@ function updateData(data, callback, raw) {
   };
   if (data.length) {  // There's at least one event.
     updateSummary(filteredData[0]);
-    latestTimestamp = data[0][0];
-    console.log("Updated latest timestamp: " + dateFormat(new Date(parseInt(latestTimestamp)), "HH:MM:ss"));
+    latestFrame = data[0][1];
+    console.log("Updated latest frame: " + parseInt(latestFrame));
   }
 }
 
@@ -99,7 +99,6 @@ function mapFrame(frame) {
 function getPopUpFromFrame(frame){
   var result = '<div style="color : black">' +
                  '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
-                 '<center>' + frame['date'] + '</center><br/>' +
                  '<u><b>Location</b></u><br/>' +
                     '<b>Latitude</b> : ' + frame['latGPS'] + '<br/>' +
                     '<b>Longitude</b> : ' + frame['longGPS'] + '<br/>' +
@@ -196,7 +195,7 @@ function filterData(dataArg) {
   var data = $.extend({}, dataArg);
 
   // Adjust values according to sensor calibration.
-  for (i in settings.sensorCalibration) {
+  for (var i in settings.sensorCalibration) {
     if (data[i] != null) {
       data[i] = (parseFloat(data[i]) * settings.sensorCalibration[i][0]) + settings.sensorCalibration[i][1];
     } else {
@@ -204,15 +203,6 @@ function filterData(dataArg) {
     }
   }
 
-  // Parse timestamp.
-  data['date'] = dateFormat(new Date(parseInt(data['date'])), "HH:MM:ss");
-
-  // Parse numbers.
-  for (var i in settings.fieldFixedPoints) {
-    if (data[i] != null) {
-      data[i] = parseFloat(data[i]).toFixed(settings.fieldFixedPoints[i]);
-    }
-  }
 
   // "Cross" icons for invalid GPS data.
   if (data['fixGPS'] == "V") {
@@ -251,8 +241,8 @@ function getNewData() {
   var newData = [];
   var timestamp;
   for (var i = 0; i < data.length; i++) {
-    timestamp = data[i][0];
-    if (timestamp > latestTimestamp) {
+    timestamp = data[i][1];
+    if (timestamp > latestFrame) {
       newData.push(data[i]);
     } else {
       break;
@@ -321,6 +311,7 @@ function handlePageUpdate() {
           displayChart(); 
 	      };
         callbackFunction = function(){};
+        optionnalFunction = displayChart;
         raw = false;
 	      break;
 
