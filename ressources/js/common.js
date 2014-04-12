@@ -244,7 +244,6 @@ function loadJsFile(filename, callback){
   fileref.onload = callback;
 
   body.appendChild(fileref);
-
 }
 
 // Get the new data from the file (if any).
@@ -262,27 +261,6 @@ function getNewData() {
   return newData;
 }
 
-// Map the updated data.
-function mapNewData() {
-  updateData(getNewData(), mapFrame);
-}
-
-// Display the updated data in a table.
-function displayFilteredData() {
-  updateData(getNewData(), updateTable);
-}
-
-// Display the raw data in a table.
-function displayRawData() {
-  updateData(getNewData(), updateTable, true);
-
-}
-
-// Display the charts.
-function displayCharts() {
-  updateData(getNewData(), plotPoint, true);
-}
-
 /*
  * Handles the pages dynamic refresh.
  * If it detects the offline mode, the reload process is not triggered.
@@ -297,32 +275,65 @@ function displayCharts() {
 function handlePageUpdate() {
 	var sPath = window.location.pathname;
 	var page_name = sPath.substring(sPath.lastIndexOf('/') + 1);
-	var func = null;
+	var callbackFunction = null;
+  var loadJSCallbackFunction = null;
+  var optionnalFunction = function() {};
+  var raw = false;
 	switch(page_name)
 	{
 		case "index.html":
 		case "map-online.html":
-			func = mapNewData;
+      loadJSCallbackFunction = function(){
+
+        updateData(getNewData(), mapFrame);
+      }
+      callbackFunction = mapFrame;
 		  break;
 
 		case "data-filtered-all.html":
-			func = displayFilteredData;
+      loadJSCallbackFunction = function(){
+        updateData(getNewData(), updateTable);
+      }
+      callbackFunction = updateTable;
+      var optionnalFunction = function() {
+        $(function() {
+      $("table").tablesorter({sortList: [[3,1]]});
+    });
+      };
 			break;
 		case "data-raw-all.html":
-			func = displayRawData;
+      loadJSCallbackFunction = function(){
+        updateData(getNewData(), updateTable, true);
+      }
+      callbackFunction = updateTable;
+      raw = true;
+      var optionnalFunction = function() {
+        $(function() {
+          $("table").tablesorter({sortList: [[3,1]]});
+        });
+      };
 		  break;
 
 		case "charts.html":
-		  func = function() { 
-	        updateData(getNewData(), function() {}); 
-	        displayChart();
+		  loadJSCallbackFunction = function() { 
+	        updateData(getNewData(), function(){});
+          displayChart(); 
 	      };
+        callbackFunction = function(){};
+        raw = false;
 	      break;
 
 		default:
 			throw "PAGE NOT HANDLED BY common.js:handlePageUpdate()";
 	}
+  
+  updateData(data, callbackFunction, raw);  //we need this one to let the leaflet API starts correctly.
+  optionnalFunction();
+
 	if(navigator.onLine) {
-    	var reloadTimer = window.setInterval(function() { loadJsFile('data/events.clean', func) }, 3000);
+    	var reloadTimer = window.setInterval(function() { 
+        loadJsFile('data/events.clean', loadJSCallbackFunction);
+        optionnalFunction();
+      }, 10000);
 	}
 }
