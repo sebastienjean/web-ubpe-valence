@@ -31,7 +31,7 @@
 	<div id="mapFullScreen" style="height: 100%; width: 100%">
 		<script>
 	    // Création de la carte 
-	    setupMap('mapFullScreen', settings.map['maxZoom'], settings.map['minZoom']);
+	    setupMap('mapFullScreen', settings.mapServers['online'], settings.map['maxZoom'], settings.map['minZoom']);
 	    handlePageUpdate();
 	    map.fitBounds(markers.getBounds());
 	</script>

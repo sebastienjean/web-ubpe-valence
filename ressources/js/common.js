@@ -283,6 +283,7 @@ function handlePageUpdate() {
 	{
 		case "index.html":
 		case "map-online.html":
+		case "map-offline.html":
       loadJSCallbackFunction = function(){
 
         updateData(getNewData(), mapFrame);

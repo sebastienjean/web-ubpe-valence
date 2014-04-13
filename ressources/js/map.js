@@ -4,10 +4,10 @@
 var map = null;
 var markers = null;
 
-function setupMap(name, maxZ, minZ) {
+function setupMap(name, mapServer, maxZ, minZ) {
   map = L.map(name, settings.map);
   markers = L.featureGroup();
-  L.tileLayer("http://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+  L.tileLayer(mapServer,
             {
               subdomains : '0123',
               attribution : 'UBPE 2013 - IUT Valence',
@@ -21,7 +21,6 @@ function setupMap(name, maxZ, minZ) {
   .bindPopup("<div style=\"color : black\">" + settings.POI[i][2] + "</div>");
   }
 }
-
 
 // Custom icons.
 var SmallIcon = L.Icon.extend({  // Create the "small icon" class.
