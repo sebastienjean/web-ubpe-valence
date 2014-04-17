@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="fr" />
+  <meta charset="utf-8">
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
   <link rel="stylesheet" href="ressources/style.css" type="text/css" />
   <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
@@ -51,7 +51,7 @@
 
   <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
-  <script type="text/javascript" src="ressources/js/date.format.js"></script>
+  <script type="text/javascript" src="ressources/js/moment.js"></script>
 
   <script type="text/javascript" src="ressources/js/settings.js"></script>
   <script type="text/javascript" src="data/events.clean" id="events-file"></script>
@@ -62,6 +62,8 @@
     'use strict';
 
     setupMap('map', settings.mapServers['online'], 18, 0);
+
+//    var x = "4425.36";
 
     (function initSummary() {
       var titles = [];
@@ -76,6 +78,7 @@
     })();   
 
   	handlePageUpdate();
+    //handlePageUpdate();
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
   </script>

@@ -6,11 +6,11 @@
 //--------------------------------------------------------------------------------
 'use strict';
 
-var rawData = [];  // List of raw events.
-var filteredData = [];  // List of events, filtered and processed.
-var latestFrame = 0;  // Store EPOCH in the latest timestamp.
-var highestAltitude = 0;  // Highest altitude attained.
-var bursted = false;  // Has the balloon poped yet?
+var rawData = []; // List of raw events.
+var filteredData = []; // List of events, filtered and processed.
+var latestFrame = 0; // Store EPOCH in the latest timestamp.
+var highestAltitude = 0; // Highest altitude attained.
+var bursted = false; // Has the balloon poped yet?
 
 // --------------------------------------------------------------------------------
 // End of Variables
@@ -30,9 +30,9 @@ function updateData(data, callback, raw) {
 
   var frame;
   var filtered;
-  for (var i=data.length - 1; i >= 0; i--) {
+  for (var i = data.length - 1; i >= 0; i--) {
     var row = data[i];
-    if ($.isArray(row) && row.length == settings.dataFrameLength) {
+    if ($.isArray(row) && row.length == Object.keys(settings.fieldLabels).length) {
       frame = createFrameObj(row);
       filtered = filterData(frame);
       rawData.push(frame);
@@ -46,7 +46,7 @@ function updateData(data, callback, raw) {
       console.warn('Encountered an invalid line: ' + row);
     }
   };
-  if (data.length) {  // There's at least one event.
+  if (data.length) { // There's at least one event.
     updateSummary(filteredData[0]);
     latestFrame = data[0][1];
     console.log("Updated latest frame: " + parseInt(latestFrame));
@@ -89,29 +89,31 @@ function mapFrame(frame) {
       highestAltitude = height;
     }
 
-    var marker = L.marker([latGPSFormat, longGPSFormat], {icon: icon})
+    var marker = L.marker([latGPSFormat, longGPSFormat], {
+      icon: icon
+    })
     /* Remplissage du pop-up du marker */
-    .bindPopup(getPopUpFromFrame(frame ));
+    .bindPopup(getPopUpFromFrame(frame));
     markers.addLayer(marker).addTo(map);
   }
 }
 
-function getPopUpFromFrame(frame){
+function getPopUpFromFrame(frame) {
   var result = '<div style="color : black">' +
-                 '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
-                 '<u><b>Location</b></u><br/>' +
-                    '<b>Latitude</b> : ' + frame['latGPS'] + '<br/>' +
-                    '<b>Longitude</b> : ' + frame['longGPS'] + '<br/>' +
-                    '<b>Altitude</b> : ' + frame['altGPS'] + ' ' + settings.fieldUnits['altGPS'] + '<br/>' +
-                 '<u><b>Data</b></u>' + '<br/>' +
-                    '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
-                    '<b>Pressure:</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
-                    '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
-                    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
-    				"<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' '+ settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" + 
-           			"<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' '          + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" + 
-            		"<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"; + "</div>";
-    return result;
+    '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
+    '<u><b>Location</b></u><br/>' +
+    '<b>Latitude</b> : ' + formatGPSCoordinates(frame['latGPS']) + '<br/>' +
+    '<b>Longitude</b> : ' + formatGPSCoordinates(frame['longGPS']) + '<br/>' +
+    '<b>Altitude</b> : ' + frame['altGPS'] + ' ' + settings.fieldUnits['altGPS'] + '<br/>' +
+    '<u><b>Data</b></u>' + '<br/>' +
+    '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
+    '<b>Pressure:</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
+    '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
+    '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
+    "<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" +
+    "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" +
+    "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"; + "</div>";
+  return result;
 }
 
 /**
@@ -135,9 +137,9 @@ function convertGPSToDecimal(GPS) {
   var neg;
   var pd;
   if (GPS < 0) {
-     pe = -Math.ceil(GPS);
-     pd = -GPS - pe;
-     neg = true;
+    pe = -Math.ceil(GPS);
+    pd = -GPS - pe;
+    neg = true;
   } else {
     pe = Math.floor(GPS);
     pd = GPS - pe;
@@ -146,7 +148,7 @@ function convertGPSToDecimal(GPS) {
   // pe et pd sont positifs
   var degres = Math.floor(pe / 100);
   var minutes = pe % 100;
-  var ddeg = +degres + ((+minutes + pd)/60*100)/100;
+  var ddeg = +degres + ((+minutes + pd) / 60 * 100) / 100;
   if (neg) {
     return (-ddeg);
   } else {
@@ -202,6 +204,15 @@ function filterData(dataArg) {
       data[i] = 0;
     }
   }
+  for (var i in settings.fieldFixedPoints) {
+    if (data[i] != null) {
+      data[i] = parseFloat(data[i]).toFixed(settings.fieldFixedPoints[i]);
+    }
+  }
+  // transform 123456 to 12:34:56
+  data.RTCTime = data.RTCTime.replace(/(..)(..)(..)/,'$1:$2:$3');
+  data.GPSTime = data.GPSTime.replace(/(..)(..)(..)/,'$1:$2:$3');
+  data.timestamp =  moment( parseInt(data.timestamp,10) ).format('HH:mm:ss');
 
 
   // "Cross" icons for invalid GPS data.
@@ -220,7 +231,7 @@ function filterData(dataArg) {
 }
 
 /* Load a JavaScript or JSON file to use its data */
-function loadJsFile(filename, callback){
+function loadJsFile(filename, callback) {
   console.log("Reloading events");
   var body = document.getElementsByTagName("body")[0];
   var fileref = document.getElementById('events-file');
@@ -228,7 +239,7 @@ function loadJsFile(filename, callback){
 
   // Recreate the node from scratch to make sure the file is reloaded.
   fileref = document.createElement('script');
-  fileref.setAttribute("type","text/javascript");
+  fileref.setAttribute("type", "text/javascript");
   fileref.setAttribute("src", filename);
   fileref.setAttribute("id", "events-file");
   fileref.onload = callback;
@@ -261,71 +272,94 @@ function getNewData() {
  * /charts.html
  * /map-online.html
  * If the page is not handled, throws an error.
- */ 
+ */
 function handlePageUpdate() {
-	var sPath = window.location.pathname;
-	var page_name = sPath.substring(sPath.lastIndexOf('/') + 1);
-	var callbackFunction = null;
+  var sPath = window.location.pathname;
+  var page_name = sPath.substring(sPath.lastIndexOf('/') + 1);
+  var callbackFunction = null;
   var loadJSCallbackFunction = null;
   var optionnalFunction = function() {};
   var raw = false;
 	switch(page_name)
 	{
+	    case "":
 		case "index.html":
 		case "map-online.html":
 		case "map-offline.html":
       loadJSCallbackFunction = function(){
-
         updateData(getNewData(), mapFrame);
       }
       callbackFunction = mapFrame;
-		  break;
+      break;
 
-		case "data-filtered-all.html":
-      loadJSCallbackFunction = function(){
+    case "data-filtered-all.html":
+      loadJSCallbackFunction = function() {
         updateData(getNewData(), updateTable);
       }
       callbackFunction = updateTable;
       var optionnalFunction = function() {
         $(function() {
-      $("table").tablesorter({sortList: [[3,1]]});
-    });
+          $("table").tablesorter({
+            sortList: [
+              [3, 1]
+            ]
+          });
+        });
       };
-			break;
-		case "data-raw-all.html":
-      loadJSCallbackFunction = function(){
+      break;
+    case "data-raw-all.html":
+      loadJSCallbackFunction = function() {
         updateData(getNewData(), updateTable, true);
       }
       callbackFunction = updateTable;
       raw = true;
       var optionnalFunction = function() {
         $(function() {
-          $("table").tablesorter({sortList: [[3,1]]});
+          $("table").tablesorter({
+            sortList: [
+              [3, 1]
+            ]
+          });
         });
       };
-		  break;
+      break;
 
-		case "charts.html":
-		  loadJSCallbackFunction = function() { 
-	        updateData(getNewData(), function(){});
-          displayChart(); 
-	      };
-        callbackFunction = function(){};
-        optionnalFunction = displayChart;
-        raw = false;
-	      break;
+    case "charts.html":
+      loadJSCallbackFunction = function() {
+        updateData(getNewData(), function() {});
+        displayChart();
+      };
+      callbackFunction = function() {};
+      optionnalFunction = displayChart;
+      raw = false;
+      break;
 
-		default:
-			throw "PAGE NOT HANDLED BY common.js:handlePageUpdate()";
-	}
-  
-  updateData(data, callbackFunction, raw);  //we need this one to let the leaflet API starts correctly.
+
+    default:
+      throw "PAGE NOT HANDLED BY common.js:handlePageUpdate()";
+      alert(page_name);
+  }
+
+  updateData(data, callbackFunction, raw); //we need this one to let the leaflet API starts correctly.
   optionnalFunction();
 
-	if(navigator.onLine) {
-    	var reloadTimer = window.setInterval(function() { 
-        loadJsFile('data/events.clean', loadJSCallbackFunction);
-        optionnalFunction();
-      }, 10000);
-	}
+  if (navigator.onLine) {
+    var reloadTimer = window.setInterval(function() {
+      loadJsFile('data/events.clean', loadJSCallbackFunction);
+      optionnalFunction();
+    }, 10000);
+  }
+}
+
+
+function formatGPSCoordinates(coordinates) {
+  var dotIndex = coordinates.indexOf('.');
+  var first = coordinates.substring(0, dotIndex - 2);
+  if (first == "") {
+    first = "0";
+  }
+  var second = coordinates.substring(dotIndex - 2, dotIndex);
+  var rest = coordinates.substring(dotIndex);
+
+  return (first + "°" + second + rest);
 }

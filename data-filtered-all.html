@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="fr" />
+  <meta charset="utf-8">
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
 
 <!--Related to tablesorter-->
@@ -31,7 +31,7 @@
 
   <script type="text/javascript" src="ressources/js/common.js"></script>
 
-  <script type="text/javascript" src="ressources/js/date.format.js"></script>
+  <script type="text/javascript" src="ressources/js/moment.js"></script>
 
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
 
@@ -59,10 +59,17 @@
 
     function updateTable(data) {
       var values = [];
+
       for (var propName in settings.fieldLabels) {
-        values.push(data[propName]);
+    if (propName == "latGPS" || propName == "longGPS") {
+
+      values.push(formatGPSCoordinates(data[propName]));
+    } else {
+      values.push(data[propName]);
+    }
+
       };
-      var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>')
+      var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>');
       $('#body_table').prepend(x);
 
 
