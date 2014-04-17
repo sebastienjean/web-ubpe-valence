@@ -6,8 +6,22 @@
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
   <link rel="stylesheet" href="ressources/style.css" type="text/css" />
   <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
+  <link rel="stylesheet" href="ressources/countdown/jquery.countdown.css">
 
   <title>UBPE2013@Valence | Home</title>
+  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  <script src="ressources/countdown/jquery.plugin.min.js"></script>
+  <script src="ressources/countdown/jquery.countdown.min.js"></script>
+  <script src="ressources/countdown/jquery.countdown-fr.js"></script>
+  <script>
+
+    $(function () {
+      var austDay =  new Date(2014, 3, 23, 14, 0, 0, 0);     
+      $('#defaultCountdown').countdown({until: austDay});
+      $('#year').text(austDay.getFullYear());
+    });
+</script>
+
 </head>
 
 <body>
@@ -21,6 +35,12 @@
         <li><a href="data-raw-all.html">Raw data</a></li>
       </ul>
     </div><!-- end menu -->
+
+    <div id="ban">
+    <p>Firefly26 - Almost there:</p>
+    <div id="defaultCountdown"></div>
+    </div>
+
 
     <div id="frame">
       <div id="page-content">
@@ -49,7 +69,7 @@
     </div><!-- end footer -->
   </div>
 
-  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
   <script type="text/javascript" src="ressources/js/moment.js"></script>
 

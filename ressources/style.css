@@ -269,3 +269,8 @@ body {
 #footer a:hover {
 	color: #ff4500;
 }
+
+#defaultCountdown, #ban { width: 240px; height: 45px; 
+	margin: 10px auto 10px auto;
+	/*background-color : orange;*/
+	text-align: center;}
