@@ -1,41 +1,45 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Content-Language" content="en" />
-<link rel="shortcut icon" href="./ressources/img/favicon.ico">
-<link rel="stylesheet" href="./ressources/style.css" type="text/css" />
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="./ressources/img/favicon.ico">
+  <link rel="stylesheet" href="./ressources/style.css" type="text/css" />
+  <link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
+  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-<script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
-<script type="text/javascript" src="./ressources/js/common.js"></script>
+    #mapFullScreen {
+      height: 100%;
+    }
+  </style>
 
-<script type="text/javascript" src="./ressources/js/date.format.js"></script>
-
-<link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
-<script type="text/javascript" src="./ressources/leaflet/leaflet.js"></script>
-
-<script type="text/javascript" src="./ressources/js/settings.js"></script>
-<script type="text/javascript" src="./ressources/js/blacklist.js"></script>
-<script type="text/javascript" src="ressources/js/map.js"></script>
-
-<!-- <meta http-equiv="refresh" content="15"> -->
-<!-- In firefox : set accessibility.blockautorefresh to false to allow the autorefresh function -->
-
-<title>UBPE2013@Valence | Map (offline)</title>
+  <title>UBPE2014@Valence | Map (online)</title>
 </head>
 
 <body>
 
-<script type="text/javascript" src="data/events.clean" id="events-file"></script>
+  <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
+  <script type="text/javascript" src="ressources/js/moment.js"></script>
 
-	<div id="mapFullScreen" style="height: 100%; width: 100%">
-		<script>
-	    // Création de la carte 
-	    setupMap('mapFullScreen', settings.mapServers['offline'], settings.map['maxZoom'], settings.map['minZoom']);
-	    handlePageUpdate();
-	    map.fitBounds(markers.getBounds());
-	</script>
-	</div>
+  <script type="text/javascript" src="ressources/js/settings.js"></script>
+  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
+  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
+  <script type="text/javascript" src="ressources/js/map.js"></script>
+  <script type="text/javascript" src="ressources/js/common.js"></script>
+
+  <div id="mapFullScreen"></div>
+    <script>
+      // Création de la carte
+      setupMap('mapFullScreen', settings.mapServers['offline'], settings.map['maxZoom'], settings.map['minZoom']);
+      handlePageUpdate();
+      map.fitBounds(markers.getBounds());
+  </script>
 </body>
 
 </html>

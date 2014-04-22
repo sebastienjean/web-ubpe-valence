@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="fr" />
+  <meta charset="utf-8">
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
 
 <!--Related to tablesorter-->
@@ -16,7 +16,7 @@
   <!--Related to tablesorter-->
 
 
-  <title>UBPE2013@Valence | Filtered data</title>
+  <title>UBPE2014@Valence | Filtered data</title>
 </head>
 <body>
   <div id="tab2" >
@@ -29,15 +29,13 @@
     </table>
   </div>
 
-  <script type="text/javascript" src="ressources/js/common.js"></script>
-
-  <script type="text/javascript" src="ressources/js/date.format.js"></script>
-
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
+  <script type="text/javascript" src="ressources/js/moment.js"></script>
 
   <script type="text/javascript" src="ressources/js/settings.js"></script>
   <script type="text/javascript" src="ressources/js/blacklist.js"></script>
   <script type="text/javascript" src="data/events.clean" id="events-file"></script>
+  <script type="text/javascript" src="ressources/js/common.js"></script>
 
  <script>
     'use strict';
@@ -59,10 +57,16 @@
 
     function updateTable(data) {
       var values = [];
+
       for (var propName in settings.fieldLabels) {
-        values.push(data[propName]);
+        if (data['fixGPS'] == "A" && (propName == "latGPS" || propName == "longGPS")) {
+
+          values.push(formatGPSCoordinates(data[propName]));
+        } else {
+          values.push(data[propName]);
+        }
       };
-      var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>')
+      var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>');
       $('#body_table').prepend(x);
 
 

@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="fr" />
+  <meta charset="utf-8">
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
   <link rel="stylesheet" href="ressources/style.css" type="text/css" />
   <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
+  <link rel="stylesheet" href="ressources/countdown/jquery.countdown.css">
 
-  <title>UBPE2013@Valence | Home</title>
+  <title>UBPE2014@Valence | Home</title>
+  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+  <script src="ressources/countdown/jquery.plugin.min.js"></script>
+  <script src="ressources/countdown/jquery.countdown.min.js"></script>
+  <script src="ressources/countdown/jquery.countdown-fr.js"></script>
+  <script>
+
+    $(function () {
+      var austDay =  new Date(2014, 3, 23, 14, 0, 0, 0);     
+      $('#defaultCountdown').countdown({until: austDay});
+      $('#year').text(austDay.getFullYear());
+    });
+</script>
+
 </head>
 
 <body>
@@ -22,9 +36,15 @@
       </ul>
     </div><!-- end menu -->
 
+    <div id="ban">
+    <p>Firefly26 - Almost there:</p>
+    <div id="defaultCountdown"></div>
+    </div>
+
+
     <div id="frame">
       <div id="page-content">
-        <div id="map" style="width: 100%; height: 800px"></div>
+        <div id="map" style="width: 100%; height: 600px"></div>
         <br/>
         <div id="lastFrame">
           <div id="tab2">
@@ -38,7 +58,7 @@
     </div><!-- end frame -->
 
     <div id="footer">
-      <div id="footer-left">UBPE2013@Valence - UBPE project team, IUT Valence</div>
+      <div id="footer-left">UBPE2014@Valence - UBPE project team, IUT Valence</div>
       <div id="footer-right">
         <ul>
           <li><a href="http://iut-valence.fr"><img
@@ -49,11 +69,12 @@
     </div><!-- end footer -->
   </div>
 
-  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
+
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
-  <script type="text/javascript" src="ressources/js/date.format.js"></script>
+  <script type="text/javascript" src="ressources/js/moment.js"></script>
 
   <script type="text/javascript" src="ressources/js/settings.js"></script>
+  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
   <script type="text/javascript" src="data/events.clean" id="events-file"></script>
   <script type="text/javascript" src="ressources/js/map.js"></script>
   <script type="text/javascript" src="ressources/js/common.js"></script>
@@ -61,7 +82,7 @@
   <script>
     'use strict';
 
-    setupMap('map', settings.mapServers['online'], 18, 0);
+    setupMap('map', settings.mapServers['online'], settings.map['maxZoom'], settings.map['minZoom']);
 
     (function initSummary() {
       var titles = [];
@@ -73,9 +94,10 @@
         titles.push(title);
       });
       $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
-    })();   
+    })();
 
-  	handlePageUpdate();
+    handlePageUpdate();
+
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
   </script>

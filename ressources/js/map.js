@@ -10,7 +10,7 @@ function setupMap(name, mapServer, maxZ, minZ) {
   L.tileLayer(mapServer,
             {
               subdomains : '0123',
-              attribution : 'UBPE 2013 - IUT Valence',
+              attribution : 'UBPE 2014 - IUT Valence',
               maxZoom : maxZ,
               minZoom : minZ
             }).addTo(map);
