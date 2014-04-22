@@ -47,7 +47,7 @@ function updateData(data, callback, raw) {
     }
   };
   if (data.length) { // There's at least one event.
-    updateSummary(filteredData[data.length - 1]);
+    updateSummary(filteredData[filteredData.length - 1]);
     latestFrame = data[0][3];
     console.log("Updated latest frame: " + parseInt(latestFrame));
   }
@@ -124,7 +124,8 @@ function updateSummary(frame) {
   settings.dataBriefLabels.forEach(function(label, index, array) {
     measures.push(frame[label]);
   });
-  $('#type-1').replaceWith('<td>' + measures.join('</td><td>') + '</td>');
+  console.log(measures);
+  $('#type-1').html('<td>' + measures.join('</td><td>') + '</td>');
 }
 
 /**
@@ -250,10 +251,10 @@ function loadJsFile(filename, callback) {
 // Get the new data from the file (if any).
 function getNewData() {
   var newData = [];
-  var timestamp;
+  var frameNum;
   for (var i = 0; i < data.length; i++) {
-    timestamp = data[i][3];
-    if (timestamp > latestFrame) {
+    frameNum = data[i][3];
+    if (frameNum > latestFrame) {
       newData.push(data[i]);
     } else {
       break;
