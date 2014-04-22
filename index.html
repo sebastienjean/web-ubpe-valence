@@ -84,8 +84,6 @@
 
     setupMap('map', settings.mapServers['online'], 18, 0);
 
-//    var x = "4425.36";
-
     (function initSummary() {
       var titles = [];
       settings.dataBriefLabels.forEach(function(label, index, array) {
@@ -96,10 +94,10 @@
         titles.push(title);
       });
       $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
-    })();   
+    })();
 
-  	handlePageUpdate();
-    //handlePageUpdate();
+    handlePageUpdate();
+
     // Center and zoom the map to display all the known points to date.
     map.fitBounds(markers.getBounds());
   </script>

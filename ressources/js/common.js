@@ -47,7 +47,7 @@ function updateData(data, callback, raw) {
     }
   };
   if (data.length) { // There's at least one event.
-    updateSummary(filteredData[0]);
+    updateSummary(filteredData[data.length - 1]);
     latestFrame = data[0][3];
     console.log("Updated latest frame: " + parseInt(latestFrame));
   }

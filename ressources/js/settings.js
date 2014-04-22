@@ -72,10 +72,10 @@ settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating 
   "voltageAnalogSensor" : 1
 };
 
-settings.dataBriefLabels = ["altGPS", "capGPS",
+settings.dataBriefLabels = ["timestamp", "resetCounter",  "altGPS", "capGPS",
   "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
-  "externalTemperatureAnalogSensor","externalHumidityAnalogSensor",
-  "differentialPressureAnalogSensor", "voltageAnalogSensor" ];
+  "externalTemperatureAnalogSensor", "differentialPressureAnalogSensor",
+  "externalHumidityAnalogSensor", "voltageAnalogSensor"];
 
 settings.sensorCalibration = {
   // An array containing the name of the data and a, b as calibratedData = (data * a) + b
