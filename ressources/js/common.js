@@ -361,5 +361,5 @@ function formatGPSCoordinates(coordinates) {
   var second = coordinates.substring(dotIndex - 2, dotIndex);
   var rest = coordinates.substring(dotIndex);
 
-  return (first + "°" + second + rest);
+  return (first + "&deg;" + second + rest);
 }

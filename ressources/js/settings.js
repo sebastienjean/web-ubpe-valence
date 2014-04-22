@@ -92,7 +92,7 @@ settings.sensorCalibration = {
   "speedGPS" : [ 1.852, 0 ]
 };
 
-settings.chartXAxis = [ "frameCounter", "altGPS"];
+settings.chartXAxis = ["timestamp", "frameCounter", "altGPS"];
 
 settings.chartYAxis = [
   "altGPS", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",

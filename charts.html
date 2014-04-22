@@ -38,15 +38,13 @@
   <script type="text/javascript" src="ressources/flot/jquery.flot.time.js"></script>
   <script type="text/javascript" src="ressources/flot/jquery.flot.axislabels.js"></script>
   <script type="text/javascript" src="ressources/flot/jquery.flot.tooltip.js"></script>
-  <script type="text/javascript" src="ressources/js/common.js"></script>
-
-  <script type="text/javascript" src="ressources/js/date.format.js"></script>
-
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
+  <script type="text/javascript" src="ressources/js/moment.js"></script>
 
   <script type="text/javascript" src="ressources/js/settings.js"></script>
   <script type="text/javascript" src="ressources/js/blacklist.js"></script>
   <script type="text/javascript" src="data/events.clean" id="events-file"></script>
+  <script type="text/javascript" src="ressources/js/common.js"></script>
 
   <script>
     (function initSelects() {
@@ -99,7 +97,7 @@
       var yLabel = settings.fieldLabels[yFieldName];
 
       // Handle the time.
-      if (xFieldName == "date") {
+      if (xFieldName == "timestamp") {
         graph_options["xaxis"]["mode"] = "time";
       } else {
         graph_options["xaxis"]["mode"] = "";
@@ -119,11 +117,12 @@
 
       var tab = [];
       for (var i = 0; i < rawData.length; i++) {
-        if ((xFieldName == "altGPS") && (data[i]['fixGPS'] == "V")) {  // Invalid GPS data, don't try to plot it.
+        if (data[i]['fixGPS'] == "V" && (xFieldName == "altGPS" || yFieldName == "altGPS")) {  // Invalid GPS data, don't try to plot it.
           return;
         }
         tab.push([rawData[i][xFieldName], filteredData[i][yFieldName]]);
       }
+      console.log(tab);
 
       var dTab = {
         data: tab,
