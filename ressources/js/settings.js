@@ -132,6 +132,5 @@ settings.map = {
 
 // POI list
 settings.POI = {  // "pointName" : [Lat, Lng, "popupText"]
-  "iut-radio" : [ 44.91568, 4.91524, "IUT de Valence, FM station" ],
-  "landing point" :[44.6289605, 5.0225093, "Landing point"]
+  "iut-radio" : [ 44.91568, 4.91524, "IUT de Valence, FM station" ]
 };
