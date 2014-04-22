@@ -61,13 +61,12 @@
       var values = [];
 
       for (var propName in settings.fieldLabels) {
-    if (propName == "latGPS" || propName == "longGPS") {
+        if (data['fixGPS'] == "A" && (propName == "latGPS" || propName == "longGPS")) {
 
-      values.push(formatGPSCoordinates(data[propName]));
-    } else {
-      values.push(data[propName]);
-    }
-
+          values.push(formatGPSCoordinates(data[propName]));
+        } else {
+          values.push(data[propName]);
+        }
       };
       var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>');
       $('#body_table').prepend(x);

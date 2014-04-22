@@ -280,12 +280,12 @@ function handlePageUpdate() {
   var loadJSCallbackFunction = null;
   var optionnalFunction = function() {};
   var raw = false;
-	switch(page_name)
-	{
-	    case "":
-		case "index.html":
-		case "map-online.html":
-		case "map-offline.html":
+  switch(page_name)
+  {
+    case "":
+    case "index.html":
+    case "map-online.html":
+    case "map-offline.html":
       loadJSCallbackFunction = function(){
         updateData(getNewData(), mapFrame);
       }
