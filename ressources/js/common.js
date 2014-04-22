@@ -348,7 +348,7 @@ function handlePageUpdate() {
     var reloadTimer = window.setInterval(function() {
       loadJsFile('data/events.clean', loadJSCallbackFunction);
       optionnalFunction();
-    }, 10000);
+    }, 30000);
   }
 }
 
