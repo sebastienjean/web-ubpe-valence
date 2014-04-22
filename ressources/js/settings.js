@@ -31,27 +31,27 @@ settings.fieldLabels = {  // "fieldName" : "label"
   "irLuminosityAnalogSensor" : "Lux ir",
   "uvLuminosityAnalogSensor" : "Lux uv",
   "batteryTemperatureAnalogSensor" : "Temp. Bat",
-  "headingPseudoAnalogSensor" : "Head. pseudo",
+  "headingPseudoAnalogSensor" : "Heading",
   "voltageAnalogSensor" : "Voltage"
 };
 
 // Measurement units
 settings.fieldUnits = {  // "fieldName" : "unit"
   "secondsSinceLastReset" : "s",
-  "longGPS" : "°",
-  "latGPS" : "°",
+  "longGPS" : "&deg;",
+  "latGPS" : "&deg;",
   "altGPS" : "m",
   "speedGPS" : "km/h",
-  "capGPS" : "°",
-  "internalTemperatureAnalogSensor" : "°C",
-  "middleTemperatureAnalogSensor" : "°C",
-  "externalTemperatureAnalogSensor" : "°C",
-  "externalHumidityAnalogSensor" : "%",
+  "capGPS" : "&deg;",
+  "internalTemperatureAnalogSensor" : "&deg;C",
+  "middleTemperatureAnalogSensor" : "&deg;C",
+  "externalTemperatureAnalogSensor" : "&deg;C",
+  "externalHumidityAnalogSensor" : "&#37;",
   "differentialPressureAnalogSensor" : "hPa",
   "visibleLuminosityAnalogSensor" : "lux",
   "irLuminosityAnalogSensor" : "lux",
   "uvLuminosityAnalogSensor" : "lux",
-  "batteryTemperatureAnalogSensor" : "°C",
+  "batteryTemperatureAnalogSensor" : "&deg;C",
   "voltageAnalogSensor" : "V"
 };
 
