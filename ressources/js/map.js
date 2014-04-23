@@ -31,7 +31,7 @@ var SmallIcon = L.Icon.extend({  // Create the "small icon" class.
   }
 });
 
-var greyIcon = new SmallIcon({iconUrl : settings.map['speedIconsPath'] + "/grey.png"});
+var whiteIcon = new SmallIcon({iconUrl : settings.map['speedIconsPath'] + "/white.png"});
 var blueIcon = new SmallIcon({iconUrl : settings.map['speedIconsPath'] + "/blue.png"});
 var greenIcon = new SmallIcon({iconUrl : settings.map['speedIconsPath'] + "/green.png"});
 var orangeIcon = new SmallIcon({iconUrl : settings.map['speedIconsPath'] + "/orange.png"});

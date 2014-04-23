@@ -186,7 +186,7 @@ function getSpeedIcon(speedGPS) {
   if (speedGPS > 5) {
     return blueIcon;
   }
-  return greyIcon;
+  return whiteIcon;
 }
 
 /**
