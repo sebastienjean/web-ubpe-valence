@@ -102,7 +102,7 @@ settings.sensorCalibration = {
   "yAccelerationAnalogSensor" : [ 0.016276041666666668, -5.0],
   "zAccelerationAnalogSensor" : [ 0.016276041666666668, -5.0],
   "frameCounter": [ 1, 0 ],
-  "resetCounter": [ 1, 0 ]
+  "resetCounter": [ 1, 2 ]
 };
 
 settings.chartXAxis = ["timestamp", "frameCounter", "altGPS"];

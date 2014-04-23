@@ -11,6 +11,7 @@ var filteredData = []; // List of events, filtered and processed.
 var latestFrame = 0; // Store EPOCH in the latest timestamp.
 var highestAltitude = 0; // Highest altitude attained.
 var bursted = false; // Has the balloon poped yet?
+var burstCounter = 0; // be sure that the balloon bursted.
 
 // --------------------------------------------------------------------------------
 // End of Variables
@@ -82,9 +83,10 @@ function mapFrame(frame) {
 
     var icon = getSpeedIcon(parseInt(frame['speedGPS']));
     var height = parseInt(frame['altGPS']);
-    if ((highestAltitude > (height + 300)) && !bursted) {
+    if ((highestAltitude > (height + 300)) && !bursted && burstCounter > 3) {
       icon = burstIcon;
       bursted = true;
+      burstCounter += 1;
     } else {
       highestAltitude = height;
     }
@@ -101,6 +103,7 @@ function mapFrame(frame) {
 function getPopUpFromFrame(frame) {
   var result = '<div style="color : black">' +
     '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
+    '<center>Time ' + frame['timestamp'] + '</center><br/>' +
     '<u><b>Location</b></u><br/>' +
     '<b>Latitude</b> : ' + formatGPSCoordinates(frame['latGPS']) + '<br/>' +
     '<b>Longitude</b> : ' + formatGPSCoordinates(frame['longGPS']) + '<br/>' +
