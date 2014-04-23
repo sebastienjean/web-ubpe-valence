@@ -88,7 +88,7 @@ settings.dataBriefLabels = ["timestamp", "frameCounter", "resetCounter",
 settings.sensorCalibration = {
   // An array containing the name of the data and a, b as calibratedData = (data * a) + b
   "middleTemperatureAnalogSensor" : [ 0.0043226031338526915, -92.49291784702551 ],
-  "internalTemperatureAnalogSensor" : [ 0.13832330028328613, -54.24929178470256 ],
+  "internalTemperatureAnalogSensor" : [ 0, 0 ], // [ 0.13832330028328613, -54.24929178470256 ],
   "externalTemperatureAnalogSensor" : [ 0.0043226031338526915, -92.49291784702551 ],
   "externalHumidityAnalogSensor" : [ 0.004578125, -21 ],
   "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
@@ -134,3 +134,7 @@ settings.map = {
 settings.POI = {  // "pointName" : [Lat, Lng, "popupText"]
   "iut-radio" : [ 44.91568, 4.91524, "IUT de Valence, FM station" ]
 };
+
+settings.gpsFields = [
+  'GPSTime', 'fixGPS', 'longGPS', 'latGPS', 'altGPS',
+  'speedGPS', 'capGPS', 'numSatsGPS', 'hdop'];

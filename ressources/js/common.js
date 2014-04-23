@@ -217,15 +217,9 @@ function filterData(dataArg) {
 
   // "Cross" icons for invalid GPS data.
   if (data['fixGPS'] == "V") {
-    data['GPSTime'] = "<img src=\"ressources/img/null.png\">";
-    data['fixGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['longGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['latGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['altGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['speedGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['capGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['numSatsGPS'] = "<img src=\"ressources/img/null.png\">";
-    data['hdop'] = "<img src=\"ressources/img/null.png\">";
+    settings.gpsFields.forEach(function(element, index, array) {
+      data[element] = "-";
+    });
   }
   return data;
 }
