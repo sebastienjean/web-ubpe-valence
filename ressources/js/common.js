@@ -299,11 +299,7 @@ function handlePageUpdate() {
       callbackFunction = updateTable;
       var optionnalFunction = function() {
         $(function() {
-          $("table").tablesorter({
-            sortList: [
-              [3, 1]
-            ]
-          });
+          //$("table").tablesorter();
         });
       };
       break;
@@ -315,11 +311,7 @@ function handlePageUpdate() {
       raw = true;
       var optionnalFunction = function() {
         $(function() {
-          $("table").tablesorter({
-            sortList: [
-              [3, 1]
-            ]
-          });
+          //$("table").tablesorter();
         });
       };
       break;
@@ -347,7 +339,7 @@ function handlePageUpdate() {
     var reloadTimer = window.setInterval(function() {
       loadJsFile('data/events.clean', loadJSCallbackFunction);
       optionnalFunction();
-    }, 30000);
+    }, 10000);
   }
 }
 
