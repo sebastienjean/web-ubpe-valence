@@ -5,25 +5,23 @@
   <meta charset="utf-8">
   <link rel="shortcut icon" href="ressources/img/favicon.ico">
 
-  <link rel="stylesheet" href="ressources/tablesorter/theme.blue.css" type="text/css" media="print, projection, screen" />
+  <link rel="stylesheet" href="ressources/style.css" type="text/css" />
   <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
 
   <title>UBPE2014@Valence | Filtered data</title>
 </head>
 <body>
   <div id="tab2" >
-    <table id="filtered-data" class="tablesorter-blue tablesorter" >
-    <thead id="headers">
-      <tr id="header_row"></tr>
-    </thead>
-    <tbody id="body_table">
-    </tbody>
+    <table id="data-table">
+      <thead id="headers">
+        <tr id="header_row"></tr>
+      </thead>
+      <tbody id="body_table"></tbody>
     </table>
   </div>
 
   <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
   <script type="text/javascript" src="ressources/js/moment.js"></script>
-  <script type="text/javascript" src="ressources/tablesorter/jquery.tablesorter.js"></script>
 
   <script type="text/javascript" src="ressources/js/settings.js"></script>
   <script type="text/javascript" src="ressources/js/blacklist.js"></script>
@@ -46,8 +44,6 @@
       };
       headers.append('<th>' + titles.join('</th><th>') + '</th>');
 
-      $("#filtered-data").tablesorter({theme: 'blue'});
-
     })();
 
     function updateTable(data) {
@@ -62,7 +58,6 @@
       };
       var x = $('<tr></tr>').append('<td>' + values.join('</td><td>') + '</td>');
       $('#body_table').prepend(x);
-      $("#filtered-data").trigger("update");
     }
 
     handlePageUpdate();

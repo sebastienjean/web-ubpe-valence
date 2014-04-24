@@ -99,7 +99,7 @@ function mapFrame(frame) {
 }
 
 function getPopUpFromFrame(frame) {
-  var result = '<div style="color : black">' +
+  var result = '<div class="popup">' +
     '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
     '<center>Time ' + frame['timestamp'] + '</center><br/>' +
     '<u><b>Location</b></u><br/>' +

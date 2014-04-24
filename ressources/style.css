@@ -65,12 +65,13 @@ body {
 }
 
 #page {
-	background: rgba(65, 70, 70, 0.85);
+	background: #FFF;
 	border-radius: 20px;
 	padding: 10px 10px 10px 10px;
 	border-width: 2px;
 	border-style: solid;
 	border-color: #ff8c00;
+	color: #000;
 }
 
 #page-content { /* Only if div title before ! */
@@ -100,10 +101,18 @@ body {
 	border-color: #ff8c00;
 }
 
+.popup {
+	color: #000;
+}
+
 #graph {
 	height: 550px;
 	width: 750px;
 	margin: auto auto auto auto;
+}
+
+#flotTip {
+	color: #000;
 }
 
 #tab {
@@ -274,3 +283,37 @@ body {
 	margin: 10px auto 10px auto;
 	/*background-color : orange;*/
 	text-align: center;}
+
+/* ----------------------------------------------------------------------------------- TABLE */
+/* overall */
+#data-table {
+	width: 100%;
+	background-color: #fff;
+	margin: 10px 0 15px;
+	text-align: left;
+	border-spacing: 0;
+	border: #cdcdcd 1px solid;
+	border-width: 1px 0 0 1px;
+}
+#data-table th,
+#data-table td {
+	border: #cdcdcd 1px solid;
+	border-width: 0 1px 1px 0;
+	color: #000;
+}
+
+/* header */
+#data-table th,
+#data-table thead td {
+	font: bold 12px/18px Arial, Sans-serif;
+	background-color: #99bfe6;
+	border-collapse: collapse;
+	padding: 4px;
+	text-shadow: 0 1px 0 rgba(204, 204, 204, 0.7);
+}
+#data-table tbody td,
+#data-table tfoot th,
+#data-table tfoot td {
+	padding: 4px;
+	vertical-align: top;
+}
