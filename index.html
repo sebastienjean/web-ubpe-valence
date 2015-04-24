@@ -2,108 +2,96 @@
 <html lang="fr">
 
 <head>
-  <meta charset="utf-8">
-  <link rel="shortcut icon" href="ressources/img/favicon.ico">
-  <link rel="stylesheet" href="ressources/style.css" type="text/css" />
-  <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
-  <link rel="stylesheet" href="ressources/countdown/jquery.countdown.css">
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="ressources/img/favicon.ico">
+    <link rel="stylesheet" href="ressources/style.css" type="text/css" />
+    <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
+    <link rel="stylesheet" href="ressources/countdown/jquery.countdown.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-  <title>UBPE2014@Valence | Home</title>
-  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
-  <script src="ressources/countdown/jquery.plugin.min.js"></script>
-  <!--
-  <script src="ressources/countdown/jquery.countdown.min.js"></script>
-  <script src="ressources/countdown/jquery.countdown-fr.js"></script>
-  <script>
-
-    $(function () {
-      var austDay =  new Date(2014, 3, 23, 14, 0, 0, 0);
-      $('#defaultCountdown').countdown({until: austDay});
-      $('#year').text(austDay.getFullYear());
-    });
-  </script>
-  -->
+    <title>UBPE2015@Valence | Home</title>
 
 </head>
 
 <body>
-  <div id="big-frame">
+    <div id="big-frame">
 
-    <div id="menu">
-      <ul>
-        <li><a href="data-filtered-all.html">Data</a></li>
-        <li><a href="charts.html">Charts</a></li>
-        <li><a href="map-online.html">Map</a></li>
-        <li><a href="data-raw-all.html">Raw data</a></li>
-      </ul>
-    </div><!-- end menu -->
-
-    <!--
-    <div id="ban">
-    <p>Firefly26 - Almost there:</p>
-    <div id="defaultCountdown"></div>
-    </div>
-    -->
-
-
-    <div id="frame">
-      <div id="page-content">
-        <div id="map" style="width: 100%; height: 600px"></div>
-        <br/>
-        <div id="lastFrame">
-          <div id="tab2">
-            <table>
-              <tr id="type-tile"></tr>
-              <tr id="type-1"></tr>
-            </table>
-          </div>
+        <div id="menu">
+            <ul>
+                <li><a href="data-filtered-all.html">Data</a>
+                </li>
+                <li><a href="charts.html">Charts</a>
+                </li>
+                <li><a href="map-online.html">Map</a>
+                </li>
+                <li><a href="data-raw-all.html">Raw data</a>
+                </li>
+            </ul>
         </div>
-      </div><!-- end page -->
-    </div><!-- end frame -->
 
-    <div id="footer">
-      <div id="footer-left">UBPE2014@Valence - UBPE project team, IUT Valence</div>
-      <div id="footer-right">
-        <ul>
-          <li><a href="http://iut-valence.fr"><img
-              src="ressources/img/logoiut2.png" title="IUT Valence"
-              alt="Logo IUT Valence"></a></li>
-        </ul>
-      </div>
-    </div><!-- end footer -->
-  </div>
+        <div id="frame">
+            <div id="page-content">
+                <div id="map" style="width: 100%; height: 600px"></div>
+                <br/>
+                <div id="lastFrame">
+                    <div id="tab2">
+                        <table>
+                            <tr id="type-tile"></tr>
+                            <tr id="type-1"></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div id="footer-left">UBPE2015@Valence - UBPE project team, IUT Valence</div>
+            <div id="footer-right">
+                <ul>
+                    <li>
+                        <a href="http://iut-valence.fr"><img src="ressources/img/logoiut2.png" title="IUT Valence" alt="Logo IUT Valence">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 
-  <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
-  <script type="text/javascript" src="ressources/js/moment.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
-  <script type="text/javascript" src="ressources/js/settings.js"></script>
-  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
-  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
-  <script type="text/javascript" src="ressources/js/map.js"></script>
-  <script type="text/javascript" src="ressources/js/common.js"></script>
+    <script type="text/javascript" src="ressources/countdown/jquery.plugin.min.js"></script>
+    <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="ressources/js/moment.js"></script>
+    <script type="text/javascript" src="ressources/js/settings.js"></script>
+    <script type="text/javascript" src="ressources/js/blacklist.js"></script>
+    <script type="text/javascript" src="ressources/js/map.js"></script>
+    <script type="text/javascript" src="ressources/js/common.js"></script>
+    <script type="text/javascript" src="data/events.clean" id="events-file"></script>
 
-  <script>
-    'use strict';
+    <script>
+        'use strict';
 
-    setupMap('map', settings.mapServers['online'], settings.map['maxZoom'], settings.map['minZoom']);
+        setupMap('map', settings.mapServers['online'], settings.map['maxZoom'], settings.map['minZoom']);
 
-    (function initSummary() {
-      var titles = [];
-      settings.dataBriefLabels.forEach(function(label, index, array) {
-        var title = settings.fieldLabels[label];
-        if (settings.fieldUnits[label]) {
-          title += "<br />(" + settings.fieldUnits[label] + ")";
-        }
-        titles.push(title);
-      });
-      $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
-    })();
+        (function initSummary() {
+            var titles = [];
+            settings.dataBriefLabels.forEach(function (label, index, array) {
+                var title = settings.fieldLabels[label];
+                if (settings.fieldUnits[label]) {
+                    title += "<br />(" + settings.fieldUnits[label] + ")";
+                }
+                titles.push(title);
+            });
+            $('#type-tile').append('<th>' + titles.join('</th><th>') + '</th>');
+        })();
 
-    handlePageUpdate();
+        handlePageUpdate();
 
-    // Center and zoom the map to display all the known points to date.
-    map.fitBounds(markers.getBounds());
-  </script>
+        // Center and zoom the map to display all the known points to date.
+        map.fitBounds(markers.getBounds());
+    </script>
 </body>
+
 </html>
