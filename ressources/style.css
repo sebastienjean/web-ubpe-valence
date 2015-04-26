@@ -8,16 +8,6 @@
 	background-repeat: no-repeat;
 }
 
-body {
-	font-size: 11pt;
-	line-height: 1.6em;
-	font-family: Arial, sans-serif;
-	background: #9ea3a3;
-	color: #adadad;
-	/*background: url(./img/Image1.png) no-repeat black;*/
-	background-color: black;
-}
-
 #header {
 	margin: 10px auto 0 auto;
 	width: 950px;

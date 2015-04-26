@@ -2,44 +2,78 @@
 <html lang="fr">
 
 <head>
-  <meta charset="utf-8">
-  <link rel="shortcut icon" href="./ressources/img/favicon.ico">
-  <link rel="stylesheet" href="./ressources/style.css" type="text/css" />
-  <link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
-  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="./ressources/img/favicon.ico">
+    <link rel="stylesheet" href="./ressources/leaflet/leaflet.css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="ressources/newStyle.css" rel="stylesheet">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #mapFullScreen {
+            height: 100%;
+        }
+    </style>
 
-    #mapFullScreen {
-      height: 100%;
-    }
-  </style>
-
-  <title>UBPE2014@Valence | Map (online)</title>
+    <title>UBPE2014@Valence | Map (online)</title>
 </head>
 
 <body>
 
-  <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
-  <script type="text/javascript" src="ressources/js/moment.js"></script>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://www.iut-valence.fr/" target="_blank">
+                    <img id="IUT-logo-navbar" alt="Brand" src="ressources/img/logoiut2.png">
+                </a>
+                <a class="navbar-brand" href="#">UBPE2015@Valence</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="data-filtered-all.html">Data</a>
+                    </li>
+                    <li><a href="charts.html">Charts</a>
+                    </li>
+                    <li class="active"><a href="map-online.html">Map</a>
+                    </li>
+                    <li><a href="data-raw-all.html">Raw data</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-  <script type="text/javascript" src="ressources/js/settings.js"></script>
-  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
-  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
-  <script type="text/javascript" src="ressources/js/map.js"></script>
-  <script type="text/javascript" src="ressources/js/common.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="ressources/js/moment.js"></script>
 
-  <div id="mapFullScreen"></div>
+    <script type="text/javascript" src="ressources/js/settings.js"></script>
+    <script type="text/javascript" src="ressources/js/blacklist.js"></script>
+    <script type="text/javascript" src="data/events.clean" id="events-file"></script>
+    <script type="text/javascript" src="ressources/js/map.js"></script>
+    <script type="text/javascript" src="ressources/js/common.js"></script>
+
+    <div id="mapFullScreen"></div>
     <script>
-      // Création de la carte
-      setupMap('mapFullScreen', settings.mapServers['online'], settings.map['maxZoom'], settings.map['minZoom']);
-      handlePageUpdate();
-      map.fitBounds(markers.getBounds());
-  </script>
+        // Création de la carte
+        setupMap('mapFullScreen', settings.mapServers['online'], settings.map['maxZoom'], settings.map['minZoom']);
+        handlePageUpdate();
+        map.fitBounds(markers.getBounds());
+    </script>
 </body>
 
 </html>

@@ -1,138 +1,177 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="fr" />
-  <link rel="shortcut icon" href="ressources/img/favicon.ico">
-  <link rel="stylesheet" href="ressources/style.css" type="text/css" />
-  <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="fr" />
+    <link rel="shortcut icon" href="ressources/img/favicon.ico">
+    <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="ressources/newStyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="ressources/style.css" type="text/css" />
 
-  <title>UBPE2014@Valence | Charts</title>
+    <title>UBPE2014@Valence | Charts</title>
 </head>
+
 <body>
-  <div id="big-frame">
-    <div id="frame">
-      <div id="page">
-        <div id="title">
-          <div id="title-left">
-            <h2>Charts</h2>
-          </div>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://www.iut-valence.fr/" target="_blank">
+                    <img id="IUT-logo-navbar" alt="Brand" src="ressources/img/logoiut2.png">
+                </a>
+                <a class="navbar-brand" href="#">UBPE2015@Valence</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="data-filtered-all.html">Data</a>
+                    </li>
+                    <li class="active"><a href="charts.html">Charts</a>
+                    </li>
+                    <li><a href="map-online.html">Map</a>
+                    </li>
+                    <li><a href="data-raw-all.html">Raw data</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div id="page-content">
-          <div id="graph"></div>
-          <div id="button-holder-graphique">
-            <ul>
-              <li>X-axis: <select name="x" id="x"></select></li>
-              <li>Y-axis: <select name="y" id="y"></select></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- end page -->
+    </nav>
+
+    <div id="page-content">
+        <div id="graph"></div>
     </div>
-    <!-- end frame -->
-  </div>
 
-  <script type="text/javascript" src="ressources/js/jquery-1.9.0.min.js"></script>
-  <script type="text/javascript" src="ressources/flot/jquery.flot.js"></script>
-  <script type="text/javascript" src="ressources/flot/jquery.flot.time.js"></script>
-  <script type="text/javascript" src="ressources/flot/jquery.flot.axislabels.js"></script>
-  <script type="text/javascript" src="ressources/flot/jquery.flot.tooltip.js"></script>
-  <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
-  <script type="text/javascript" src="ressources/js/moment.js"></script>
+    <div class="panel panel-default center" style="width : 50%">
+        <div class="panel-body" style="text-align : center;">
+            <b>Change axis : </b>
+                &emsp;X-axis : 
+                    <select name="x" id="x"></select>
+                &emsp;Y-axis : 
+                        <select name="y" id="y"></select>
+        </div>
+    </div>
 
-  <script type="text/javascript" src="ressources/js/settings.js"></script>
-  <script type="text/javascript" src="ressources/js/blacklist.js"></script>
-  <script type="text/javascript" src="data/events.clean" id="events-file"></script>
-  <script type="text/javascript" src="ressources/js/common.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="ressources/flot/jquery.flot.js"></script>
+    <script type="text/javascript" src="ressources/flot/jquery.flot.time.js"></script>
+    <script type="text/javascript" src="ressources/flot/jquery.flot.axislabels.js"></script>
+    <script type="text/javascript" src="ressources/flot/jquery.flot.tooltip.js"></script>
+    <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="ressources/js/moment.js"></script>
 
-  <script>
-    (function initSelects() {
-      var x = $('#x');
-      for (var i in settings.chartXAxis) {
-        var val = settings.chartXAxis[i];
-        x.append('<option value="' + val + '">' + settings.fieldLabels[val] +  '</option>');
-      }
-      var y = $('#y');
-      for (var i in settings.chartYAxis) {
-        var val = settings.chartYAxis[i];
-        y.append('<option value="' + val + '">' + settings.fieldLabels[val] +  '</option>');
-      }
-      x.find('option:first-child').attr('selected', 'selected');
-      y.find('option:first-child').attr('selected', 'selected');
+    <script type="text/javascript" src="ressources/js/settings.js"></script>
+    <script type="text/javascript" src="ressources/js/blacklist.js"></script>
+    <script type="text/javascript" src="data/events.clean" id="events-file"></script>
+    <script type="text/javascript" src="ressources/js/common.js"></script>
 
-      $('#x, #y').bind('change', displayChart);
-    })();
+    <script>
+        (function initSelects() {
+            var x = $('#x');
+            for (var i in settings.chartXAxis) {
+                var val = settings.chartXAxis[i];
+                x.append('<option value="' + val + '">' + settings.fieldLabels[val] + '</option>');
+            }
+            var y = $('#y');
+            for (var i in settings.chartYAxis) {
+                var val = settings.chartYAxis[i];
+                y.append('<option value="' + val + '">' + settings.fieldLabels[val] + '</option>');
+            }
+            x.find('option:first-child').attr('selected', 'selected');
+            y.find('option:first-child').attr('selected', 'selected');
 
-    var graph = $("#graph");
+            $('#x, #y').bind('change', displayChart);
+        })();
 
-    var graph_options = {
-      legend : {
-        show : true,
-        position : 'ne',
-        backgroundColor : null,
-        backgroundOpacity : 0
-      },
-      grid : {
-        show : true,
-        color : '#ff8c00',
-        backgroundColor : null,
-        hoverable : true,
-        mouseActiveRadius : 30
-      },
-      tooltip: true,
-      tooltipOpts: {
-        content: "%lx = %x<br />%ly = %y",
-        xDateFormat: "%H:%M:%S",
-        yDateFormat: "%H:%M:%S",
-      },
-      xaxis : {color : 'orange'},
-      yaxis : {color : 'orange'},
-    };
+        var graph = $("#graph");
 
-    function displayChart() {
-      var xFieldName = $("#x").val();
-      var yFieldName = $("#y").val();
-      var xLabel = settings.fieldLabels[xFieldName];
-      var yLabel = settings.fieldLabels[yFieldName];
+        var graph_options = {
+            legend: {
+                show: true,
+                position: 'ne',
+                backgroundColor: null,
+                backgroundOpacity: 0
+            },
+            grid: {
+                show: true,
+                color: '#bdc3c7',
+                backgroundColor: null,
+                hoverable: true,
+                mouseActiveRadius: 30
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%lx = %x<br />%ly = %y",
+                xDateFormat: "%H:%M:%S",
+                yDateFormat: "%H:%M:%S",
+            },
+            xaxis: {
+                color: "#4aa3df"
+            },
+            yaxis: {
+                color: '#4aa3df'
+            },
+        };
 
-      // Handle the time.
-      if (xFieldName == "timestamp") {
-        graph_options["xaxis"]["mode"] = "time";
-      } else {
-        graph_options["xaxis"]["mode"] = "";
-      }
-      var xUnitString = "";
-      if (settings.fieldUnits[xFieldName] != null) {
-        xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
-      }
+        function displayChart() {
+            var xFieldName = $("#x").val();
+            var yFieldName = $("#y").val();
+            var xLabel = settings.fieldLabels[xFieldName];
+            var yLabel = settings.fieldLabels[yFieldName];
 
-      var yUnitString = "";
-      if (settings.fieldUnits[yFieldName] != null) {
-        yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
-      }
+            // Handle the time.
+            if (xFieldName == "timestamp") {
+                graph_options["xaxis"]["mode"] = "time";
+            } else {
+                graph_options["xaxis"]["mode"] = "";
+            }
+            var xUnitString = "";
+            if (settings.fieldUnits[xFieldName] != null) {
+                xUnitString = " (" + settings.fieldUnits[xFieldName] + ")";
+            }
 
-      graph_options["xaxes"] = [{axisLabel: xLabel + xUnitString}];
-      graph_options["yaxes"] = [{axisLabel: yLabel + yUnitString}];
+            var yUnitString = "";
+            if (settings.fieldUnits[yFieldName] != null) {
+                yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
+            }
 
-      var tab = [];
-      for (var i = 0; i < rawData.length; i++) {
-        if (data[i]['fixGPS'] == "V" && (xFieldName == "altGPS" || yFieldName == "altGPS")) {  // Invalid GPS data, don't try to plot it.
-          return;
+            graph_options["xaxes"] = [{
+                axisLabel: xLabel + xUnitString
+            }];
+            graph_options["yaxes"] = [{
+                axisLabel: yLabel + yUnitString
+            }];
+
+            var tab = [];
+            for (var i = 0; i < rawData.length; i++) {
+                if (data[i]['fixGPS'] == "V" && (xFieldName == "altGPS" || yFieldName == "altGPS")) { // Invalid GPS data, don't try to plot it.
+                    return;
+                }
+                tab.push([rawData[i][xFieldName], filteredData[i][yFieldName]]);
+            }
+
+            var dTab = {
+                data: tab,
+                color: '#4aa3df',
+                points: {
+                    show: true
+                },
+            }
+
+            $.plot(graph, [dTab], graph_options);
         }
-        tab.push([rawData[i][xFieldName], filteredData[i][yFieldName]]);
-      }
 
-      var dTab = {
-        data: tab,
-        color: 'red',
-        points: {show : true},
-      }
-
-      $.plot(graph, [dTab], graph_options);
-    }
-
-    handlePageUpdate();
-  </script>
+        handlePageUpdate();
+    </script>
 </body>
+
 </html>

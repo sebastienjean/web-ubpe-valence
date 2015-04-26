@@ -4,62 +4,72 @@
 <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="ressources/img/favicon.ico">
-    <link rel="stylesheet" href="ressources/style.css" type="text/css" />
     <link rel="stylesheet" href="ressources/leaflet/leaflet.css">
     <link rel="stylesheet" href="ressources/countdown/jquery.countdown.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="ressources/newStyle.css" rel="stylesheet">
 
     <title>UBPE2015@Valence | Home</title>
 
 </head>
 
 <body>
-    <div id="big-frame">
 
-        <div id="menu">
-            <ul>
-                <li><a href="data-filtered-all.html">Data</a>
-                </li>
-                <li><a href="charts.html">Charts</a>
-                </li>
-                <li><a href="map-online.html">Map</a>
-                </li>
-                <li><a href="data-raw-all.html">Raw data</a>
-                </li>
-            </ul>
-        </div>
-
-        <div id="frame">
-            <div id="page-content">
-                <div id="map" style="width: 100%; height: 600px"></div>
-                <br/>
-                <div id="lastFrame">
-                    <div id="tab2">
-                        <table>
-                            <tr id="type-tile"></tr>
-                            <tr id="type-1"></tr>
-                        </table>
-                    </div>
-                </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://www.iut-valence.fr/" target="_blank">
+                    <img id="IUT-logo-navbar" alt="Brand" src="ressources/img/logoiut2.png">
+                </a>
+                <a class="navbar-brand" href="#">UBPE2015@Valence</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-        </div>
-
-        <div id="footer">
-            <div id="footer-left">UBPE2015@Valence - UBPE project team, IUT Valence</div>
-            <div id="footer-right">
-                <ul>
-                    <li>
-                        <a href="http://iut-valence.fr"><img src="ressources/img/logoiut2.png" title="IUT Valence" alt="Logo IUT Valence">
-                        </a>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.html">Home</a>
+                    </li>
+                    <li><a href="data-filtered-all.html">Data</a>
+                    </li>
+                    <li><a href="charts.html">Charts</a>
+                    </li>
+                    <li><a href="map-online.html">Map</a>
+                    </li>
+                    <li><a href="data-raw-all.html">Raw data</a>
                     </li>
                 </ul>
             </div>
         </div>
+    </nav>
+
+    <div id="frame">
+        <div id="page-content">
+            <!-- Leaflet map -->
+            <div id="map"></div>
+        </div>
+    </div>
+    
+    <div id="footer" class="panel panel-default">
+        <!-- Last data table -->
+        <div class="panel-heading">Last data</div>
+        <div id="tab2">
+            <table id="lastDataTable" class="table-condensed">
+                <tr id="type-tile"></tr>
+                <tr id="type-1"></tr>
+            </table>
+        </div>
+        <div class="panel-footer">UBPE2015@Valence - UBPE project team, IUT Valence.</div>
     </div>
 
+    </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="ressources/countdown/jquery.plugin.min.js"></script>
     <script type="text/javascript" src="ressources/leaflet/leaflet.js"></script>
@@ -80,7 +90,7 @@
             settings.dataBriefLabels.forEach(function (label, index, array) {
                 var title = settings.fieldLabels[label];
                 if (settings.fieldUnits[label]) {
-                    title += "<br />(" + settings.fieldUnits[label] + ")";
+                    title += " (" + settings.fieldUnits[label] + ")";
                 }
                 titles.push(title);
             });
