@@ -3,7 +3,7 @@ var settings = {};
 
 // Field labels (for charts and tables)
 settings.fieldLabels = {  // "fieldName" : "label"
-  "timestamp" : "Timestamp",
+  "timestamp" : "Time",
   "stationName" : "Station Name",
   "objectName" : "Object",
   "frameCounter" : "Frame",
@@ -16,21 +16,20 @@ settings.fieldLabels = {  // "fieldName" : "label"
   "latGPS" : "Latitude",
   "altGPS" : "Altitude",
   "speedGPS" : "Speed",
-  "capGPS" : "Course",
+  "courseGPS" : "Course",
   "numSatsGPS" : "Sats",
   "hdop" : "Precision",
-  "internalTemperatureAnalogSensor" : "Temp. in",
+  "boardTemperatureAnalogSensor" : "Temp. board",
   "externalTemperatureAnalogSensor" : "Temp. out",
-  "middleTemperatureAnalogSensor" : "Temp. middle",  
+  "internalTemperatureAnalogSensor" : "Temp. in",  
   "externalHumidityAnalogSensor" : "Hygro",
   "differentialPressureAnalogSensor" : "Pressure",
   "xAccelerationAnalogSensor" : "Acc. X",
   "yAccelerationAnalogSensor" : "Acc. Y",
   "zAccelerationAnalogSensor" : "Acc. Z",
-  "visibleLuminosityAnalogSensor" : "Lux visible",
-  "irLuminosityAnalogSensor" : "Lux ir",
-  // "uvLuminosityAnalogSensor" : "Lux uv",
-  "batteryTemperatureAnalogSensor" : "Temp. Bat",
+  "visibleLuminosityAnalogSensor" : "Lum. visible",
+  "irLuminosityAnalogSensor" : "Lum. IR",
+  "batteryTemperatureAnalogSensor" : "Temp. LiPo",
   "headingPseudoAnalogSensor" : "Heading",
   "voltageAnalogSensor" : "Voltage"
 };
@@ -42,15 +41,14 @@ settings.fieldUnits = {  // "fieldName" : "unit"
   "latGPS" : "&deg;",
   "altGPS" : "m",
   "speedGPS" : "km/h",
-  "capGPS" : "&deg;",
+  "courseGPS" : "&deg;",
+  "boardTemperatureAnalogSensor" : "&deg;C",
   "internalTemperatureAnalogSensor" : "&deg;C",
-  "middleTemperatureAnalogSensor" : "&deg;C",
   "externalTemperatureAnalogSensor" : "&deg;C",
   "externalHumidityAnalogSensor" : "&#37;",
   "differentialPressureAnalogSensor" : "hPa",
   "visibleLuminosityAnalogSensor" : "lux",
   "irLuminosityAnalogSensor" : "mW/cm&sup2;",
-  //"uvLuminosityAnalogSensor" : "mW/cm&sup2;",
   "batteryTemperatureAnalogSensor" : "&deg;C",
   "voltageAnalogSensor" : "V",
   "headingPseudoAnalogSensor" : "&deg;",
@@ -62,13 +60,12 @@ settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating 
   "altGPS" : 0,
   "speedGPS" : 0,
   "internalTemperatureAnalogSensor" : 1,
-  "middleTemperatureAnalogSensor" : 1,
+  "boardTemperatureAnalogSensor" : 1,
   "externalTemperatureAnalogSensor" : 1,
   "externalHumidityAnalogSensor" : 0,
   "differentialPressureAnalogSensor" : 0,
   "visibleLuminosityAnalogSensor" : 0,
   "irLuminosityAnalogSensor" : 0,
-  //"uvLuminosityAnalogSensor" : 0,
   "batteryTemperatureAnalogSensor" : 1,
   "voltageAnalogSensor" : 1,
   "headingPseudoAnalogSensor" : 1,
@@ -80,41 +77,39 @@ settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating 
 };
 
 settings.dataBriefLabels = ["timestamp", "frameCounter", "resetCounter",
-  "altGPS", "capGPS", "internalTemperatureAnalogSensor",
-  "middleTemperatureAnalogSensor", "externalTemperatureAnalogSensor",
+  "altGPS", "courseGPS", "internalTemperatureAnalogSensor",
+  "boardTemperatureAnalogSensor", "externalTemperatureAnalogSensor",
   "differentialPressureAnalogSensor", "externalHumidityAnalogSensor",
   "voltageAnalogSensor"];
 
 settings.sensorCalibration = {
   // An array containing the name of the data and a, b as calibratedData = (data * a) + b
-  "middleTemperatureAnalogSensor" : [ 0.0043226031338526915, -92.49291784702551 ],
-  "internalTemperatureAnalogSensor" : [ 0.138, -89.7],
-  "externalTemperatureAnalogSensor" : [ 0.0043226031338526915, -92.49291784702551 ],
-  "externalHumidityAnalogSensor" : [ 0.004578125, -21 ],
+  "internalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
+  "boardTemperatureAnalogSensor" : [ 0.138, -89.7],
+  "externalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
+  "externalHumidityAnalogSensor" : [ 0.0019, -40.45 ],
   "differentialPressureAnalogSensor" : [ -1.2207, 1284 ],
-  "visibleLuminosityAnalogSensor" : [ 2.25067138671875, -112 ],
-  "irLuminosityAnalogSensor" : [ 0.002384185791015625, 0 ],
-  //"uvLuminosityAnalogSensor" : [ 0.34637451171875, -5680 ],
+  "visibleLuminosityAnalogSensor" : [ 1,1867, 38850 ],
+  "irLuminosityAnalogSensor" : [ 0.001, 33.29 ],
   "voltageAnalogSensor" : [ 0.0097, 0 ],
   "speedGPS" : [ 1.852, 0 ],
   "headingPseudoAnalogSensor" : [ 0.1, 0 ],
-  "xAccelerationAnalogSensor" : [ 0.016276041666666668, -5.0],
-  "yAccelerationAnalogSensor" : [ 0.016276041666666668, -5.0],
-  "zAccelerationAnalogSensor" : [ 0.016276041666666668, -5.0],
+  "xAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
+  "yAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
+  "zAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
   "frameCounter": [ 1, 0 ],
   "resetCounter": [ 1, -2 ],
-  "batteryTemperatureAnalogSensor": [ -0.09091, 70.9091]
+  "batteryTemperatureAnalogSensor": [ -0.09091, 70.91]
 };
 
 settings.chartXAxis = ["timestamp", "frameCounter", "altGPS"];
 
 settings.chartYAxis = [
-  "altGPS", "internalTemperatureAnalogSensor", "middleTemperatureAnalogSensor",
+  "altGPS", "internalTemperatureAnalogSensor", "boardTemperatureAnalogSensor",
     "externalTemperatureAnalogSensor", "externalHumidityAnalogSensor",
     "differentialPressureAnalogSensor", "visibleLuminosityAnalogSensor",
     "irLuminosityAnalogSensor", 
-    // "uvLuminosityAnalogSensor",
-    "voltageAnalogSensor", "speedGPS", "capGPS", "numSatsGPS",
+    "voltageAnalogSensor", "speedGPS", "courseGPS", "numSatsGPS",
     "resetCounter", "batteryTemperatureAnalogSensor"];
 
 // Tiles server list
@@ -139,4 +134,4 @@ settings.POI = {  // "pointName" : [Lat, Lng, "popupText"]
 
 settings.gpsFields = [
   'GPSTime', 'fixGPS', 'longGPS', 'latGPS', 'altGPS',
-  'speedGPS', 'capGPS', 'numSatsGPS', 'hdop'];
+  'speedGPS', 'courseGPS', 'numSatsGPS', 'hdop'];
