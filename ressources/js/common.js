@@ -1,7 +1,7 @@
 //  commons.js
 //  Main functions to handle the data processing
 //--------------------------------------------------------------------------------
-//  Varaiables :
+//  Variables :
 //  Allow the user to quickly tune the website configuration
 //--------------------------------------------------------------------------------
 'use strict';
@@ -100,19 +100,19 @@ function mapFrame(frame) {
 
 function getPopUpFromFrame(frame) {
   var result = '<div class="popup">' +
-    '<center>Point ' + frame['frameCounter'] + '</center><br/>' +
-    '<center>Time ' + frame['timestamp'] + '</center><br/>' +
+    '<center>Frame #' + frame['frameCounter'] + ' at ' + frame['timestamp'] + '</center><br/>' +
     '<u><b>Location</b></u><br/>' +
     '<b>Latitude</b> : ' + formatGPSCoordinates(frame['latGPS']) + '<br/>' +
     '<b>Longitude</b> : ' + formatGPSCoordinates(frame['longGPS']) + '<br/>' +
     '<b>Altitude</b> : ' + frame['altGPS'] + ' ' + settings.fieldUnits['altGPS'] + '<br/>' +
-    '<u><b>Data</b></u>' + '<br/>' +
     '<b>Speed</b> : ' + frame['speedGPS'] + ' ' + settings.fieldUnits['speedGPS'] + '<br/>' +
+    '<b>Course</b> : ' + frame['courseGPS'] + ' ' + settings.fieldUnits['courseGPS'] + '<br/>' + '<br/>' +
+    '<u><b>Data</b></u>' + '<br/>' +    
     '<b>Pressure:</b> : ' + frame['differentialPressureAnalogSensor'] + ' ' + settings.fieldUnits['differentialPressureAnalogSensor'] + '<br/>' +
     '<b>Temperature out</b> : ' + frame['externalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['externalTemperatureAnalogSensor'] + '<br/>' +
     '<b>Temperature in</b> : ' + frame['internalTemperatureAnalogSensor'] + ' ' + settings.fieldUnits['internalTemperatureAnalogSensor'] + '<br/>' +
-    "<b>Temperature middle</b> : " + (frame['middleTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['middleTemperatureAnalogSensor'] + "<br/>" +
-    "<b>Temperature bat.</b> : " + (frame['batteryTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['batteryTemperatureAnalogSensor'] + "<br/>" +
+    "<b>Temperature board</b> : " + (frame['boardTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['boardTemperatureAnalogSensor'] + "<br/>" +
+    "<b>Temperature LiPo</b> : " + (frame['batteryTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['batteryTemperatureAnalogSensor'] + "<br/>" +
     "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" +
     "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"; + "</div>";
   return result;
