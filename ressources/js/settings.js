@@ -85,7 +85,7 @@ settings.dataBriefLabels = ["timestamp", "frameCounter", "resetCounter",
 settings.sensorCalibration = {
   // An array containing the name of the data and a, b as calibratedData = (data * a) + b
   "internalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
-  "boardTemperatureAnalogSensor" : [ 0.138, -89.7],
+  "boardTemperatureAnalogSensor" : [ 0.138, -99.7],
   "externalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
   "externalHumidityAnalogSensor" : [ 0.0019, 40.37 ],
   "differentialPressureAnalogSensor" : [ -1.2207, 1065 ],
