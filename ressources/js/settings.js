@@ -88,7 +88,7 @@ settings.sensorCalibration = {
   "boardTemperatureAnalogSensor" : [ 0.138, -89.7],
   "externalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
   "externalHumidityAnalogSensor" : [ 0.0019, 40.37 ],
-  "differentialPressureAnalogSensor" : [ -1.2207, 1060 ],
+  "differentialPressureAnalogSensor" : [ -1.2207, 1055 ],
   "visibleLuminosityAnalogSensor" : [ 1.1867, 38850 ],
   "irLuminosityAnalogSensor" : [ 0.001, 33.29 ],
   "voltageAnalogSensor" : [ 0.0097, 0 ],
