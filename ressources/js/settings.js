@@ -98,7 +98,7 @@ settings.sensorCalibration = {
   "yAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
   "zAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
   "frameCounter": [ 1, 0 ],
-  "resetCounter": [ 1, -2 ],
+  "resetCounter": [ 1, 0 ],
   "batteryTemperatureAnalogSensor": [ -0.09091, 70.91]
 };
 
