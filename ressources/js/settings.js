@@ -24,13 +24,9 @@ settings.fieldLabels = {  // "fieldName" : "label"
   "internalTemperatureAnalogSensor" : "Temp. in",  
   "externalHumidityAnalogSensor" : "Hygro",
   "differentialPressureAnalogSensor" : "Pressure",
-  "xAccelerationAnalogSensor" : "Acc. X",
-  "yAccelerationAnalogSensor" : "Acc. Y",
-  "zAccelerationAnalogSensor" : "Acc. Z",
   "visibleLuminosityAnalogSensor" : "Lum. visible",
   "irLuminosityAnalogSensor" : "Lum. IR",
   "batteryTemperatureAnalogSensor" : "Temp. LiPo",
-  "headingPseudoAnalogSensor" : "Heading",
   "voltageAnalogSensor" : "Voltage"
 };
 
@@ -51,7 +47,6 @@ settings.fieldUnits = {  // "fieldName" : "unit"
   "irLuminosityAnalogSensor" : "mW/cm&sup2;",
   "batteryTemperatureAnalogSensor" : "&deg;C",
   "voltageAnalogSensor" : "V",
-  "headingPseudoAnalogSensor" : "&deg;",
 };
 
 // Measurement precision
@@ -69,9 +64,6 @@ settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating 
   "batteryTemperatureAnalogSensor" : 1,
   "voltageAnalogSensor" : 1,
   "headingPseudoAnalogSensor" : 1,
-  "xAccelerationAnalogSensor" : 1,
-  "yAccelerationAnalogSensor" : 1,
-  "zAccelerationAnalogSensor" : 1,
   "frameCounter": 0,
   "resetCounter": 0
 };
@@ -84,19 +76,15 @@ settings.dataBriefLabels = ["timestamp", "frameCounter", "resetCounter",
 
 settings.sensorCalibration = {
   // An array containing the name of the data and a, b as calibratedData = (data * a) + b
-  "internalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
-  "boardTemperatureAnalogSensor" : [ 0.138, -99.7],
-  "externalTemperatureAnalogSensor" : [ 0.0019, -25.21 ],
-  "externalHumidityAnalogSensor" : [ 0.0019, 40.37 ],
-  "differentialPressureAnalogSensor" : [ -1.2207, 1065 ],
+  "internalTemperatureAnalogSensor" : [ 0.00161, -27.93 ],
+  "boardTemperatureAnalogSensor" : [ 0.12534, -80.52 ],
+  "externalTemperatureAnalogSensor" : [ 0.00161, -27.93 ],
+  "externalHumidityAnalogSensor" : [ 0.001738, 41.29 ],
+  "differentialPressureAnalogSensor" : [ 1.08507, 965], // 1010
   "visibleLuminosityAnalogSensor" : [ 1.1867, 38850 ],
   "irLuminosityAnalogSensor" : [ 0.001, 33.29 ],
   "voltageAnalogSensor" : [ 0.0097, 0 ],
   "speedGPS" : [ 1.852, 0 ],
-  "headingPseudoAnalogSensor" : [ 0.1, 0 ],
-  "xAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
-  "yAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
-  "zAccelerationAnalogSensor" : [ 0.01627, -5.0 ],
   "frameCounter": [ 1, 0 ],
   "resetCounter": [ 1, 0 ],
   "batteryTemperatureAnalogSensor": [ -0.09091, 70.91]
