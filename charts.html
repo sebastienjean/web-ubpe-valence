@@ -148,11 +148,17 @@
                 yUnitString = " (" + settings.fieldUnits[yFieldName] + ")";
             }
 
+			var yAxisDecimal = "0";
+			if (settings.fieldFixedPoints[yFieldName] != null) {
+                yAxisDecimal = settings.fieldFixedPoints[yFieldName];
+            } 
+            
             graph_options["xaxes"] = [{
-                axisLabel: xLabel + xUnitString
+                axisLabel: xLabel + xUnitString                
             }];
             graph_options["yaxes"] = [{
-                axisLabel: yLabel + yUnitString
+                axisLabel: yLabel + yUnitString,
+                tickDecimals: yAxisDecimal
             }];
 
             var tab = [];
