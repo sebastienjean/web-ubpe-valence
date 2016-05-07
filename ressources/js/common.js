@@ -60,9 +60,8 @@ function createFrameObj(row) {
   // Initialize a frame object from raw json data.
 
   // Exemple row:
-  // ["1367221880630", "IUT-Radio", "STRATERRESTRE",  "148", "0", "0", "801",
-  //  "84", "271658", "001128", "V", "454.969", "4454.896", "0.0", "0.0",
-  //  "0.0", "0", "0.0", "38", "824", "615", "614", "467"]
+  // (to be completed)
+  
   var obj = {};
   var counter = 0;
   for (var propName in settings.fieldLabels) {
@@ -92,7 +91,7 @@ function mapFrame(frame) {
     var marker = L.marker([latGPSFormat, longGPSFormat], {
       icon: icon
     })
-    /* Remplissage du pop-up du marker */
+    /* Filling pop-up */
     .bindPopup(getPopUpFromFrame(frame));
     markers.addLayer(marker).addTo(map);
   }
@@ -114,7 +113,7 @@ function getPopUpFromFrame(frame) {
     "<b>Temperature board</b> : " + (frame['boardTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['boardTemperatureAnalogSensor'] + "<br/>" +
     "<b>Temperature LiPo</b> : " + (frame['batteryTemperatureAnalogSensor']) + '' + ' ' + settings.fieldUnits['batteryTemperatureAnalogSensor'] + "<br/>" +
     "<b>Humidity</b> : " + (frame['externalHumidityAnalogSensor']) + '' + ' ' + settings.fieldUnits['externalHumidityAnalogSensor'] + "<br/>" +
-    "<b>Voltage</b> : " + (frame['voltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"; + "</div>";
+    "<b>Voltage</b> : " + (frame['batteryVoltageAnalogSensor']) + '' + ' ' + settings.fieldUnits['voltageAnalogSensor'] + "<br/>"; + "</div>";
   return result;
 }
 
@@ -131,8 +130,8 @@ function updateSummary(frame) {
 
 /**
  * // convertGPSToDecimal : convert DDDMM.MM / 0DDMM.MM / 00DMM.MM GPS to
- * decimal GPS // IN : GPS coordinates in DDDMM.MM foramt // OUT : GPS
- * coordinates in decimal foramt
+ * decimal GPS // IN : GPS coordinates in DDDMM.MM format // OUT : GPS
+ * coordinates in decimal format
  */
 function convertGPSToDecimal(GPS) {
   var pe;
@@ -159,33 +158,34 @@ function convertGPSToDecimal(GPS) {
 }
 
 /**
- * // guessCapImgName : get the cap icon name according to the GPS cap // IN :
- * GPS cap // OUT : image name corresponding to the cap
+ * // guessCapImgName : get the cap icon name according to the GPS course 
+ * // IN : GPS course 
+ * // OUT : image name corresponding to the course
  */
-function guessCapImgName(cap) {
-  if (cap == 'null' || cap == '' || cap == null) {
+function guessCapImgName(course) {
+  if (course == 'null' || course == '' || course == null) {
     return 'null';
   }
-  cap = Number(cap) + 22.5;
+  course = Number(course) + 22.5;
 
-  if (cap > 360) {
-    cap = 0;
+  if (course > 360) {
+    course = 0;
   }
-  return (Math.floor(cap / 45) * 45) + '.png';
+  return (Math.floor(course / 45) * 45) + '.png';
 }
 
 // Get the icon depending on the GPS speed.
 function getSpeedIcon(speedGPS) {
-  if (speedGPS > 75) {
+  if (speedGPS > settings.mapFlags['red']) {
     return redIcon;
   }
-  if (speedGPS > 50) {
+  if (speedGPS > settings.mapFlags['orange']) {
     return orangeIcon;
   }
-  if (speedGPS > 25) {
+  if (speedGPS > settings.mapFlags['green']) {
     return greenIcon;
   }
-  if (speedGPS > 5) {
+  if (speedGPS > settings.mapFlags['blue']) {
     return blueIcon;
   }
   return whiteIcon;
@@ -212,8 +212,8 @@ function filterData(dataArg) {
     }
   }
   // transform 123456 to 12:34:56
-  data.RTCTime = data.RTCTime.replace(/(..)(..)(..)/,'$1:$2:$3');
-  data.GPSTime = data.GPSTime.replace(/(..)(..)(..)/,'$1:$2:$3');
+  data.timeRTC = data.timeRTC.replace(/(..)(..)(..)/,'$1:$2:$3');
+  data.timeGPS = data.timeGPS.replace(/(..)(..)(..)/,'$1:$2:$3');
   data.timestamp =  moment( parseInt(data.timestamp,10) ).format('HH:mm:ss');
 
 
