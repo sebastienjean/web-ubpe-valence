@@ -71,7 +71,7 @@ settings.fieldFixedPoints = {  // "fieldName" : "number of digit after floating 
   "visibleLuminosityAnalogSensor" : 0,
   "irLuminosityAnalogSensor" : 0,
   "batteryTemperatureAnalogSensor" : 1,
-  "batteryVoltageAnalogSensor" : 1,
+  "batteryVoltageAnalogSensor" : 2,
   "headingPseudoAnalogSensor" : 1,
   "frameCounter": 0,
   "resetCounter": 0,
