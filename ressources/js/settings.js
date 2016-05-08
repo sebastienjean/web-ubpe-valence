@@ -109,7 +109,7 @@ settings.chartYAxis = [
   "externalTemperatureAnalogSensor", "externalHumidityAnalogSensor",
   "differentialPressureAnalogSensor", "visibleLuminosityAnalogSensor",
   "irLuminosityAnalogSensor", "distancePseudoAnalogSensor",
-  "speedGPS", "courseGPS", "numSatsGPS",
+  "bestGPS","speedGPS", "courseGPS", "numSatsGPS",
   "resetCounter", "batteryTemperatureAnalogSensor", "batteryVoltageAnalogSensor"];
 
 // Tiles server list
