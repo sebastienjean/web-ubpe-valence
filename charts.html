@@ -135,6 +135,7 @@
             // Handle the time.
             if (xFieldName == "timestamp") {
                 graph_options["xaxis"]["mode"] = "time";
+                graph_options["xaxis"]["timezone"] = "browser"
             } else {
                 graph_options["xaxis"]["mode"] = "";
             }
