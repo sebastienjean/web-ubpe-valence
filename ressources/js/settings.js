@@ -94,7 +94,7 @@ settings.sensorCalibration = {
   "differentialPressureAnalogSensor" : [ 1.08507, 965], // 1010
   "visibleLuminosityAnalogSensor" : [ 1.1867, 38850 ],
   "irLuminosityAnalogSensor" : [ 0.001, 33.29 ],
-  "batteryVoltageAnalogSensor" : [ 0.0097, 0 ],
+  "batteryVoltageAnalogSensor" : [ 0.0146, 0 ],
   "speedGPS" : [ 1.852, 0 ],
   "frameCounter": [ 1, 0 ],
   "resetCounter": [ 1, 0 ],
